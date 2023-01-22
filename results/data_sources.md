@@ -23,8 +23,6 @@ Wie oben angerissen ist die API sehr fragil und fehleranfällig. Hinzu kommt, da
 ```
 
 ```python
-    import csv
-
     with open('ticker.txt', 'w') as file:
     for ticker in combined_list:
         file.write(ticker + '\n')

@@ -1,0 +1,12 @@
+# Resultate und Diskussion 
+
+##  Was sind die wichtigsten Ergebnisse der Arbeit, die zur Lösung des Problems beitragen?
+Zum einem wäre hier die API Funktionalität, die es uns nun ermöglicht, für jedes Unternehmen die fundamentalen Daten auszulesen und in einer JSON-Datei zwischenzuspeichern. Um das Verständnis für die einzelnen Kennzahlen auszubauen, wurde ein Glossar angelegt, in der die wichtigsten Kennzahlen kurz und prägnant erläutert werden.
+Zum anderen haben wir den Web-Scraper der die wichtigsten Artikel zu jeder Branche extrahieren und speichern kann. Diese können dazu verwendet werden, um eine fundierte Investionsentscheidung zu fällen oder zu rividieren. Das speichern der Artikel ermöglicht auch, den Vergleich mit vergangenen Meldungen durchzuführen. 
+
+
+##  Wie lassen sich diese Ergebnisse interpretieren? Was sind die Schwächen der Lösung?
+Mit den oben aufgeführten Funktionalitäten wird der manuelle Aufwand signifikant reduziert. Die erforderlichen Finanzdaten lassen sich nun mit der Alpha Vantage API automatisch auslesen und für spätere Anwendungsfälle wie bspw. die statistische Auswertung der Daten speichern und manipulieren. Mit dem Web Scraper können nun alle Artikel zu jeder Branche extrahiert und mit anderen Meldungen verglichen werden. Diese Informationen sind essentiell, da bestimmte Meldungen den Kurs einer Aktie maßgeblich beeinflussen können wie bspw. Volkswagen und der Dieselskandal. 
+
+Die einzelnen Funktionalitäten haben aber natürlich auch ihre Schwächen. Die Alpha Vantage API hat nur eine begrenzte Anzahl an API-Aufrufen. So können pro Minute 5 Anfragen und täglich bis zu 500 Anfragen gestellt werden. Der Algorithmus musste dementsprechend so angepasst werden, dass nach fünf gestellten Anfragen ein Timer den Algorithmus für 60 Sekunden pausiert, bevor die nächsten fünf Anfragen gestellt werden konnten. Dies verzögert den gesamten Prozess und es lassen sich somit nicht für alle Ticker die notwendigen Informationen ausgeben. Allein der NASDAQ umfasst mehr als 1200 Ticker! Der Web Scraper hat derzeit das Problem, dass er noch ohne rotierende Proxies arbeitet. Dadurch kann er zwar die Hyperlinks auf der Übersichtsseite problemlos extrahieren, aber er hat Schwierigkeiten, auf die einzelnen Artikel zuzugreifen, da er nur Anfragen mit einer IP-Adresse stellen kann. Dies führt dazu, dass wenn innerhalb einer kurzen Zeitspanne zu viele Anfragen an den Server von finanzen.net gestellt werden, man blockiert wird.
+
