@@ -25,37 +25,62 @@ class Data:
         return (self.key + ': ' + self.function)
 
 indicators = {
+    # Revenue growth = (Current Period Revenue - Prior Period revenue) / Prior period revenue
     Indicator.REVENUE_GROWTH: Data(
         'totalRevenue',
         Function.INCOME_STATEMENT),
 
-    Indicator.GROSS_PROFIT: Data(
-        'grossProfit',
-        Function.INCOME_STATEMENT),
+    # Gross Profit = Revenue – Cost of Revenue
+    Indicator.GROSS_PROFIT: [
+        Data(
+            'totalRevenue',
+            Function.INCOME_STATEMENT),
+        Data(
+            'costOfRevenue',
+            Function.INCOME_STATEMENT)],
 
-    Indicator.RETURN_ON_EQUITY: Data(
-        'ReturnOnEquityTTM',
-        Function.COMPANY_OVERVIEW),
+    # ROE = Net Income / Shareholders' Equity
+    Indicator.RETURN_ON_EQUITY: [
+        Data(
+            'netIncome',
+            Function.INCOME_STATEMENT),
+        Data(
+            'totalShareholderEquity',
+            Function.BALANCE_SHEET )],
 
+    # Equity Ratio = Shareholder's Equity / (Liabilities + Shareholders' Equity)
+    #              = Shareholder's Equity / (Current Assets + Non Current Assets)
     Indicator.EQUITY_RATIO: [
         Data(
             'totalShareholderEquity',
             Function.BALANCE_SHEET),
         Data(
-            'totalAssets',
+            'totalLiabilities',
+            Function.BALANCE_SHEET),
+        Data(
+            'totalCurrentAssets',
+            Function.BALANCE_SHEET),
+        Data(
+            'totalNonCurrentAssets',
             Function.BALANCE_SHEET)],
 
+    # Gearing = Total Debt / Total Shareholders' Equity
     Indicator.GEARING: [
         Data(
             'longTermDebtNoncurrent',
             Function.BALANCE_SHEET),
         Data(
             'totalShareholdersEquity',
-        Function.BALANCE_SHEET)],
+            Function.BALANCE_SHEET)],
 
-    Indicator.MARKET_CAPITALIZATION: Data(
-        'marketCapitalization',
-        Function.COMPANY_OVERVIEW),
+    # Market Capitalization = Current Market Price per share * Total Number of Outstanding Shares
+    Indicator.MARKET_CAPITALIZATION: [
+        Data(
+            '4. close',
+            Function.TIME_SERIES_INTRADAY),
+        Data(
+            'SharesOutstanding',
+            Function.COMPANY_OVERVIEW)],
 
     Indicator.EV: Data(
         'totalAssets',
