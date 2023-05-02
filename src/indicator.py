@@ -1,4 +1,6 @@
 from src.function import Function
+from src.fiscal import Fiscal
+from src.alphavantage import get_latest_report, get_latest_series, get_currency
 from dataclasses import dataclass
 from enum import StrEnum, auto
 
@@ -23,6 +25,8 @@ class Data:
         self.function = function
     def __str__(self):
         return (self.key + ': ' + self.function)
+
+# ---------------------------------------------------Templates--------------------------------------------------- #
 
 indicators = {
     # Revenue growth = (Current Period Revenue - Prior Period revenue) / Prior period revenue
@@ -70,7 +74,7 @@ indicators = {
             'longTermDebtNoncurrent',
             Function.BALANCE_SHEET),
         Data(
-            'totalShareholdersEquity',
+            'totalShareholderEquity',
             Function.BALANCE_SHEET)],
 
     # Market Capitalization = Current Market Price per share * Total Number of Outstanding Shares
@@ -82,17 +86,46 @@ indicators = {
             'SharesOutstanding',
             Function.COMPANY_OVERVIEW)],
 
-    Indicator.EV: Data(
-        'totalAssets',
-        Function.BALANCE_SHEET),
+    # EV = market capitalization + total debt - cash and cash equivalents
+    # Total debt: Current long-term debt, short/long-term debt total, and long-term debt noncurrent
+    Indicator.EV: [
+        Data(
+            '4. close',
+            Function.TIME_SERIES_INTRADAY),
+        Data(
+            'SharesOutstanding',
+            Function.COMPANY_OVERVIEW),
+        Data(
+            'currentLongTermDebt',
+            Function.BALANCE_SHEET),
+        Data(
+            'shortLongTermDebtTotal',
+            Function.BALANCE_SHEET),
+        Data(
+            'longTermDebtNoncurrent',
+            Function.BALANCE_SHEET),
+        Data(
+            'cashAndCashEquivalentsAtCarryingValue',
+            Function.BALANCE_SHEET)],
 
     Indicator.EV_TO_REVENUE: Data(
-        'EvToRevenue',
-        Function.BALANCE_SHEET),
+        'totalRevenue',
+        Function.INCOME_STATEMENT),
 
-    Indicator.EV_TO_EBITDA: Data(
-        'EvToEbitda',
-        Function.BALANCE_SHEET),
+    # EBITDA = Operating Income + Depreciation and Amortization + Non-Operating Expenses(interestAndDebtExpense)
+    Indicator.EV_TO_EBITDA: [
+        Data(
+            'depreciationAndAmortization',
+            Function.INCOME_STATEMENT),
+        Data(
+            'depreciation',
+            Function.INCOME_STATEMENT),
+        Data(
+            'operatingIncome',
+            Function.INCOME_STATEMENT),
+        Data(
+            'interestAndDebtExpense',
+             Function.INCOME_STATEMENT)],            
 
     Indicator.PRICE_TO_EARNING: Data(
         'PERatio',
@@ -110,3 +143,252 @@ indicators = {
             'operatingCashFlow',
             Function.CASH_FLOW)]
 }
+
+# -------------------------------------------------Get indicators------------------------------------------------- #
+
+def revenue_growth(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding=None):
+    t0_rep, i = get_latest_report(
+        symbol,
+        indicators[Indicator.REVENUE_GROWTH].function,
+        fiscal,
+        fiscalDateEnding
+        )
+    t0_rev = int(t0_rep[indicators[Indicator.REVENUE_GROWTH].key])
+
+    tMin1_rev = int(get_latest_report(
+        symbol,
+        indicators[Indicator.REVENUE_GROWTH].function,
+        fiscal,
+        index=i+1
+        )[0][indicators[Indicator.REVENUE_GROWTH].key])
+
+    return f'{round((t0_rev-tMin1_rev)/tMin1_rev, 4):.0%}'  # maybe better to format later
+
+def gross_profit(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    # calc
+    totRev_rep, _ = get_latest_report(
+        symbol,
+        indicators[Indicator.GROSS_PROFIT][0].function,
+        fiscal,
+        fiscalDateEnding
+        )
+    totRev = int(totRev_rep[indicators[Indicator.GROSS_PROFIT][0].key])
+
+    costOfRev_rep, _ = get_latest_report(
+        symbol,
+        indicators[Indicator.GROSS_PROFIT][1].function,
+        fiscal,
+        fiscalDateEnding
+        )
+    costOfRev = int(costOfRev_rep[indicators[Indicator.GROSS_PROFIT][1].key])
+
+    gp = totRev-costOfRev, get_currency(totRev_rep) if get_currency(totRev_rep) == get_currency(costOfRev_rep) else None
+
+    # given
+    rep, _ = get_latest_report(symbol,
+        Function.INCOME_STATEMENT,
+        fiscal,
+        fiscalDateEnding
+        )
+
+    gp_av = rep['grossProfit'], get_currency(rep)
+
+    return gp, gp_av
+
+def return_on_equity(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    # calc
+    netInc = int(get_latest_report(
+        symbol,
+        indicators[Indicator.RETURN_ON_EQUITY][0].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.RETURN_ON_EQUITY][0].key])
+
+    totShareEqu = int(get_latest_report(
+        symbol,
+        indicators[Indicator.RETURN_ON_EQUITY][1].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.RETURN_ON_EQUITY][1].key])
+
+    roe = f'{round(netInc/totShareEqu, 4):.2%}' # maybe better to format later
+
+    # given
+    rep = get_latest_report(symbol, Function.COMPANY_OVERVIEW)
+    roe_av = float(rep['ReturnOnEquityTTM'])
+
+    return roe, roe_av
+
+def equity_ratio(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    # calc with liabilities
+    totShareEqu = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EQUITY_RATIO][0].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EQUITY_RATIO][0].key])
+
+    totLiab = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EQUITY_RATIO][1].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EQUITY_RATIO][1].key])
+
+    equRat = round(totShareEqu/(totLiab+totShareEqu), 4)
+
+    # calc with current & non current assets
+    totCurAss = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EQUITY_RATIO][2].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EQUITY_RATIO][2].key])
+
+    totNonCurAss = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EQUITY_RATIO][3].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EQUITY_RATIO][3].key])
+
+    equRat_curr = round(totShareEqu/(totCurAss+totNonCurAss), 4)
+
+    # given
+    totAss = int(get_latest_report(
+        symbol,
+        Function.BALANCE_SHEET,
+        fiscal,
+        fiscalDateEnding
+        )[0]['totalAssets'])
+
+    equRat_av = round(totShareEqu/totAss, 4)
+
+    return equRat, equRat_curr, equRat_av
+
+def gearing(symbol):
+    totDebt = int(get_latest_report(symbol, indicators[Indicator.GEARING][0].function)[0][indicators[Indicator.GEARING][0].key])
+    totShareEqau = int(get_latest_report(symbol, indicators[Indicator.GEARING][1].function)[0][indicators[Indicator.GEARING][1].key])
+
+    return round(totDebt/totShareEqau, 4)
+
+def market_capitalization(symbol):
+    # calc
+    close_ser = get_latest_series(
+        symbol,
+        indicators[Indicator.MARKET_CAPITALIZATION][0].function)
+    close = float(close_ser[indicators[Indicator.MARKET_CAPITALIZATION][0].key])
+
+    num_rep = get_latest_report(
+        symbol,
+        indicators[Indicator.MARKET_CAPITALIZATION][1].function)
+    num = int(num_rep[indicators[Indicator.MARKET_CAPITALIZATION][1].key])
+
+    markCap = round(close*num, 4)
+
+    # given
+    rep = get_latest_report(
+        symbol,
+        Function.COMPANY_OVERVIEW)
+
+    markCap_av = rep['MarketCapitalization']
+
+    return markCap, markCap_av  # how to get currency?
+
+#EV = market capitalization + total debt - cash and cash equivalents
+#Total debt: Current long-term debt, short/long-term debt total, and long-term debt noncurrent
+def ev(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    # calc
+    markCap = market_capitalization(symbol)[0]
+   
+    currLongDebt = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EV][2].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EV][2].key])
+   
+    shortLongTermDebt = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EV][3].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EV][3].key])
+    
+    longTermDebt = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EV][4].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EV][4].key])
+    
+    cashandCashequ = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EV][5].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EV][5].key])
+
+    totDebt = currLongDebt + shortLongTermDebt + longTermDebt
+
+    ev = markCap + totDebt - cashandCashequ
+
+    ev_av = int(get_latest_report(symbol, Function.BALANCE_SHEET)[0]['totalAssets'])
+
+    return ev, ev_av
+
+def ev_to_revenue(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    # calc
+    ev1 = ev(symbol)[0]
+
+    totRev = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EV_TO_REVENUE].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EV_TO_REVENUE].key])
+    
+    evToRev = round(ev1 / totRev, 4)
+
+    # given
+    evToRev_av = float(get_latest_report(
+        symbol,
+        Function.COMPANY_OVERVIEW,
+        )['EVToRevenue'])
+
+    return evToRev, evToRev_av
+
+def ev_to_ebitda(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    ev2 = ev(symbol)[0]
+
+    depAndAmo = int(get_latest_report(
+    symbol,
+    indicators[Indicator.EV_TO_EBITDA][0].function,
+    fiscal,
+    fiscalDateEnding
+    )[0][indicators[Indicator.EV_TO_EBITDA][0].key])
+
+    dep = int(get_latest_report(
+    symbol,
+    indicators[Indicator.EV_TO_EBITDA][1].function,
+    fiscal,
+    fiscalDateEnding
+    )[0][indicators[Indicator.EV_TO_EBITDA][1].key])
+
+    opInc = int(get_latest_report(
+    symbol,
+    indicators[Indicator.EV_TO_EBITDA][2].function,
+    fiscal,
+    fiscalDateEnding
+    )[0][indicators[Indicator.EV_TO_EBITDA][2].key])
+
+    intAndDeptExp = int(get_latest_report(
+    symbol,
+    indicators[Indicator.EV_TO_EBITDA][3].function,
+    fiscal,
+    fiscalDateEnding
+    )[0][indicators[Indicator.EV_TO_EBITDA][3].key])
+
+    ebitda = depAndAmo + dep + opInc + intAndDeptExp
+
+    return ebitda

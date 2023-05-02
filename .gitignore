@@ -1,5 +1,7 @@
 # Custom
 .DS_Store
+assets/credential.py
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
