@@ -22,10 +22,10 @@ def alpha_vantage(function, symbol, interval=None, apikey=cred.apikey) -> dict:
     url = base + (inter if interval else '') + key
     r = requests.get(url, timeout=60)
     data = r.json()
-    if list(data.keys())[0] in ['Information', 'Error Message']:
-        raise Exception(data)
     if not data:
         raise Exception('Invalid symbol')
+    if list(data.keys())[0] in ['Information', 'Error Message']:
+        raise Exception(data)
     return data
 
 # -------------------------------------------------Common queries------------------------------------------------- #

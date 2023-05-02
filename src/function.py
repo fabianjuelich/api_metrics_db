@@ -1,4 +1,4 @@
-from enum import StrEnum, auto, Enum
+from enum import StrEnum, auto
 
 class Function(StrEnum):
     COMPANY_OVERVIEW = 'OVERVIEW'
