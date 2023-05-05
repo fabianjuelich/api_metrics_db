@@ -21,10 +21,15 @@ def add_indicators(table: pd.DataFrame, symbols):
         table = table._append(row, ignore_index=True)
     return table
 
-def fill_table(symbols):
+def fill_table(symbols, withContext=False):
     indicators_pd = pd.DataFrame(columns=['Ticker']+list(indicator.Indicator))
     if symbols is not list:
         symbols = [symbols]
-    indicators_pd = add_context(indicators_pd)
+    if withContext:
+        indicators_pd = add_context(indicators_pd)
     indicators_pd = add_indicators(indicators_pd, symbols)
     return indicators_pd
+
+def table_to_excel(table: pd.DataFrame):
+    with pd.ExcelWriter('important-metrics.xlsx') as writer:  
+        table.to_excel(writer, sheet_name='indicators')

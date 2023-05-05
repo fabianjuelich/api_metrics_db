@@ -2,4 +2,4 @@ from src import table
 
 ticker = ['IBM', 'AAPL']
 
-print(table.fill_table('IBM'))
+table.table_to_excel(table.fill_table('IBM'))
