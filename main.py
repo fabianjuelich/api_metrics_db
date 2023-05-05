@@ -2,4 +2,4 @@ from src import table
 
 ticker = ['IBM', 'AAPL']
 
-print(table.fill_table(ticker))
+print(table.fill_table('IBM'))
