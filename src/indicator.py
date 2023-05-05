@@ -125,23 +125,42 @@ indicators = {
             Function.INCOME_STATEMENT),
         Data(
             'interestAndDebtExpense',
-             Function.INCOME_STATEMENT)],            
+             Function.INCOME_STATEMENT)],    
 
-    Indicator.PRICE_TO_EARNING: Data(
-        'PERatio',
-        Function.COMPANY_OVERVIEW),
+    #Stock Price / Earnings Per Share
+    Indicator.PRICE_TO_EARNING: [
+         Data(
+            '4. close',
+            Function.TIME_SERIES_INTRADAY),
+        Data(
+            'EPS',
+            Function.COMPANY_OVERVIEW)],
 
-    Indicator.PRICE_TO_BOOK: Data(
-        'PriceToBookRatio',
-        Function.COMPANY_OVERVIEW),
+    #Market price per share(stock price) / (total shareholder equity / shares outstanding(=book value per share))
+    Indicator.PRICE_TO_BOOK: [
+         Data(
+            '4. close',
+            Function.TIME_SERIES_INTRADAY),
+        Data(
+            'totalShareholderEquity',
+            Function.BALANCE_SHEET),
+        Data(
+            'commonStockSharesOutstanding',
+            Function.BALANCE_SHEET)],
+        
 
+    # Stock Price / (Operating Cash Flow / Shares Outstanding)
     Indicator.PRICE_TO_CASHFLOW: [
         Data(
-            'marketCapitalization',
-            Function.COMPANY_OVERVIEW),
+            '4. close',
+            Function.TIME_SERIES_INTRADAY),
         Data(
-            'operatingCashFlow',
-            Function.CASH_FLOW)]
+            'operatingCashflow',
+            Function.CASH_FLOW),
+        Data(
+            'commonStockSharesOutstanding',
+            Function.BALANCE_SHEET,
+        )]
 }
 
 # -------------------------------------------------Get indicators------------------------------------------------- #
@@ -359,6 +378,7 @@ def ev_to_revenue(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     return evToRev, evToRev_av
 
 def ev_to_ebitda(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    # calc
     ev2 = ev(symbol)[0]
 
     depAndAmo = int(get_latest_report(
@@ -390,5 +410,73 @@ def ev_to_ebitda(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     )[0][indicators[Indicator.EV_TO_EBITDA][3].key])
 
     ebitda = depAndAmo + dep + opInc + intAndDeptExp
+    evToEbitda = ev2 / ebitda
 
-    return ebitda
+    return evToEbitda
+
+def price_to_earning(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    close_ser = get_latest_series(
+    symbol,
+    indicators[Indicator.PRICE_TO_EARNING][0].function)
+    close = float(close_ser[indicators[Indicator.PRICE_TO_EARNING][0].key])
+
+    eps = float(get_latest_report(
+    symbol,
+    indicators[Indicator.PRICE_TO_EARNING][1].function,
+    fiscal,
+    fiscalDateEnding
+    )[indicators[Indicator.PRICE_TO_EARNING][1].key])
+   
+    priceToEarning = close / eps
+
+    return priceToEarning
+
+#Market price per share(stock price) / (total shareholder equity / shares outstanding(=book value per share))
+def price_to_book(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    close_ser = get_latest_series(
+        symbol,
+        indicators[Indicator.PRICE_TO_BOOK][0].function)
+    close = float(close_ser[indicators[Indicator.PRICE_TO_BOOK][0].key])
+
+    totShareEqui = int(get_latest_report(
+        symbol,
+        indicators[Indicator.PRICE_TO_BOOK][1].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.PRICE_TO_BOOK][1].key])
+
+    shareOutSta = int(get_latest_report(
+        symbol,
+        indicators[Indicator.PRICE_TO_BOOK][2].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.PRICE_TO_BOOK][2].key])
+    
+    priceToBook = close/(totShareEqui/shareOutSta)
+
+    return priceToBook
+
+    # Stock Price / (Operating Cash Flow / Shares Outstanding)
+def price_to_cashflow(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    close_ser = get_latest_series(
+        symbol,
+        indicators[Indicator.PRICE_TO_CASHFLOW][0].function)
+    close = float(close_ser[indicators[Indicator.PRICE_TO_CASHFLOW][0].key])
+
+    operCash = int(get_latest_report(
+        symbol,
+        indicators[Indicator.PRICE_TO_CASHFLOW][1].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.PRICE_TO_CASHFLOW][1].key])
+    
+    sharesOutst = int(get_latest_report(
+        symbol,
+        indicators[Indicator.PRICE_TO_CASHFLOW][2].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.PRICE_TO_CASHFLOW][2].key])
+    
+    priceToCashflow = close / (operCash/sharesOutst)
+
+    return priceToCashflow
