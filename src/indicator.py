@@ -50,7 +50,7 @@ indicators = {
             Function.INCOME_STATEMENT),
         Data(
             'totalShareholderEquity',
-            Function.BALANCE_SHEET )],
+            Function.BALANCE_SHEET)],
 
     # Equity Ratio = Shareholder's Equity / (Liabilities + Shareholders' Equity)
     #              = Shareholder's Equity / (Current Assets + Non Current Assets)
@@ -89,12 +89,6 @@ indicators = {
     # EV = market capitalization + total debt - cash and cash equivalents
     # Total debt: Current long-term debt, short/long-term debt total, and long-term debt noncurrent
     Indicator.EV: [
-        Data(
-            '4. close',
-            Function.TIME_SERIES_INTRADAY),
-        Data(
-            'SharesOutstanding',
-            Function.COMPANY_OVERVIEW),
         Data(
             'currentLongTermDebt',
             Function.BALANCE_SHEET),
@@ -314,44 +308,43 @@ def market_capitalization(symbol):
 
     return markCap, markCap_av  # how to get currency?
 
-#EV = market capitalization + total debt - cash and cash equivalents
-#Total debt: Current long-term debt, short/long-term debt total, and long-term debt noncurrent
 def ev(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
     markCap = market_capitalization(symbol)[0]
    
     currLongDebt = int(get_latest_report(
         symbol,
+        indicators[Indicator.EV][0].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EV][0].key])
+   
+    shortLongTermDebt = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EV][1].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EV][1].key])
+    
+    longTermDebt = int(get_latest_report(
+        symbol,
         indicators[Indicator.EV][2].function,
         fiscal,
         fiscalDateEnding
         )[0][indicators[Indicator.EV][2].key])
-   
-    shortLongTermDebt = int(get_latest_report(
+    
+    cashandCashequ = int(get_latest_report(
         symbol,
         indicators[Indicator.EV][3].function,
         fiscal,
         fiscalDateEnding
         )[0][indicators[Indicator.EV][3].key])
-    
-    longTermDebt = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EV][4].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.EV][4].key])
-    
-    cashandCashequ = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EV][5].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.EV][5].key])
 
     totDebt = currLongDebt + shortLongTermDebt + longTermDebt
 
     ev = markCap + totDebt - cashandCashequ
 
+    # given
     ev_av = int(get_latest_report(symbol, Function.BALANCE_SHEET)[0]['totalAssets'])
 
     return ev, ev_av
@@ -367,7 +360,7 @@ def ev_to_revenue(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
         fiscalDateEnding
         )[0][indicators[Indicator.EV_TO_REVENUE].key])
     
-    evToRev = round(ev1 / totRev, 4)
+    evToRev = round(ev1 / totRev, 3)
 
     # given
     evToRev_av = float(get_latest_report(
@@ -379,7 +372,7 @@ def ev_to_revenue(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
 
 def ev_to_ebitda(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
-    ev2 = ev(symbol)[0]
+    ev_ = ev(symbol)[0]
 
     depAndAmo = int(get_latest_report(
     symbol,
@@ -410,9 +403,15 @@ def ev_to_ebitda(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     )[0][indicators[Indicator.EV_TO_EBITDA][3].key])
 
     ebitda = depAndAmo + dep + opInc + intAndDeptExp
-    evToEbitda = ev2 / ebitda
+    evToEbitda = ev_ / ebitda
 
-    return evToEbitda
+    # given
+    evToEbitda_av = float(get_latest_report(
+        symbol,
+        Function.COMPANY_OVERVIEW
+        )['EVToEBITDA'])
+
+    return evToEbitda, evToEbitda_av
 
 def price_to_earning(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     close_ser = get_latest_series(
@@ -427,12 +426,12 @@ def price_to_earning(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     fiscalDateEnding
     )[indicators[Indicator.PRICE_TO_EARNING][1].key])
    
-    priceToEarning = close / eps
+    priceToEarning = close/eps
 
     return priceToEarning
 
-#Market price per share(stock price) / (total shareholder equity / shares outstanding(=book value per share))
 def price_to_book(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    # calc
     close_ser = get_latest_series(
         symbol,
         indicators[Indicator.PRICE_TO_BOOK][0].function)
@@ -452,18 +451,24 @@ def price_to_book(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
         fiscalDateEnding
         )[0][indicators[Indicator.PRICE_TO_BOOK][2].key])
     
-    priceToBook = close/(totShareEqui/shareOutSta)
+    priceToBook = round(close/(totShareEqui/shareOutSta), 2)
 
-    return priceToBook
+    # given
+    priceToBook_av = float(get_latest_report(
+        symbol,
+        Function.COMPANY_OVERVIEW
+    )['PriceToBookRatio'])
 
-    # Stock Price / (Operating Cash Flow / Shares Outstanding)
+    return priceToBook, priceToBook_av
+
 def price_to_cashflow(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    # calc
     close_ser = get_latest_series(
         symbol,
         indicators[Indicator.PRICE_TO_CASHFLOW][0].function)
     close = float(close_ser[indicators[Indicator.PRICE_TO_CASHFLOW][0].key])
 
-    operCash = int(get_latest_report(
+    opCash = int(get_latest_report(
         symbol,
         indicators[Indicator.PRICE_TO_CASHFLOW][1].function,
         fiscal,
@@ -477,6 +482,6 @@ def price_to_cashflow(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
         fiscalDateEnding
         )[0][indicators[Indicator.PRICE_TO_CASHFLOW][2].key])
     
-    priceToCashflow = close / (operCash/sharesOutst)
+    priceToCashflow = close/(opCash/sharesOutst)
 
     return priceToCashflow
