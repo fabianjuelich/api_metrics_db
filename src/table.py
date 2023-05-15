@@ -1,6 +1,8 @@
 from src import indicator
 import pandas as pd
 from src import context
+from src.symbol import Symbol
+from src.components import Components
 
 def add_context(table: pd.DataFrame):
     definition = {'Ticker': 'Definition'}
@@ -16,20 +18,28 @@ def add_indicators(table: pd.DataFrame, symbols):
     for symbol in symbols:
         row = {'Ticker': symbol}
         for i, ind in enumerate(list(indicator.Indicator)):
-            if i<12:
-                row.update({ind: eval(f'indicator.{ind}(symbol)')})
+            row.update({ind: eval(f'indicator.{ind}(symbol)')})
         table = table._append(row, ignore_index=True)
     return table
 
-def fill_table(symbols, withContext=False):
-    indicators_pd = pd.DataFrame(columns=['Ticker']+list(indicator.Indicator))
+def fill_table(symbols, withContext=False, type=Symbol.SHARE):
     if symbols is not list:
         symbols = [symbols]
+
+    if type == Symbol.INDEX:
+        components = Components()
+        tmp_symbols = []
+        for symbol in symbols:
+            for component in components.get_symbols(symbol):
+                tmp_symbols.append(component)
+        symbols = tmp_symbols.copy()
+
+    indicators_pd = pd.DataFrame(columns=['Ticker']+list(indicator.Indicator))
     if withContext:
         indicators_pd = add_context(indicators_pd)
     indicators_pd = add_indicators(indicators_pd, symbols)
     return indicators_pd
-
+    
 def table_to_excel(table: pd.DataFrame):
     with pd.ExcelWriter('important-metrics.xlsx') as writer:  
         table.to_excel(writer, sheet_name='indicators')
