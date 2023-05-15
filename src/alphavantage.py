@@ -16,11 +16,14 @@ def alpha_vantage(function, symbol, interval=None, apikey=cred.apikey) -> dict:
     Raises:
         Exception: If the API returns an error.
     """
-    base = f'https://www.alphavantage.co/query?function={function.upper()}&symbol={symbol}'
-    inter = f'&interval={interval}min'
-    key = f'&apikey={apikey}'
-    url = base + (inter if interval else '') + key
-    r = requests.get(url, timeout=60)
+    url = 'https://www.alphavantage.co/query'
+    params = {
+        'function': function.upper(),
+        'symbol': symbol,
+        'interval': f'{interval}min',
+        'apikey': apikey
+    }
+    r = requests.get(url, params={key: val for key, val in params.items() if val is not None}, timeout=60)
     data = r.json()
     if not data:
         raise Exception('Invalid symbol')
