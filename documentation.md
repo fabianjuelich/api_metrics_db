@@ -20,7 +20,7 @@ We aim to provide investors with an easier way to perform fundamental analysis b
 
 ## 3. Approach: How exactly is the goal to be achieved?
 
-To work out the most important stock ratios we orientate ourselves on a [video of the Youtuber Finanzfluss](https://www.youtube.com/watch?v=qie9sxCIhHM).
+To work out the most important stock ratios we will use [a video of the Youtuber Finanzfluss](https://www.youtube.com/watch?v=qie9sxCIhHM) as a reference.
 
 ### The 12 Most important Financial Ratios (regarding to Finanzfluss)
 
@@ -69,3 +69,6 @@ The Data research came to the following results, which we will present in a tabl
 ### Problems with the approach
 
 One problem we encountered right at the beginning is that the free version of the API is very limited. 5 API requests per minute and 500 requests per day was clearly too little for us, because in the worst case we already have 5 API requests in one function. However, we were able to get in touch with a member of staff at Alpha Vantage and with the help of Prof. Schaible and Steve we now have access to the Academic Access version of the API with 150 API requests per minute and no daily limit.
+Another common problem is that in the financial world the companies listed on different stock exchanges have different abbreviations or ticker symbols. A ticker symbol is usually an abbreviation used to identify a listed company. This symbol consists of a letter combination of 1-6 numbers and letters, depending on the type of stock exchange. It's unique for every company on every stock exchange. This discrepancy in ticker symbols can create challenges when collecting and analyzing stock data across different exchanges. For example, a company listed as "XYZ Corporation" on the NASDAQ exchange might have a ticker symbol of "XYZ" on NASDAQ. However, the same company could be listed as "XYZ Corp." on the New York Stock Exchange (NYSE) with a ticker symbol of "XYZC." These different variations of ticker symbols make it difficult to analyze and track data consistently.
+We realized later that Alpha Vantage adressed this issue and is aiming to propvide standardized data and simplify the process of retrieving and analyzing stock information by only using ticker symbols used on NASDAQ, which is one of the major stock exchanges in the US.
+However, it is still important for users to be aware of potential variations and take the necessary steps to ensure data consistency when working with stock data from several stock exchanges
