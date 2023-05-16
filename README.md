@@ -16,5 +16,6 @@ Building on [Informatikprojekt im WiSe 22/23: Dateninfrastruktur für die künft
 
 ## Documentation
 1. [The Problem](./documentation.md#1-the-problem-what-is-the-actual-problem-we-are-facing)
-2. [Purpose of the Project](./documentation.md#2-purpose-of-the-project-what-exactly-do-we-plan-to-do-to-solve-the-problem)
+2. [Purpose of the Project](./documentation.                                                                            md#2-purpose-of-the-project-what-exactly-do-we-plan-to-do-to-solve-the-problem)
 3. [Approach](./documentation.md#3-approach-how-exactly-is-the-goal-to-be-achieved)
+4. [Discussion](./documentation.md#4-Discussion)

@@ -78,3 +78,14 @@ Thats because in the financial world the companies listed on different stock exc
 As mentionend before, Alpha Vantage adressed this issue and is aiming to provide standardized data and simplify the process of retrieving and analyzing stock information by only using ticker symbols used on NASDAQ, which is one of the major stock exchanges in the US.
 
 However, it is still important for users to be aware of potential variations and take the necessary steps to ensure data consistency when working with stock data from several stock exchanges.
+
+## Discussion
+
+### Threats to validity 
+
+When doing a stock key figure analysis with an API there are several threats to validity that should be taken into consideration.
+1. Data Coverage: All stock key figures may not be completely covered by APIs. The analysis may be constrained and could result in skewed or incomplete conclusions if some crucial data points are missing or not available via the API. 
+2. Data Accuracy: It is essential that the API's data is accurate. Data that is inaccurate or unreliable can result in incorrect analysis and decisions. It's crucial to evaluate the credibility and dependability of the data source.
+3. API Limitations: The quantity of requests, data points, or available historical data may be constrained by APIs. The extent and depth of the analysis may be constrained by these restrictions. It's crucial to be aware of any restrictions put forward by the API and take into account how they might affect the analysis.
+4. Data Consistency: The validity of data can be threatened by differences in how it is presented and formatted among various API endpoints or sources. It's crucial to guarantee that the data obtained from various API calls can be properly integrated and analyzed and is consistent
+5. API Reliability and Downtime: The process of analyzing data may be obstructed by API outages or other disruptions. To reduce the risk of interruptions, it is crucial to take the API provider's dependability and stability into account.
