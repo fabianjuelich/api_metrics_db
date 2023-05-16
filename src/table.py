@@ -5,6 +5,12 @@ from src.symbol import Symbol
 from src.components import Components
 
 def add_context(table: pd.DataFrame):
+    """Adds context information to a table.
+    Args:
+        table (pd.DataFrame): The input table.
+    Returns:
+        pd.DataFrame: The updated table with context information.
+    """
     definition = {'Ticker': 'Definition'}
     for ind in list(indicator.Indicator):
         definition.update({ind: context.get_indicator_context(ind, 'definition')})
@@ -15,6 +21,13 @@ def add_context(table: pd.DataFrame):
     return table
 
 def add_indicators(table: pd.DataFrame, symbols):
+    """Adds indicators to a table.
+    Args:
+        table (pd.DataFrame): The input table.
+        symbols (list): A list of symbols.
+    Returns:
+        pd.DataFrame: The updated table with indicators.
+    """
     for symbol in symbols:
         row = {'Ticker': symbol}
         for i, ind in enumerate(list(indicator.Indicator)):
@@ -23,6 +36,14 @@ def add_indicators(table: pd.DataFrame, symbols):
     return table
 
 def fill_table(symbols, withContext=False, type=Symbol.SHARE):
+    """Fills a table with indicators for symbols.
+    Args:
+        symbols (list or str): A list of symbols or a single symbol.
+        withContext (bool, optional): Specifies whether to add context information (default: False).
+        type (Symbol, optional): The type of symbols (default: Symbol.SHARE).
+    Returns:
+        pd.DataFrame: The table with the indicators for the symbols.
+    """
     if symbols is not list:
         symbols = [symbols]
 
@@ -41,5 +62,9 @@ def fill_table(symbols, withContext=False, type=Symbol.SHARE):
     return indicators_pd
     
 def table_to_excel(table: pd.DataFrame):
+    """Saves a table as an Excel file.
+    Args:
+        table (pd.DataFrame): The input table.
+    """
     with pd.ExcelWriter('important-metrics.xlsx') as writer:  
         table.to_excel(writer, sheet_name='indicators')
