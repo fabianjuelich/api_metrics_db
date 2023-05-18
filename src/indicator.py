@@ -175,7 +175,7 @@ def revenue_growth(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEndin
         index=i+1
         )[0][indicators[Indicator.REVENUE_GROWTH].key])
 
-    return f'{round((t0_rev-tMin1_rev)/tMin1_rev, 4):.0%}'  # maybe better to format later
+    return f'{round((t0_rev-tMin1_rev)/tMin1_rev, 4):.0%}', None  # maybe better to format later
 
 def gross_profit(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
@@ -277,13 +277,13 @@ def equity_ratio(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
 
     equRat_av = round(totShareEqu/totAss, 4)
 
-    return equRat, equRat_curr, equRat_av
+    return equRat, equRat_av
 
 def gearing(symbol):
     totDebt = int(get_latest_report(symbol, indicators[Indicator.GEARING][0].function)[0][indicators[Indicator.GEARING][0].key])
     totShareEqau = int(get_latest_report(symbol, indicators[Indicator.GEARING][1].function)[0][indicators[Indicator.GEARING][1].key])
 
-    return round(totDebt/totShareEqau, 4)
+    return round(totDebt/totShareEqau, 4), None
 
 def market_capitalization(symbol):
     # calc
@@ -374,36 +374,40 @@ def ev_to_ebitda(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
     ev_ = ev(symbol)[0]
 
-    depAndAmo = int(get_latest_report(
-    symbol,
-    indicators[Indicator.EV_TO_EBITDA][0].function,
-    fiscal,
-    fiscalDateEnding
-    )[0][indicators[Indicator.EV_TO_EBITDA][0].key])
+    try:
+        depAndAmo = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EV_TO_EBITDA][0].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EV_TO_EBITDA][0].key])
 
-    dep = int(get_latest_report(
-    symbol,
-    indicators[Indicator.EV_TO_EBITDA][1].function,
-    fiscal,
-    fiscalDateEnding
-    )[0][indicators[Indicator.EV_TO_EBITDA][1].key])
+        dep = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EV_TO_EBITDA][1].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EV_TO_EBITDA][1].key])
 
-    opInc = int(get_latest_report(
-    symbol,
-    indicators[Indicator.EV_TO_EBITDA][2].function,
-    fiscal,
-    fiscalDateEnding
-    )[0][indicators[Indicator.EV_TO_EBITDA][2].key])
+        opInc = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EV_TO_EBITDA][2].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EV_TO_EBITDA][2].key])
 
-    intAndDeptExp = int(get_latest_report(
-    symbol,
-    indicators[Indicator.EV_TO_EBITDA][3].function,
-    fiscal,
-    fiscalDateEnding
-    )[0][indicators[Indicator.EV_TO_EBITDA][3].key])
+        intAndDeptExp = int(get_latest_report(
+        symbol,
+        indicators[Indicator.EV_TO_EBITDA][3].function,
+        fiscal,
+        fiscalDateEnding
+        )[0][indicators[Indicator.EV_TO_EBITDA][3].key])
 
-    ebitda = depAndAmo + dep + opInc + intAndDeptExp
-    evToEbitda = ev_ / ebitda
+        ebitda = depAndAmo + dep + opInc + intAndDeptExp
+        evToEbitda = ev_ / ebitda
+
+    except:
+        evToEbitda = None
 
     # given
     evToEbitda_av = float(get_latest_report(
@@ -428,7 +432,7 @@ def price_to_earning(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
    
     priceToEarning = close/eps
 
-    return priceToEarning
+    return priceToEarning, None
 
 def price_to_book(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
@@ -484,4 +488,4 @@ def price_to_cashflow(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     
     priceToCashflow = close/(opCash/sharesOutst)
 
-    return priceToCashflow
+    return priceToCashflow, None
