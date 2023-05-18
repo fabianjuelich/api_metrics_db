@@ -106,19 +106,19 @@ indicators = {
         'totalRevenue',
         Function.INCOME_STATEMENT),
 
-    # EBITDA = Operating Income + Depreciation and Amortization + Non-Operating Expenses(interestAndDebtExpense)
-    Indicator.EV_TO_EBITDA: [
+    # EBITDA = neue rechnung!!!: incomeTaxExpense+ interestExpense + netincome + depreciationAndAmortization 
+    Indicator.EV_TO_EBITDA: [                                                                                                      
         Data(
             'depreciationAndAmortization',
             Function.INCOME_STATEMENT),
         Data(
-            'depreciation',
+            'incomeTaxExpense',
             Function.INCOME_STATEMENT),
         Data(
-            'operatingIncome',
+            'netIncome',
             Function.INCOME_STATEMENT),
         Data(
-            'interestAndDebtExpense',
+            'interestExpense',
              Function.INCOME_STATEMENT)],    
 
     #Stock Price / Earnings Per Share
@@ -344,10 +344,7 @@ def ev(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
 
     ev = markCap + totDebt - cashandCashequ
 
-    # given
-    ev_av = int(get_latest_report(symbol, Function.BALANCE_SHEET)[0]['totalAssets'])
-
-    return ev, ev_av
+    return ev, None
 
 def ev_to_revenue(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
@@ -376,47 +373,46 @@ def ev_to_ebitda(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
 
     try:
         depAndAmo = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EV_TO_EBITDA][0].function,
-        fiscal,
-        fiscalDateEnding
+            symbol,
+            indicators[Indicator.EV_TO_EBITDA][0].function,
+            fiscal,
+            fiscalDateEnding
         )[0][indicators[Indicator.EV_TO_EBITDA][0].key])
 
-        dep = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EV_TO_EBITDA][1].function,
-        fiscal,
-        fiscalDateEnding
+        incTaxExp = int(get_latest_report(
+            symbol,
+            indicators[Indicator.EV_TO_EBITDA][1].function,
+            fiscal,
+            fiscalDateEnding
         )[0][indicators[Indicator.EV_TO_EBITDA][1].key])
 
-        opInc = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EV_TO_EBITDA][2].function,
-        fiscal,
-        fiscalDateEnding
+        netInc = int(get_latest_report(
+            symbol,
+            indicators[Indicator.EV_TO_EBITDA][2].function,
+            fiscal,
+            fiscalDateEnding
         )[0][indicators[Indicator.EV_TO_EBITDA][2].key])
 
-        intAndDeptExp = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EV_TO_EBITDA][3].function,
-        fiscal,
-        fiscalDateEnding
+        intExp = int(get_latest_report(
+            symbol,
+            indicators[Indicator.EV_TO_EBITDA][3].function,
+            fiscal,
+            fiscalDateEnding
         )[0][indicators[Indicator.EV_TO_EBITDA][3].key])
 
-        ebitda = depAndAmo + dep + opInc + intAndDeptExp
+        ebitda = depAndAmo + incTaxExp + netInc + intExp
         evToEbitda = ev_ / ebitda
 
     except:
         evToEbitda = None
 
-    # given
+    # given         
     evToEbitda_av = float(get_latest_report(
         symbol,
         Function.COMPANY_OVERVIEW
-        )['EVToEBITDA'])
+    )['EVToEBITDA'])
 
     return evToEbitda, evToEbitda_av
-
 def price_to_earning(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     close_ser = get_latest_series(
     symbol,

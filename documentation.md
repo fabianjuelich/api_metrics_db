@@ -79,7 +79,12 @@ As mentionend before, Alpha Vantage adressed this issue and is aiming to provide
 
 However, it is still important for users to be aware of potential variations and take the necessary steps to ensure data consistency when working with stock data from several stock exchanges.
 
-## Discussion
+## 4. Methodology
+
+We choose to develope a [Python](https://www.python.org/) script because the language is widely spread and pretty handy for such tasks, like working with data. [Jupyter notebooks](https://jupyter.org/) might be good for demonstration purposes but not eligible for production.
+The goal to reach was a function that takes a single or list of symbols and returns a json containing the [12 most important metrics mentioned before](.#the-12-most-important-financial-ratios-(regarding-to-finanzfluss)), both, calculated and given by the API. For this case we designed the class Table, which is the one the user interacts with. Calling it, returns an object having the desired json attribute. If the user wishes to analyze the data using pandas, the method to_dataframe can be called to open the door for a lot of data science related options.
+
+## 5. Discussion
 
 ### Threats to validity 
 
