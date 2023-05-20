@@ -157,6 +157,7 @@ indicators = {
         )]
 }
 
+
 # -------------------------------------------------Get indicators------------------------------------------------- #
 
 def revenue_growth(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding=None):
@@ -428,7 +429,13 @@ def price_to_earning(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
    
     priceToEarning = close/eps
 
-    return priceToEarning, None
+    # given
+    priceToEarning_av = float(get_latest_report(
+        symbol,
+        Function.COMPANY_OVERVIEW
+    )['PERatio'])
+
+    return priceToEarning, priceToEarning_av
 
 def price_to_book(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
