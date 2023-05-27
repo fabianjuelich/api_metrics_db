@@ -6,7 +6,11 @@ import pandas as pd
 class Table:
 
     def __init__(self, symbols, symbol_type=Symbol.SHARE):
-
+        """Initialize the Table object with symbols and symbol type.
+        Args:
+            symbols (list or str): A list of symbols or a single symbol.
+            symbol_type (Symbol, optional): The type of symbols (default: Symbol.SHARE).
+        """
         if type(symbols) != list:
             symbols = [symbols]
         if symbol_type == Symbol.INDEX:
@@ -21,7 +25,7 @@ class Table:
         self.__get_dict()
 
     def __get_dict(self):
-
+        """Get the dictionary representation of the table."""
         dic = {}
 
         for symbol in self.symbols:
@@ -37,7 +41,10 @@ class Table:
         self.json = dic
     
     def to_dataframe(self):
-
+        """Convert the table to a DataFrame.
+        Returns:
+            pd.DataFrame: The table represented as a DataFrame.
+        """
         matrix = [[] for symbol in range(2*len(self.symbols))]
 
         for s, symbol in enumerate(self.json):
