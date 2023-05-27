@@ -121,7 +121,7 @@ indicators = {
             'interestExpense',
              Function.INCOME_STATEMENT)],    
 
-    #Stock Price / Earnings Per Share
+    # Stock Price / Earnings Per Share
     Indicator.PRICE_TO_EARNING: [
          Data(
             '4. close',
@@ -130,7 +130,7 @@ indicators = {
             'EPS',
             Function.COMPANY_OVERVIEW)],
 
-    #Market price per share(stock price) / (total shareholder equity / shares outstanding(=book value per share))
+    # Market price per share(stock price) / (total shareholder equity / shares outstanding(=book value per share))
     Indicator.PRICE_TO_BOOK: [
          Data(
             '4. close',
@@ -160,215 +160,275 @@ indicators = {
 
 # -------------------------------------------------Get indicators------------------------------------------------- #
 
-def revenue_growth(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding=None):
-    t0_rep, i = get_latest_report(
-        symbol,
-        indicators[Indicator.REVENUE_GROWTH].function,
-        fiscal,
-        fiscalDateEnding
-        )
-    t0_rev = int(t0_rep[indicators[Indicator.REVENUE_GROWTH].key])
+def revenue_growth(symbol, fiscal: Fiscal=Fiscal.QUARTERLY_REPORTS, fiscalDateEnding=None):
+    # calc
+    try:
+        t0_rep, i = get_latest_report(
+            symbol,
+            indicators[Indicator.REVENUE_GROWTH].function,
+            fiscal,
+            fiscalDateEnding
+            )
+        t0_rev = int(t0_rep[indicators[Indicator.REVENUE_GROWTH].key])
 
-    tMin1_rev = int(get_latest_report(
-        symbol,
-        indicators[Indicator.REVENUE_GROWTH].function,
-        fiscal,
-        index=i+1
-        )[0][indicators[Indicator.REVENUE_GROWTH].key])
+        tMin1_rev = int(get_latest_report(
+            symbol,
+            indicators[Indicator.REVENUE_GROWTH].function,
+            fiscal,
+            index=i+4
+            )[0][indicators[Indicator.REVENUE_GROWTH].key])
+        
+        revenueGrowth = round((t0_rev-tMin1_rev)/tMin1_rev, 3)
+    except:
+        revenueGrowth = None
 
-    return f'{round((t0_rev-tMin1_rev)/tMin1_rev, 4):.0%}', None  # maybe better to format later
+    # given
+    try:
+        revenueGrowth_av = get_latest_report(
+            symbol,
+            Function.COMPANY_OVERVIEW
+        )['QuarterlyRevenueGrowthYOY']
+    except:
+        revenueGrowth_av = None
+
+    return revenueGrowth, revenueGrowth_av
 
 def gross_profit(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
-    totRev_rep, _ = get_latest_report(
-        symbol,
-        indicators[Indicator.GROSS_PROFIT][0].function,
-        fiscal,
-        fiscalDateEnding
-        )
-    totRev = int(totRev_rep[indicators[Indicator.GROSS_PROFIT][0].key])
+    try:
+        totRev_rep, _ = get_latest_report(
+            symbol,
+            indicators[Indicator.GROSS_PROFIT][0].function,
+            fiscal,
+            fiscalDateEnding
+            )
+        totRev = int(totRev_rep[indicators[Indicator.GROSS_PROFIT][0].key])
 
-    costOfRev_rep, _ = get_latest_report(
-        symbol,
-        indicators[Indicator.GROSS_PROFIT][1].function,
-        fiscal,
-        fiscalDateEnding
-        )
-    costOfRev = int(costOfRev_rep[indicators[Indicator.GROSS_PROFIT][1].key])
+        costOfRev_rep, _ = get_latest_report(
+            symbol,
+            indicators[Indicator.GROSS_PROFIT][1].function,
+            fiscal,
+            fiscalDateEnding
+            )
+        costOfRev = int(costOfRev_rep[indicators[Indicator.GROSS_PROFIT][1].key])
 
-    gp = totRev-costOfRev, get_currency(totRev_rep) if get_currency(totRev_rep) == get_currency(costOfRev_rep) else None
+        gp = totRev-costOfRev
+    except:
+        gp = None
 
     # given
-    rep, _ = get_latest_report(symbol,
-        Function.INCOME_STATEMENT,
-        fiscal,
-        fiscalDateEnding
-        )
+    try:
+        rep, _ = get_latest_report(symbol,
+            Function.INCOME_STATEMENT,
+            fiscal,
+            fiscalDateEnding
+            )
 
-    gp_av = rep['grossProfit'], get_currency(rep)
+        gp_av = rep['grossProfit']
+    except:
+        gp_av = None
 
     return gp, gp_av
 
-def return_on_equity(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
-    # calc
-    netInc = int(get_latest_report(
-        symbol,
-        indicators[Indicator.RETURN_ON_EQUITY][0].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.RETURN_ON_EQUITY][0].key])
+def return_on_equity(symbol, fiscal: Fiscal=Fiscal.QUARTERLY_REPORTS, fiscalDateEnding=None):
+    # calc TTM
+    try:
+        netInc = 0
+        totShareEqu = 0
+        for quarter in range(4):
+            netInc += int(get_latest_report(
+                symbol,
+                indicators[Indicator.RETURN_ON_EQUITY][0].function,
+                fiscal,
+                fiscalDateEnding,
+                index=quarter
+                )[0][indicators[Indicator.RETURN_ON_EQUITY][0].key])
 
-    totShareEqu = int(get_latest_report(
-        symbol,
-        indicators[Indicator.RETURN_ON_EQUITY][1].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.RETURN_ON_EQUITY][1].key])
+            totShareEqu += int(get_latest_report(
+                symbol,
+                indicators[Indicator.RETURN_ON_EQUITY][1].function,
+                fiscal,
+                fiscalDateEnding,
+                index=quarter
+                )[0][indicators[Indicator.RETURN_ON_EQUITY][1].key])
 
-    roe = f'{round(netInc/totShareEqu, 4):.2%}' # maybe better to format later
+        roe = round(netInc/totShareEqu, 3)
+    except:
+        roe = None
 
-    # given
-    rep = get_latest_report(symbol, Function.COMPANY_OVERVIEW)
-    roe_av = float(rep['ReturnOnEquityTTM'])
+    # given TTM
+    try:
+        rep = get_latest_report(symbol, Function.COMPANY_OVERVIEW)
+        roe_av = float(rep['ReturnOnEquityTTM'])
+    except:
+        roe_av = None
 
     return roe, roe_av
 
 def equity_ratio(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc with liabilities
-    totShareEqu = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EQUITY_RATIO][0].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.EQUITY_RATIO][0].key])
+    try:
+        totShareEqu = int(get_latest_report(
+            symbol,
+            indicators[Indicator.EQUITY_RATIO][0].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.EQUITY_RATIO][0].key])
 
-    totLiab = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EQUITY_RATIO][1].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.EQUITY_RATIO][1].key])
-
-    equRat = round(totShareEqu/(totLiab+totShareEqu), 4)
+        totLiab = int(get_latest_report(
+            symbol,
+            indicators[Indicator.EQUITY_RATIO][1].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.EQUITY_RATIO][1].key])
+    
+        equRat = round(totShareEqu/(totLiab+totShareEqu), 4)
+    except:
+        equRat = None
 
     # calc with current & non current assets
-    totCurAss = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EQUITY_RATIO][2].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.EQUITY_RATIO][2].key])
+    try:
+        totCurAss = int(get_latest_report(
+            symbol,
+            indicators[Indicator.EQUITY_RATIO][2].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.EQUITY_RATIO][2].key])
 
-    totNonCurAss = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EQUITY_RATIO][3].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.EQUITY_RATIO][3].key])
+        totNonCurAss = int(get_latest_report(
+            symbol,
+            indicators[Indicator.EQUITY_RATIO][3].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.EQUITY_RATIO][3].key])
 
-    equRat_curr = round(totShareEqu/(totCurAss+totNonCurAss), 4)
+        equRat_curr = round(totShareEqu/(totCurAss+totNonCurAss), 4)
+    except:
+        equRat_curr = None
 
     # given
-    totAss = int(get_latest_report(
-        symbol,
-        Function.BALANCE_SHEET,
-        fiscal,
-        fiscalDateEnding
-        )[0]['totalAssets'])
+    try:
+        totAss = int(get_latest_report(
+            symbol,
+            Function.BALANCE_SHEET,
+            fiscal,
+            fiscalDateEnding
+            )[0]['totalAssets'])
 
-    equRat_av = round(totShareEqu/totAss, 4)
+        equRat_av = round(totShareEqu/totAss, 4)
+    except:
+        equRat_av = None
 
     return equRat, equRat_av
 
 def gearing(symbol):
-    totDebt = int(get_latest_report(symbol, indicators[Indicator.GEARING][0].function)[0][indicators[Indicator.GEARING][0].key])
-    totShareEqau = int(get_latest_report(symbol, indicators[Indicator.GEARING][1].function)[0][indicators[Indicator.GEARING][1].key])
+    try:
+        totDebt = int(get_latest_report(symbol, indicators[Indicator.GEARING][0].function)[0][indicators[Indicator.GEARING][0].key])
+        totShareEqau = int(get_latest_report(symbol, indicators[Indicator.GEARING][1].function)[0][indicators[Indicator.GEARING][1].key])
+        gearing = round(totDebt/totShareEqau, 4)
+    except:
+        gearing = None
 
-    return round(totDebt/totShareEqau, 4), None
+    return gearing, None
 
 def market_capitalization(symbol):
     # calc
-    close_ser = get_latest_series(
-        symbol,
-        indicators[Indicator.MARKET_CAPITALIZATION][0].function)
-    close = float(close_ser[indicators[Indicator.MARKET_CAPITALIZATION][0].key])
+    try:
+        close_ser = get_latest_series(
+            symbol,
+            indicators[Indicator.MARKET_CAPITALIZATION][0].function)
+        close = float(close_ser[indicators[Indicator.MARKET_CAPITALIZATION][0].key])
 
-    num_rep = get_latest_report(
-        symbol,
-        indicators[Indicator.MARKET_CAPITALIZATION][1].function)
-    num = int(num_rep[indicators[Indicator.MARKET_CAPITALIZATION][1].key])
+        num_rep = get_latest_report(
+            symbol,
+            indicators[Indicator.MARKET_CAPITALIZATION][1].function)
+        num = int(num_rep[indicators[Indicator.MARKET_CAPITALIZATION][1].key])
 
-    markCap = round(close*num, 4)
+        markCap = round(close*num)
+    except:
+        markCap = None
 
     # given
-    rep = get_latest_report(
-        symbol,
-        Function.COMPANY_OVERVIEW)
+    try:
+        rep = get_latest_report(
+            symbol,
+            Function.COMPANY_OVERVIEW)
 
-    markCap_av = rep['MarketCapitalization']
+        markCap_av = rep['MarketCapitalization']
+    except:
+        markCap_av = None
 
-    return markCap, markCap_av  # how to get currency?
+    return markCap, markCap_av
 
 def ev(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
-    markCap = market_capitalization(symbol)[0]
-   
-    currLongDebt = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EV][0].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.EV][0].key])
-   
-    shortLongTermDebt = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EV][1].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.EV][1].key])
+    try:
+        markCap = market_capitalization(symbol)[0]
     
-    longTermDebt = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EV][2].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.EV][2].key])
+        currLongDebt = int(get_latest_report(
+            symbol,
+            indicators[Indicator.EV][0].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.EV][0].key])
     
-    cashandCashequ = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EV][3].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.EV][3].key])
+        shortLongTermDebt = int(get_latest_report(
+            symbol,
+            indicators[Indicator.EV][1].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.EV][1].key])
+        
+        longTermDebt = int(get_latest_report(
+            symbol,
+            indicators[Indicator.EV][2].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.EV][2].key])
+        
+        cashandCashequ = int(get_latest_report(
+            symbol,
+            indicators[Indicator.EV][3].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.EV][3].key])
 
-    totDebt = currLongDebt + shortLongTermDebt + longTermDebt
+        totDebt = currLongDebt + shortLongTermDebt + longTermDebt
 
-    ev = markCap + totDebt - cashandCashequ
+        ev = markCap + totDebt - cashandCashequ
+    except:
+        ev = None
 
     return ev, None
 
-def ev_to_revenue(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+def ev_to_revenue(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding=None):
     # calc
-    ev1 = ev(symbol)[0]
+    try:
+        ev1 = ev(symbol)[0]
 
-    totRev = int(get_latest_report(
-        symbol,
-        indicators[Indicator.EV_TO_REVENUE].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.EV_TO_REVENUE].key])
-    
-    evToRev = round(ev1 / totRev, 3)
+        totRev = int(get_latest_report(
+            symbol,
+            indicators[Indicator.EV_TO_REVENUE].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.EV_TO_REVENUE].key])
+        
+        evToRev = round(ev1 / totRev, 3)
+    except:
+        evToRev = None
 
     # given
-    evToRev_av = float(get_latest_report(
-        symbol,
-        Function.COMPANY_OVERVIEW,
-        )['EVToRevenue'])
+    try:
+        evToRev_av = float(get_latest_report(
+            symbol,
+            Function.COMPANY_OVERVIEW,
+            )['EVToRevenue'])
+    except:
+        evToRev_av = None
 
     return evToRev, evToRev_av
 
-def ev_to_ebitda(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+def ev_to_ebitda(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding=None):
     # calc
     ev_ = ev(symbol)[0]
 
@@ -403,92 +463,111 @@ def ev_to_ebitda(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
 
         ebitda = depAndAmo + incTaxExp + netInc + intExp
         evToEbitda = ev_ / ebitda
-
     except:
         evToEbitda = None
 
-    # given         
-    evToEbitda_av = float(get_latest_report(
-        symbol,
-        Function.COMPANY_OVERVIEW
-    )['EVToEBITDA'])
+    # given
+    try:
+        evToEbitda_av = float(get_latest_report(
+            symbol,
+            Function.COMPANY_OVERVIEW
+        )['EVToEBITDA'])
+    except:
+        evToEbitda_av = None
 
     return evToEbitda, evToEbitda_av
-def price_to_earning(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
-    close_ser = get_latest_series(
-    symbol,
-    indicators[Indicator.PRICE_TO_EARNING][0].function)
-    close = float(close_ser[indicators[Indicator.PRICE_TO_EARNING][0].key])
 
-    eps = float(get_latest_report(
-    symbol,
-    indicators[Indicator.PRICE_TO_EARNING][1].function,
-    fiscal,
-    fiscalDateEnding
-    )[indicators[Indicator.PRICE_TO_EARNING][1].key])
-   
-    priceToEarning = close/eps
+def price_to_earning(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+    # calc
+    try:
+        close_ser = get_latest_series(
+        symbol,
+        indicators[Indicator.PRICE_TO_EARNING][0].function)
+        close = float(close_ser[indicators[Indicator.PRICE_TO_EARNING][0].key])
+
+        eps = float(get_latest_report(
+        symbol,
+        indicators[Indicator.PRICE_TO_EARNING][1].function,
+        fiscal,
+        fiscalDateEnding
+        )[indicators[Indicator.PRICE_TO_EARNING][1].key])
+    
+        priceToEarning = close/eps
+    except:
+        priceToEarning = None
 
     # given
-    priceToEarning_av = float(get_latest_report(
-        symbol,
-        Function.COMPANY_OVERVIEW
-    )['PERatio'])
+    try:
+        priceToEarning_av = float(get_latest_report(
+            symbol,
+            Function.COMPANY_OVERVIEW
+        )['PERatio'])
+    except:
+        priceToEarning_av = None
 
     return priceToEarning, priceToEarning_av
 
 def price_to_book(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
-    close_ser = get_latest_series(
-        symbol,
-        indicators[Indicator.PRICE_TO_BOOK][0].function)
-    close = float(close_ser[indicators[Indicator.PRICE_TO_BOOK][0].key])
+    try:
+        close_ser = get_latest_series(
+            symbol,
+            indicators[Indicator.PRICE_TO_BOOK][0].function)
+        close = float(close_ser[indicators[Indicator.PRICE_TO_BOOK][0].key])
 
-    totShareEqui = int(get_latest_report(
-        symbol,
-        indicators[Indicator.PRICE_TO_BOOK][1].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.PRICE_TO_BOOK][1].key])
+        totShareEqui = int(get_latest_report(
+            symbol,
+            indicators[Indicator.PRICE_TO_BOOK][1].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.PRICE_TO_BOOK][1].key])
 
-    shareOutSta = int(get_latest_report(
-        symbol,
-        indicators[Indicator.PRICE_TO_BOOK][2].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.PRICE_TO_BOOK][2].key])
-    
-    priceToBook = round(close/(totShareEqui/shareOutSta), 2)
+        shareOutSta = int(get_latest_report(
+            symbol,
+            indicators[Indicator.PRICE_TO_BOOK][2].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.PRICE_TO_BOOK][2].key])
+        
+        priceToBook = round(close/(totShareEqui/shareOutSta), 2)
+    except:
+        priceToBook = None
 
     # given
-    priceToBook_av = float(get_latest_report(
-        symbol,
-        Function.COMPANY_OVERVIEW
-    )['PriceToBookRatio'])
+    try:
+        priceToBook_av = float(get_latest_report(
+            symbol,
+            Function.COMPANY_OVERVIEW
+        )['PriceToBookRatio'])
+    except:
+        priceToBook_av = None
 
     return priceToBook, priceToBook_av
 
 def price_to_cashflow(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
-    close_ser = get_latest_series(
-        symbol,
-        indicators[Indicator.PRICE_TO_CASHFLOW][0].function)
-    close = float(close_ser[indicators[Indicator.PRICE_TO_CASHFLOW][0].key])
+    try:
+        close_ser = get_latest_series(
+            symbol,
+            indicators[Indicator.PRICE_TO_CASHFLOW][0].function)
+        close = float(close_ser[indicators[Indicator.PRICE_TO_CASHFLOW][0].key])
 
-    opCash = int(get_latest_report(
-        symbol,
-        indicators[Indicator.PRICE_TO_CASHFLOW][1].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.PRICE_TO_CASHFLOW][1].key])
-    
-    sharesOutst = int(get_latest_report(
-        symbol,
-        indicators[Indicator.PRICE_TO_CASHFLOW][2].function,
-        fiscal,
-        fiscalDateEnding
-        )[0][indicators[Indicator.PRICE_TO_CASHFLOW][2].key])
-    
-    priceToCashflow = close/(opCash/sharesOutst)
+        opCash = int(get_latest_report(
+            symbol,
+            indicators[Indicator.PRICE_TO_CASHFLOW][1].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.PRICE_TO_CASHFLOW][1].key])
+        
+        sharesOutst = int(get_latest_report(
+            symbol,
+            indicators[Indicator.PRICE_TO_CASHFLOW][2].function,
+            fiscal,
+            fiscalDateEnding
+            )[0][indicators[Indicator.PRICE_TO_CASHFLOW][2].key])
+        
+        priceToCashflow = close/(opCash/sharesOutst)
+    except:
+        priceToCashflow = None
 
     return priceToCashflow, None

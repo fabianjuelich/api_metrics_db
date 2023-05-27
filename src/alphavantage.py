@@ -44,7 +44,7 @@ def get_latest_report(symbol, function: Function, fiscal: Fiscal=None, fiscalDat
         index (int, optional): The index of the report to be returned (default None).
     Returns:
         The latest report (, the index in case of periodically reports).
-    Args:
+    Raises:
         Exception: If an error occurs while getting the report or the fiscal date ending is not found.
     """
     try:
