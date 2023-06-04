@@ -87,14 +87,8 @@ indicators = {
             Function.COMPANY_OVERVIEW)],
 
     # EV = market capitalization + total debt - cash and cash equivalents
-    # Total debt: Current long-term debt, short/long-term debt total, and long-term debt noncurrent
-    Indicator.EV: [
-        Data(
-            'currentLongTermDebt',
-            Function.BALANCE_SHEET),
-        Data(
-            'shortLongTermDebtTotal',
-            Function.BALANCE_SHEET),
+    # Total debt:  long-term debt noncurrent
+    Indicator.EV: [    
         Data(
             'longTermDebtNoncurrent',
             Function.BALANCE_SHEET),
@@ -364,36 +358,22 @@ def ev(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
     try:
         markCap = market_capitalization(symbol)[0]
-    
-        currLongDebt = int(get_latest_report(
+       
+        longTermDebt = int(get_latest_report(
             symbol,
             indicators[Indicator.EV][0].function,
             fiscal,
             fiscalDateEnding
             )[0][indicators[Indicator.EV][0].key])
-    
-        shortLongTermDebt = int(get_latest_report(
+        
+        cashandCashequ = int(get_latest_report(
             symbol,
             indicators[Indicator.EV][1].function,
             fiscal,
             fiscalDateEnding
             )[0][indicators[Indicator.EV][1].key])
-        
-        longTermDebt = int(get_latest_report(
-            symbol,
-            indicators[Indicator.EV][2].function,
-            fiscal,
-            fiscalDateEnding
-            )[0][indicators[Indicator.EV][2].key])
-        
-        cashandCashequ = int(get_latest_report(
-            symbol,
-            indicators[Indicator.EV][3].function,
-            fiscal,
-            fiscalDateEnding
-            )[0][indicators[Indicator.EV][3].key])
 
-        totDebt = currLongDebt + shortLongTermDebt + longTermDebt
+        totDebt = longTermDebt
 
         ev = markCap + totDebt - cashandCashequ
     except:
