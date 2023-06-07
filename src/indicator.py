@@ -151,7 +151,6 @@ indicators = {
         )]
 }
 
-
 # -------------------------------------------------Get indicators------------------------------------------------- #
 
 def revenue_growth(symbol, fiscal: Fiscal=Fiscal.QUARTERLY_REPORTS, fiscalDateEnding=None):
