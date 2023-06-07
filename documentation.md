@@ -20,7 +20,7 @@ We aim to provide investors with an easier way to perform fundamental analysis b
 
 ## 3. Approach: How exactly is the goal to be achieved?
 
-To work out the most important stock ratios we will use [a video of the Youtuber Finanzfluss](https://www.youtube.com/watch?v=qie9sxCIhHM) as a reference.
+To work out the most important stock ratios we will use a [video of the Youtuber Finanzfluss](https://www.youtube.com/watch?v=qie9sxCIhHM) as a reference.
 
 ### The 12 Most important Financial Ratios (regarding to Finanzfluss)
 
@@ -53,7 +53,7 @@ The Data research came to the following results, which we will present in a tabl
 
 | Stock key figure <br/>________________ | What does it mean for the investor <br/>_____________________________________________ | Description <br/>_____________________ | Positive <br/>________ | Data for calculation <br/>___________________________________ | Data given <br/>____________________ |
 |---|---|---|---|---|---|
-| Revenue Growth | If a company is consistently growing its revenue over time, it can signal to investors that the company is successful and has a strong competitive position in its industry.Moreover, revenue growth can indicate an expanding customer base, increasing market share, or launching new products or services. | Revenue Growth is the increase in revenue over a period of time. | > 0 | N/A | [TotalRevenue](https://www.alphavantage.co/documentation/#income-statement) (new) - [TotalRevenue](https://www.alphavantage.co/documentation/#income-statement) (old) / [TotalRevenue](https://www.alphavantage.co/documentation/#income-statement) (old) |
+| Revenue Growth | If a company is consistently growing its revenue over time, it can signal to investors that the company is successful and has a strong competitive position in its industry.Moreover, revenue growth can indicate an expanding customer base, increasing market share, or launching new products or services. | Revenue Growth is the increase in revenue over a period of time. | > 0 | [TotalRevenue](https://www.alphavantage.co/documentation/#income-statement) (new) - [TotalRevenue](https://www.alphavantage.co/documentation/#income-statement) (old) / [TotalRevenue](https://www.alphavantage.co/documentation/#income-statement) (old) | [QuarterlyRevenueGrowthYOY](https://www.alphavantage.co/documentation/#company-overview) |
 | Gross profit | Gross profit is important to investors because it is a key driver of a company's net income or profitability. With a high gross profit margin, a company generates more revenue from each unit of product or service sold, resulting in a higher net income and higher stock price. If a company has a low gross profit margin, it may indicate that it is not managing its costs efficiently, resulting in lower profitability and a lower stock price. | A company's gross profit is its financial gain after deduction of manufacturing and distribution costs. | > 0 | [totalRevenue](https://www.alphavantage.co/documentation/#income-statement) - [costOfRevenue](https://www.alphavantage.co/documentation/#income-statement) | [grossProfit](https://www.alphavantage.co/documentation/#income-statement) |
 | Return on Equity | Investors use ROE to evaluate a company's financial performance over time and to compare it with other companies in the same field. A consistently high ROE may suggest that a company has a competitive advantage or a strong business model that allows it to generate higher profits with less shareholder equity. It could indicate that the company will generate higher returns in the future, which is a positive sign for investors. | Return on equity (ROE) is a financial performance measure calculated by dividing net income by shareholders' equity. | > 1 | [netIncome](https://www.alphavantage.co/documentation/#income-statement) / [totalShareholdersEquity](https://www.alphavantage.co/documentation/#income-statement) | [returnOnEquityTTM](https://www.alphavantage.co/documentation/#company-overview) |
 | Equity ratio | Investors should pay attention to the equity ratio because it shows how much of a company's assets are financed by equity as opposed to debt. Being less dependent on borrowing money to finance its operations, a company with a high equity ratio is likely to have lower debt levels and be more financially stable. Investors may find this encouraging because it may mean that the business is less vulnerable to financial risks and may be better able to withstand economic downturns. | The equity ratio is a way to show how much of a company's assets were financed through equity. | > 1 | [totalShareholderEquity](https://www.alphavantage.co/documentation/#balance-sheet) / [totalLiabilities](https://www.alphavantage.co/documentation/#balance-sheet) + [totalShareholderEquity](https://www.alphavantage.co/documentation/#balance-sheet) | [totalShareholderEquity](https://www.alphavantage.co/documentation/#balance-sheet) / [totalAssets](https://www.alphavantage.co/documentation/#balance-sheet) |
@@ -77,19 +77,100 @@ When implementing the option to analyze stocks belonging to an index, we tried t
 Thats because in the financial world the companies listed on different stock exchanges have different abbreviations or ticker symbols. A ticker symbol is usually an abbreviation used to identify a listed company. This symbol consists of a letter combination of 1-6 numbers and letters, depending on the type of stock exchange. It's unique for every company on every stock exchange. This discrepancy in ticker symbols can create challenges when collecting and analyzing stock data across different exchanges. For example, a company listed as "XYZ Corporation" on the NASDAQ exchange might have a ticker symbol of "XYZ" on NASDAQ. However, the same company could be listed as "XYZ Corp." on the New York Stock Exchange (NYSE) with a ticker symbol of "XYZC." These different variations of ticker symbols make it difficult to analyze and track data consistently.
 As mentionend before, Alpha Vantage adressed this issue and is aiming to provide standardized data and simplify the process of retrieving and analyzing stock information by only using ticker symbols used on NASDAQ, which is one of the major stock exchanges in the US.
 
+Even if you get the desired indicator for the correct ticker, you have to consider that indicators are often put into a context. So there is not e.g. the revenue growth but many, each covering another dimension and each being correct. So they obviously can not be compared just as you want. For that reason, we tried to approach the contexts used by Alpha Vantage the best we could - not only for better comparisson, but, not to be neglected, as well because we think, that those are the most meanignful to the investor. To stay with the example: Instead of comparing the revenue of one report with the one released in the report released before, we used the year over year growth for the latest quarter.
+
 However, it is still important for users to be aware of potential variations and take the necessary steps to ensure data consistency when working with stock data from several stock exchanges.
 
 ## 4. Methodology
 
 We choose to develope a [Python](https://www.python.org/) script because the language is widely spread and pretty handy for such tasks, like working with data. [Jupyter notebooks](https://jupyter.org/) might be good for demonstration purposes but not eligible for production.
-The goal to reach was a function that takes a single or list of symbols and returns a json containing the [12 most important metrics mentioned before](#the-12-most-important-financial-ratios-regarding-to-finanzfluss), both, calculated and given by the API.
+The goal to reach is a function that takes a single or list of symbols and returns a json containing the [12 most important metrics mentioned before](#the-12-most-important-financial-ratios-regarding-to-finanzfluss), both, calculated and given by the API.
 
-For this case we designed the class Table, https://github.com/WanjaSchaible/important-metrics/blob/248e50634f16b7e6784af77d1e93d32926ce6427/src/table.py#L6 which is the one the user interacts with. Instantiating it, returns an object having the desired json attribute. If the user wishes to analyze the data using pandas, the method to_dataframe https://github.com/WanjaSchaible/important-metrics/blob/248e50634f16b7e6784af77d1e93d32926ce6427/src/table.py#L39 can be called to open the door for a lot of data science related options.
+For this case we designed the class Table, https://github.com/WanjaSchaible/important-metrics/blob/248e50634f16b7e6784af77d1e93d32926ce6427/src/table.py#L6 which is the one the user interacts with. Instantiating it, returns an object having the desired json attribute. If the user wishes to analyze the data using pandas, the method to_dataframe https://github.com/WanjaSchaible/important-metrics/blob/248e50634f16b7e6784af77d1e93d32926ce6427/src/table.py#L39 can be called to open the door for a lot of data science related options or converting it into e.g. a csv file easily.
 For enabling handling huge numbers of symbols belonging to an index like NASDAQ, we implemented the possibility to create the table object for such one. In the background the components will be scraped from yahoo finance like explained before. The Components class https://github.com/WanjaSchaible/important-metrics/blob/81c39baf92ea573b3580467d6478850336686205/src/components.py#L4 offers the method get_symbols https://github.com/WanjaSchaible/important-metrics/blob/81c39baf92ea573b3580467d6478850336686205/src/components.py#L10 for requesting the html file including the rendered js code which will be parsed and its relationl data temporarily stored in a sqlite database https://github.com/WanjaSchaible/important-metrics/blob/81c39baf92ea573b3580467d6478850336686205/src/components.py#L29 for accessing easily.
 
-The core of the program lives in the [indicator.py](src/indicator.py) file, which is seperated into the required data as well as its source and its actual retrieving and calculation of the stock key figures. For consistency and to accelerate the developement, we created enums like Function https://github.com/WanjaSchaible/important-metrics/blob/f7476cc9f23cc52fd65ac426f17ba458cc8b33ed/src/function.py#L3-L8
+The core of the program lives in the [indicator.py](src/indicator.py) file, which is seperated into the required data as well as its source section and its actual retrieving and calculation section of the stock key figures. For consistency and to accelerate the developement, we created enums like Function https://github.com/WanjaSchaible/important-metrics/blob/f7476cc9f23cc52fd65ac426f17ba458cc8b33ed/src/function.py#L3-L8
 
 In short, the following abstract shows how simple it is to interact with the code introduced before: https://github.com/WanjaSchaible/important-metrics/blob/f7476cc9f23cc52fd65ac426f17ba458cc8b33ed/main.py#L4-L9
+
+## What did Alpha Vantage Provide?
+
+As we looked in to Alpha Vantage for the stock figures, we noticed that the API doesnt provide every stock figure directly and we had to calculate some of them completely by Ourselves.
+Even if the Stock figure was provided we still calculatet it ourselves using the formula that is needed. We always tried to use the smallest and most atomic possible way to calculate the metric.
+
+In the following we will explain in Detail if the key stock figures where given or not and which other key figures we used for our own calculation.
+
+Revenue Growth:
+
+- The QuarterlyRevenueGrowthYOY provided by Alpha Vantage represents the percentage change in revenue compared to the same quarter of the previous year. It helps assess the company's growth rate.
+- To calculate the revenue growth ourselves, we use the formula: (Current Period Revenue - Prior Period Revenue) / Prior Period Revenue.
+- The Current Period Revenue and Prior Period Revenue are obtained from the Income Statement provided by Alpha Vantage.
+
+Gross Profit:
+
+- The Gross Profit provided by Alpha Vantage in the Income Statement represents the revenue remaining after deducting the cost of goods sold. It indicates the profitability of the core business operations.
+- To calculate the gross profit ourselves, we use the formula: Revenue - Cost of Revenue.
+- We obtain the Revenue and Cost of Revenue figures from the Income Statement provided by Alpha Vantage.
+
+Return on Equity:
+
+- The ReturnOnEquityTTM (Trailing Twelve Months) provided by Alpha Vantage in the Company Overview represents the profitability of shareholders' investment in the company over the past year.
+- To calculate the return on equity ourselves, we use the formula: Net Income / Shareholders' Equity.
+- The Net Income is obtained from the Income Statement, and Shareholders' Equity is obtained from the Balance Sheet provided by Alpha Vantage.
+
+Equity Ratio:
+
+- Alpha Vantage partially provides the Equity Ratio. For the given Equity Ratio, we use Shareholders' Equity / Total Assets from the Balance Sheet.
+- To calculate the Equity Ratio ourselves, we use the formula: Shareholders' Equity / (Liabilities + Shareholders' Equity).
+- We obtain the Shareholders' Equity, Liabilities, and Total Assets figures from the Balance Sheet provided by Alpha Vantage.
+
+Gearing:
+
+- Alpha Vantage does not provide the Gearing (debt to equity ratio).
+- To calculate the gearing ourselves, we use the formula: Total Debt / Total Shareholders' Equity.
+- We obtain the Total Debt and Total Shareholders' Equity figures from the Balance Sheet provided by Alpha Vantage.
+
+Market Capitalization:
+
+- The Market Capitalization provided by Alpha Vantage in the Company Overview represents the total value of a company's outstanding shares in the stock market.
+- To calculate the market capitalization ourselves, we use the formula: Current Market Price per Share * Total Number of Outstanding Shares.
+- We obtain the Current Market Price per Share from the Time Series Intraday and the Total Number of Outstanding Shares from the Company Overview provided by Alpha Vantage.
+
+Enterprise Value:
+
+- Alpha Vantage does not provide the Enterprise Value.
+- To calculate the enterprise value ourselves, we use the formula: Market Capitalization + Total Debt - Cash and Cash Equivalents.
+- We obtain the Market Capitalization, Total Debt, and Cash and Cash Equivalents figures from the Balance Sheet provided by Alpha Vantage.
+
+Enterprise Value to Revenue Ratio:
+
+- The EvToRevenue Ratio provided by Alpha Vantage in the Company Overview represents the valuation multiple of enterprise value to total revenue.
+- To calculate the enterprise value to revenue ratio ourselves, we use the formula: Enterprise Value / Total Revenue.
+- We use the calculated Enterprise Value and Total Revenue from the Income Statement provided by Alpha Vantage.
+
+Enterprise Value to EBITDA:
+
+- The EvToEBITDA provided by Alpha Vantage in the Company Overview represents the valuation multiple of enterprise value to EBITDA (Earnings Before Interest, Taxes, Depreciation, and Amortization).
+- To calculate the enterprise value to EBITDA ourselves, we calculate EBITDA using the formula: Income Tax Expense + Interest Expense + Net Income + Depreciation and Amortization.
+- We then divide our calculated Enterprise Value by EBITDA to obtain the ratio.
+
+Price to Earnings:
+
+- The P/E ratio provided by Alpha Vantage in the Company Overview represents the valuation multiple of price per share to earnings per share.
+- To calculate the price to earnings ratio ourselves, we use the formula: Stock Price / Earnings Per Share.
+- We obtain the Stock Price from the Time Series Intraday and the Earnings Per Share from the Company Overview provided by Alpha Vantage.
+
+Price to Book:
+
+- The P/B ratio provided by Alpha Vantage in the Company Overview represents the valuation multiple of price per share to book value per share.
+- To calculate the price to book ratio ourselves, we use the formula: Market Price per Share / (Total Shareholders' Equity / Shares Outstanding).
+- We obtain the Market Price per Share from the Time Series Intraday, the Total Shareholders' Equity, and the Shares Outstanding from the Balance Sheet provided by Alpha Vantage.
+
+Price to Cashflow:
+
+- The Price to Cashflow ratio is not provided by Alpha Vantage.
+- To calculate it ourselves, we use the formula: Stock Price / (Operating Cash Flow / Shares Outstanding).
+- We obtain the Stock Price from the Time Series Intraday, the Operating Cash Flow from the Cash Flow statement, and the Shares Outstanding from the Balance Sheet provided by Alpha Vantage.
 
 ## 5. Discussion
 
