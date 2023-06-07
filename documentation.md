@@ -81,6 +81,85 @@ Even if you get the desired indicator for the correct ticker, you have to consid
 
 However, it is still important for users to be aware of potential variations and take the necessary steps to ensure data consistency when working with stock data from several stock exchanges.
 
+### What did Alpha Vantage Provide?
+
+As we looked in to Alpha Vantage for the stock figures, we noticed that the API doesnt provide every stock figure directly and we had to calculate some of them completely by Ourselves.
+Even if the Stock figure was provided we still calculatet it ourselves using the formula that is needed. We always tried to use the smallest and most atomic possible way to calculate the metric.
+
+In the following we will explain in Detail if the key stock figures where given or not and which other key figures we used for our own calculation.
+
+Revenue Growth:
+
+- The QuarterlyRevenueGrowthYOY provided by Alpha Vantage represents the percentage change in revenue compared to the same quarter of the previous year. It helps assess the company's growth rate.
+- To calculate the revenue growth ourselves, we use the formula: (Current Period Revenue - Prior Period Revenue) / Prior Period Revenue.
+- The Current Period Revenue and Prior Period Revenue are obtained from the Income Statement provided by Alpha Vantage.
+
+Gross Profit:
+
+- The Gross Profit provided by Alpha Vantage in the Income Statement represents the revenue remaining after deducting the cost of goods sold. It indicates the profitability of the core business operations.
+- To calculate the gross profit ourselves, we use the formula: Revenue - Cost of Revenue.
+- We obtain the Revenue and Cost of Revenue figures from the Income Statement provided by Alpha Vantage.
+
+Return on Equity:
+
+- The ReturnOnEquityTTM (Trailing Twelve Months) provided by Alpha Vantage in the Company Overview represents the profitability of shareholders' investment in the company over the past year.
+- To calculate the return on equity ourselves, we use the formula: Net Income / Shareholders' Equity.
+- The Net Income is obtained from the Income Statement, and Shareholders' Equity is obtained from the Balance Sheet provided by Alpha Vantage.
+
+Equity Ratio:
+
+- Alpha Vantage partially provides the Equity Ratio. For the given Equity Ratio, we use Shareholders' Equity / Total Assets from the Balance Sheet.
+- To calculate the Equity Ratio ourselves, we use the formula: Shareholders' Equity / (Liabilities + Shareholders' Equity).
+- We obtain the Shareholders' Equity, Liabilities, and Total Assets figures from the Balance Sheet provided by Alpha Vantage.
+
+Gearing:
+
+- Alpha Vantage does not provide the Gearing (debt to equity ratio).
+- To calculate the gearing ourselves, we use the formula: Total Debt / Total Shareholders' Equity.
+- We obtain the Total Debt and Total Shareholders' Equity figures from the Balance Sheet provided by Alpha Vantage.
+
+Market Capitalization:
+
+- The Market Capitalization provided by Alpha Vantage in the Company Overview represents the total value of a company's outstanding shares in the stock market.
+- To calculate the market capitalization ourselves, we use the formula: Current Market Price per Share * Total Number of Outstanding Shares.
+- We obtain the Current Market Price per Share from the Time Series Intraday and the Total Number of Outstanding Shares from the Company Overview provided by Alpha Vantage.
+
+Enterprise Value:
+
+- Alpha Vantage does not provide the Enterprise Value.
+- To calculate the enterprise value ourselves, we use the formula: Market Capitalization + Total Debt - Cash and Cash Equivalents.
+- We obtain the Market Capitalization, Total Debt, and Cash and Cash Equivalents figures from the Balance Sheet provided by Alpha Vantage.
+
+Enterprise Value to Revenue Ratio:
+
+- The EvToRevenue Ratio provided by Alpha Vantage in the Company Overview represents the valuation multiple of enterprise value to total revenue.
+- To calculate the enterprise value to revenue ratio ourselves, we use the formula: Enterprise Value / Total Revenue.
+- We use the calculated Enterprise Value and Total Revenue from the Income Statement provided by Alpha Vantage.
+
+Enterprise Value to EBITDA:
+
+- The EvToEBITDA provided by Alpha Vantage in the Company Overview represents the valuation multiple of enterprise value to EBITDA (Earnings Before Interest, Taxes, Depreciation, and Amortization).
+- To calculate the enterprise value to EBITDA ourselves, we calculate EBITDA using the formula: Income Tax Expense + Interest Expense + Net Income + Depreciation and Amortization.
+- We then divide our calculated Enterprise Value by EBITDA to obtain the ratio.
+
+Price to Earnings:
+
+- The P/E ratio provided by Alpha Vantage in the Company Overview represents the valuation multiple of price per share to earnings per share.
+- To calculate the price to earnings ratio ourselves, we use the formula: Stock Price / Earnings Per Share.
+- We obtain the Stock Price from the Time Series Intraday and the Earnings Per Share from the Company Overview provided by Alpha Vantage.
+
+Price to Book:
+
+- The P/B ratio provided by Alpha Vantage in the Company Overview represents the valuation multiple of price per share to book value per share.
+- To calculate the price to book ratio ourselves, we use the formula: Market Price per Share / (Total Shareholders' Equity / Shares Outstanding).
+- We obtain the Market Price per Share from the Time Series Intraday, the Total Shareholders' Equity, and the Shares Outstanding from the Balance Sheet provided by Alpha Vantage.
+
+Price to Cashflow:
+
+- The Price to Cashflow ratio is not provided by Alpha Vantage.
+- To calculate it ourselves, we use the formula: Stock Price / (Operating Cash Flow / Shares Outstanding).
+- We obtain the Stock Price from the Time Series Intraday, the Operating Cash Flow from the Cash Flow statement, and the Shares Outstanding from the Balance Sheet provided by Alpha Vantage.
+
 ## 4. Methodology
 
 We choose to develope a [Python](https://www.python.org/) script because the language is widely spread and pretty handy for such tasks, like working with data. [Jupyter notebooks](https://jupyter.org/) might be good for demonstration purposes but not eligible for production.
