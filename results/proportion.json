@@ -1,0 +1,90 @@
+{
+  "number of tickers": 35,
+  "tickers": [
+    "AAPL",
+    "AMGN",
+    "CSCO",
+    "HON",
+    "INTC",
+    "MSFT",
+    "WBA",
+    "AAL",
+    "ACGL",
+    "ADBE",
+    "ADI",
+    "ADP",
+    "ADSK",
+    "AEP",
+    "AKAM",
+    "ALGN",
+    "AMAT",
+    "AMD",
+    "AMZN",
+    "ANSS",
+    "APA",
+    "ATVI",
+    "AVGO",
+    "BIIB",
+    "BKNG",
+    "BKR",
+    "CDNS",
+    "CDW",
+    "CEG",
+    "CHRW",
+    "CHTR",
+    "CINF",
+    "CMCSA",
+    "CME",
+    "COST"
+  ],
+  "proportion_of_valid_values": {
+    "revenue_growth": {
+      "calculated": 1.0,
+      "given": 1.0
+    },
+    "gross_profit": {
+      "calculated": 1.0,
+      "given": 1.0
+    },
+    "return_on_equity": {
+      "calculated": 0.97,
+      "given": 0.97
+    },
+    "equity_ratio": {
+      "calculated": 1.0,
+      "given": 1.0
+    },
+    "gearing": {
+      "calculated": 0.8,
+      "given": 0.0
+    },
+    "market_capitalization": {
+      "calculated": 1.0,
+      "given": 1.0
+    },
+    "ev": {
+      "calculated": 0.8,
+      "given": 0.0
+    },
+    "ev_to_revenue": {
+      "calculated": 0.8,
+      "given": 1.0
+    },
+    "ev_to_ebitda": {
+      "calculated": 0.8,
+      "given": 0.94
+    },
+    "price_to_earning": {
+      "calculated": 1.0,
+      "given": 0.89
+    },
+    "price_to_book": {
+      "calculated": 1.0,
+      "given": 0.97
+    },
+    "price_to_cashflow": {
+      "calculated": 1.0,
+      "given": 0.0
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "IBM": {
+    "revenue_growth": {
+      "calculated": 0.004,
+      "given": "0.004"
+    },
+    "gross_profit": {
+      "calculated": 7509000000,
+      "given": "7509000000"
+    },
+    "return_on_equity": {
+      "calculated": 0.022,
+      "given": 0.101
+    },
+    "equity_ratio": {
+      "calculated": 0.1617,
+      "given": 0.1617
+    },
+    "gearing": {
+      "calculated": 2.4915,
+      "given": null
+    },
+    "market_capitalization": {
+      "calculated": 123103660650,
+      "given": "122858488000"
+    },
+    "ev": {
+      "calculated": 167592660650,
+      "given": null
+    },
+    "ev_to_revenue": {
+      "calculated": 2.769,
+      "given": 2.969
+    },
+    "ev_to_ebitda": {
+      "calculated": 36.24408751081315,
+      "given": 25.81
+    },
+    "price_to_earning": {
+      "calculated": 60.25333333333333,
+      "given": 60.13
+    },
+    "price_to_book": {
+      "calculated": 5.69,
+      "given": 6.75
+    },
+    "price_to_cashflow": {
+      "calculated": 32.599304451510335,
+      "given": null
+    }
+  },
+  "AAPL": {
+    "revenue_growth": {
+      "calculated": -0.028,
+      "given": "-0.025"
+    },
+    "gross_profit": {
+      "calculated": 34845000000,
+      "given": "41976000000"
+    },
+    "return_on_equity": {
+      "calculated": 0.414,
+      "given": 1.456
+    },
+    "equity_ratio": {
+      "calculated": 0.1871,
+      "given": 0.1871
+    },
+    "gearing": {
+      "calculated": 1.5612,
+      "given": null
+    },
+    "market_capitalization": {
+      "calculated": 2843906247000,
+      "given": "2846265704000"
+    },
+    "ev": {
+      "calculated": 2916260247000,
+      "given": null
+    },
+    "ev_to_revenue": {
+      "calculated": 7.451,
+      "given": 5.92
+    },
+    "ev_to_ebitda": {
+      "calculated": 21.904041272964893,
+      "given": 17.53
+    },
+    "price_to_earning": {
+      "calculated": 30.185308848080133,
+      "given": 30.21
+    },
+    "price_to_book": {
+      "calculated": 45.74,
+      "given": 44.63
+    },
+    "price_to_cashflow": {
+      "calculated": 99.54303357352941,
+      "given": null
+    }
+  }
+}
