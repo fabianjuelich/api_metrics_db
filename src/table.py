@@ -1,5 +1,5 @@
 from src import indicator
-from src.symbol import Symbol
+from src.enums.symbol import Symbol
 from src.components import Components
 import pandas as pd
 from collections import defaultdict
