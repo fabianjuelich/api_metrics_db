@@ -79,15 +79,15 @@
       "given": null
     },
     "ev_to_revenue": {
-      "calculated": 7.451,
+      "calculated": 7.45,
       "given": 5.92
     },
     "ev_to_ebitda": {
-      "calculated": 21.904041272964893,
+      "calculated": 21.90,
       "given": 17.53
     },
     "price_to_earning": {
-      "calculated": 30.185308848080133,
+      "calculated": 30.18,
       "given": 30.21
     },
     "price_to_book": {
@@ -95,7 +95,7 @@
       "given": 44.63
     },
     "price_to_cashflow": {
-      "calculated": 99.54303357352941,
+      "calculated": 99.54,
       "given": null
     }
   }

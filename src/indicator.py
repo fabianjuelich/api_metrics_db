@@ -177,10 +177,10 @@ def revenue_growth(symbol, fiscal: Fiscal=Fiscal.QUARTERLY_REPORTS, fiscalDateEn
 
     # given
     try:
-        revenueGrowth_av = get_latest_report(
+        revenueGrowth_av = float(get_latest_report(
             symbol,
             Function.COMPANY_OVERVIEW
-        )['QuarterlyRevenueGrowthYOY']
+        )['QuarterlyRevenueGrowthYOY'])
     except:
         revenueGrowth_av = None
 
@@ -217,7 +217,7 @@ def gross_profit(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
             fiscalDateEnding
             )
 
-        gp_av = rep['grossProfit']
+        gp_av = int(rep['grossProfit'])
     except:
         gp_av = None
 
@@ -347,7 +347,7 @@ def market_capitalization(symbol):
             symbol,
             Function.COMPANY_OVERVIEW)
 
-        markCap_av = rep['MarketCapitalization']
+        markCap_av = int(rep['MarketCapitalization'])
     except:
         markCap_av = None
 
@@ -392,7 +392,7 @@ def ev_to_revenue(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding
             fiscalDateEnding
             )[0][indicators[Indicator.EV_TO_REVENUE].key])
         
-        evToRev = round(ev1 / totRev, 3)
+        evToRev = round(ev1 / totRev, 2)
     except:
         evToRev = None
 
