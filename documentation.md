@@ -87,13 +87,23 @@ We choose to develope a [Python](https://www.python.org/) script because the lan
 The goal to reach is a function that takes a single or list of symbols and returns a json containing the [12 most important metrics mentioned before](#the-12-most-important-financial-ratios-regarding-to-finanzfluss), both, calculated and given by the API.
 
 For this case we designed the class Table, https://github.com/WanjaSchaible/important-metrics/blob/248e50634f16b7e6784af77d1e93d32926ce6427/src/table.py#L6 which is the one the user interacts with. Instantiating it, returns an object having the desired json attribute. If the user wishes to analyze the data using pandas, the method to_dataframe https://github.com/WanjaSchaible/important-metrics/blob/248e50634f16b7e6784af77d1e93d32926ce6427/src/table.py#L39 can be called to open the door for a lot of data science related options or converting it into e.g. a csv file easily.
-For enabling handling huge numbers of symbols belonging to an index like NASDAQ, we implemented the possibility to create the table object for such one. In the background the components will be scraped from yahoo finance like explained before. The Components class https://github.com/WanjaSchaible/important-metrics/blob/81c39baf92ea573b3580467d6478850336686205/src/components.py#L4 offers the method get_symbols https://github.com/WanjaSchaible/important-metrics/blob/81c39baf92ea573b3580467d6478850336686205/src/components.py#L10 for requesting the html file including the rendered js code which will be parsed and its relationl data temporarily stored in a sqlite database https://github.com/WanjaSchaible/important-metrics/blob/81c39baf92ea573b3580467d6478850336686205/src/components.py#L29 for accessing easily.
+For enabling handling huge numbers of symbols belonging to an index like NASDAQ, we implemented the possibility to create the table object for such one. In the background the components will be scraped from yahoo finance like explained before. The Components class https://github.com/WanjaSchaible/important-metrics/blob/81c39baf92ea573b3580467d6478850336686205/src/components.py#L4 offers the method get_symbols https://github.com/WanjaSchaible/important-metrics/blob/81c39baf92ea573b3580467d6478850336686205/src/components.py#L10 for requesting the html file including the rendered js code which will be parsed and its relating data temporarily stored in a sqlite database https://github.com/WanjaSchaible/important-metrics/blob/81c39baf92ea573b3580467d6478850336686205/src/components.py#L29 for accessing easily.
 
-The core of the program lives in the [indicator.py](src/indicator.py) file, which is seperated into the required data as well as its source section and its actual retrieving and calculation section of the stock key figures. For consistency and to accelerate the developement, we created enums like Function https://github.com/WanjaSchaible/important-metrics/blob/f7476cc9f23cc52fd65ac426f17ba458cc8b33ed/src/function.py#L3-L8
+The core of the program lives in the [indicator.py](src/indicator.py) file, which is seperated into the required data as well as its source section and its actual retrieving
+https://github.com/WanjaSchaible/important-metrics/blob/b6754a88220c920c1befa3421dbc07fbb8a2eb38/src/indicator.py#L119-L125
+and calculation
+https://github.com/WanjaSchaible/important-metrics/blob/b6754a88220c920c1befa3421dbc07fbb8a2eb38/src/indicator.py#L459-L487
+section of the stock key figures. For consistency and to accelerate the developement, we created enums like Function https://github.com/WanjaSchaible/important-metrics/blob/f7476cc9f23cc52fd65ac426f17ba458cc8b33ed/src/function.py#L3-L8
 
-In short, the following abstract shows how simple it is to interact with the code introduced before: https://github.com/WanjaSchaible/important-metrics/blob/f7476cc9f23cc52fd65ac426f17ba458cc8b33ed/main.py#L4-L9
+In short, the following abstract shows how simple it is to interact with the code introduced before: https://github.com/WanjaSchaible/important-metrics/blob/de288fe66d27be4c2742bbc3f9ae44bea28721ff/showcase.py#L1-L28
+In the resulting JSON the key indicators will look like this
+https://github.com/WanjaSchaible/important-metrics/blob/f2564a57ac8088b6a6da848419c06d67daa27fa5/results/metrics.json#L2-L50
+The proportion of valid values as key indicators will be provided like
+https://github.com/WanjaSchaible/important-metrics/blob/b6754a88220c920c1befa3421dbc07fbb8a2eb38/results/proportion.json#L1-L90
+Finally there will be provided such a png which visualizes a index compared to one of it's compnents
+![comparison.png](results/comparison.png)
 
-# What did [Alpha Vantage](https://www.alphavantage.co/) Provide?
+### What did [Alpha Vantage](https://www.alphavantage.co/) Provide?
 
 As we looked into Alpha Vantage for the stock figures, we noticed that the API doesn't provide every stock figure directly and we had to calculate some of them completely by ourselves. Even if the stock figure was provided, we still calculated it ourselves using the formula that is needed. We always tried to use the smallest and most atomic possible way to calculate the metric.
 
@@ -180,4 +190,5 @@ When doing a stock key figure analysis with an API there are several threats to 
 2. Data Accuracy: It is essential that the API's data is accurate. Data that is inaccurate or unreliable can result in incorrect analysis and decisions. It's crucial to evaluate the credibility and dependability of the data source.
 3. API Limitations: The quantity of requests, data points, or available historical data may be constrained by APIs. The extent and depth of the analysis may be constrained by these restrictions. It's crucial to be aware of any restrictions put forward by the API and take into account how they might affect the analysis.
 4. Data Consistency: The validity of data can be threatened by differences in how it is presented and formatted among various API endpoints or sources. It's crucial to guarantee that the data obtained from various API calls can be properly integrated and analyzed and is consistent
-5. API Reliability and Downtime: The process of analyzing data may be obstructed by API outages or other disruptions. To reduce the risk of interruptions, it is crucial to take the API provider's dependability and stability into account.
+5. API Reliability and Downtime: The process of analyzing data may be obstructed by API outages or other disruptions. To reduce the risk of interruptions, it is crucial to take the API provider's dependability and stability into account or look out for alternatives like [Financial Modeling Prep](https://site.financialmodelingprep.com/financial-ratios/AAPL).
+6. Time required: The data is not provided immediately, but takes some time to be retrieved from the servers.
