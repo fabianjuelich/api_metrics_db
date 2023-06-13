@@ -441,7 +441,7 @@ def ev_to_ebitda(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding=
         )[0][indicators[Indicator.EV_TO_EBITDA][3].key])
 
         ebitda = depAndAmo + incTaxExp + netInc + intExp
-        evToEbitda = ev_ / ebitda
+        evToEbitda = round(ev_ / ebitda, 2)
     except:
         evToEbitda = None
 
@@ -459,19 +459,19 @@ def ev_to_ebitda(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding=
 def price_to_earning(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
     try:
-        close_ser = get_latest_series(
-        symbol,
-        indicators[Indicator.PRICE_TO_EARNING][0].function)
-        close = float(close_ser[indicators[Indicator.PRICE_TO_EARNING][0].key])
+        close = float(get_latest_series(
+            symbol,
+            indicators[Indicator.PRICE_TO_EARNING][0].function
+        )[indicators[Indicator.PRICE_TO_EARNING][0].key])
 
         eps = float(get_latest_report(
-        symbol,
-        indicators[Indicator.PRICE_TO_EARNING][1].function,
-        fiscal,
-        fiscalDateEnding
+            symbol,
+            indicators[Indicator.PRICE_TO_EARNING][1].function,
+            fiscal,
+            fiscalDateEnding
         )[indicators[Indicator.PRICE_TO_EARNING][1].key])
-    
-        priceToEarning = close/eps
+
+        priceToEarning = round(close/eps, 2)
     except:
         priceToEarning = None
 
@@ -545,7 +545,7 @@ def price_to_cashflow(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
             fiscalDateEnding
             )[0][indicators[Indicator.PRICE_TO_CASHFLOW][2].key])
         
-        priceToCashflow = close/(opCash/sharesOutst)
+        priceToCashflow = round(close/(opCash/sharesOutst), 2)
     except:
         priceToCashflow = None
 
