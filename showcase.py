@@ -1,7 +1,7 @@
 if __name__ == "__main__":
 
     from src.table import Table
-    from src.symbol import Symbol
+    from src.enums.symbol import Symbol
     import json, os
 
     SINGLE_SHARE = True
