@@ -1,44 +1,32 @@
 # Documentation
 
-## 1. The Problem: What is the actual problem we are facing?
+## 1. The Problem: Need for Automation in Fundamental Analysis
 
-### What is the problem we want to solve with our Work?
+### Problem Statement:
+The problem we aim to solve is the laborious and time-consuming nature of manually conducting fundamental analysis for stock investments. Manual analysis requires significant effort and concentration to collect and analyze key performance indicators (KPIs) from various sources. This process is prone to human error and inefficiency.
+Automating fundamental analysis is crucial to save time, reduce errors, and enhance investment decisions. By streamlining the analysis process and providing investors with key indicators, our solution aims to improve investment outcomes.
 
-The problem we aim to solve with our work is the manual execution of fundamental analysis. When deciding which stocks to invest in, there are numerous key performance indicators that one must know and analyze. Doing this manually and handpicking the indicators requires a lot of effort and concentration. To solve this problem, we aim to implement a solution that allows investors to obtain the most important indicators, in our case the 12 most important indicators selected by us, with just one click and display them in a table, automating the entire manual process.
+### Solution Overview:
+Our project proposes an automated solution that generates a table of the 12 most important stock indicators using a stock ticker, such as "IBM." Leveraging the [Alpha Vantage API](https://www.alphavantage.co/), we gather the necessary data for these indicators. Additionally, we calculate the indicators ourselves using Alpha Vantage for comparison. This solution aims to simplify stock analysis and provide investors with the information they need for informed decision-making.
 
-### Why is this a Problem and why is it important to solve it?
-
-This is a problem because fundamental analysis is very time consuming and labor intensive. Investors would have to collect a large amount of data and analyze it from various sources to make a good and meaningful investment.
-
-In addition, human error can also occur very easily, as it is possible to miss an important metric or make mistakes when analyzing the data manually.
-
-It is important for us to solve this problem because our solution can save investors time and effort by automating the analysis process and providing them with the key indicators they need to make informed decisions. This can help investors make better investment decisions, reduce the risk of errors, and ultimately lead to better investment outcome. It is important for us to solve this problem because our solution can save investors time and effort by automating the analysis process and providing them with the key indicators they need to make informed decisions. This can help investors make better investment decisions, reduce the risk of errors, and ultimately lead to better investment results
-
-## 2. Purpose of the Project: What exactly do we plan to do to solve the problem?
-
-We aim to provide investors with an easier way to perform fundamental analysis by creating a solution that generates a table of the 12 most important stock indicators using a stock ticker such as "IBM". Our solution will utilize the [Alpha Vantage API](https://www.alphavantage.co/) to gather the necessary data for the indicators. Additionally, we will also calculate the indicators ourselves using Alpha Vantage to provide a comparison between the API-generated indicators and our own calculations. This solution will make the process of analyzing stock data more efficient and provide investors with the information they need to make informed investment decisions.
-
-## 3. Approach: How exactly is the goal to be achieved?
+## 2. Approach
 
 To work out the most important stock ratios we will use a [video of the Youtuber Finanzfluss](https://www.youtube.com/watch?v=qie9sxCIhHM) as a reference.
 
 ### The 12 Most important Financial Ratios (regarding to Finanzfluss)
 
-Assumption: Compare and understand companies within their respective industries.
+Assumption: Comparing and understanding companies within their respective industries.
 
 Profitability Ratios:
-
 - Revenue growth (e.g. compared to previous year)
 - Gross profit (EBITDA margin)
 - Return on equity (ROE)
 
 Balance Sheet Ratios:
-
 - Equity ratio
 - Gearing ratio (debt-to-equity ratio)
 
 Valuation Ratios:
-
 - Market capitalization
 - Enterprise value (EV)
 - EV/sales
@@ -49,7 +37,7 @@ Valuation Ratios:
 
 After that we had to choose where to get the key figures from, but since our colleague [Edgar Kinetz already compared the best APIs for financial data in his project](./Informatikprojekt_WS22-23_Kinetz/), it was immediately clear that we would use the Alpha Vantage API. This API is very comprehensive and potentially free of charge. The key figures of the companies and their shares can be found in the section "Core Stock APIs" and "Fundamental Data" and can be accessed with the provided API requests.
 
-The Data research came to the following results, which we will present in a table for better overview.
+The Data research came to the following results, which we will present in a table for better overview:
 
 | Stock key figure <br/>________________ | What does it mean for the investor <br/>_____________________________________________ | Description <br/>_____________________ | Positive <br/>________ | Data for calculation <br/>___________________________________ | Data given <br/>____________________ |
 |---|---|---|---|---|---|
@@ -81,26 +69,26 @@ Even if you get the desired indicator for the correct ticker, you have to consid
 
 However, it is still important for users to be aware of potential variations and take the necessary steps to ensure data consistency when working with stock data from several stock exchanges.
 
-## 4. Methodology
+## 3. Methodology
 
 We choose to develope a [Python](https://www.python.org/) script because the language is widely spread and pretty handy for such tasks, like working with data. [Jupyter notebooks](https://jupyter.org/) might be good for demonstration purposes but not eligible for production.
-The goal to reach is a function that takes a single or list of symbols and returns a json containing the [12 most important metrics mentioned before](#the-12-most-important-financial-ratios-regarding-to-finanzfluss), both, calculated and given by the API.
+The goal to reach is a function that takes a single or list of symbols and returns a JSON containing the [12 most important metrics mentioned before](#the-12-most-important-financial-ratios-regarding-to-finanzfluss), both, calculated and given by the API.
 
 For this case we designed the class Table, https://github.com/WanjaSchaible/important-metrics/blob/248e50634f16b7e6784af77d1e93d32926ce6427/src/table.py#L6 which is the one the user interacts with. Instantiating it, returns an object having the desired json attribute. If the user wishes to analyze the data using pandas, the method to_dataframe https://github.com/WanjaSchaible/important-metrics/blob/248e50634f16b7e6784af77d1e93d32926ce6427/src/table.py#L39 can be called to open the door for a lot of data science related options or converting it into e.g. a csv file easily.
 For enabling handling huge numbers of symbols belonging to an index like NASDAQ, we implemented the possibility to create the table object for such one. In the background the components will be scraped from yahoo finance like explained before. The Components class https://github.com/WanjaSchaible/important-metrics/blob/81c39baf92ea573b3580467d6478850336686205/src/components.py#L4 offers the method get_symbols https://github.com/WanjaSchaible/important-metrics/blob/81c39baf92ea573b3580467d6478850336686205/src/components.py#L10 for requesting the html file including the rendered js code which will be parsed and its relating data temporarily stored in a sqlite database https://github.com/WanjaSchaible/important-metrics/blob/81c39baf92ea573b3580467d6478850336686205/src/components.py#L29 for accessing easily.
 
-The core of the program lives in the [indicator.py](src/indicator.py) file, which is seperated into the required data as well as its source section and its actual retrieving
+The core of the program lives in the [indicator.py](src/indicator.py) file, which is seperated into the required data as well as its source
 https://github.com/WanjaSchaible/important-metrics/blob/b6754a88220c920c1befa3421dbc07fbb8a2eb38/src/indicator.py#L119-L125
-and calculation
+and its actual retrieving and calculation
 https://github.com/WanjaSchaible/important-metrics/blob/b6754a88220c920c1befa3421dbc07fbb8a2eb38/src/indicator.py#L459-L487
-section of the stock key figures. For consistency and to accelerate the developement, we created enums like Function https://github.com/WanjaSchaible/important-metrics/blob/f7476cc9f23cc52fd65ac426f17ba458cc8b33ed/src/function.py#L3-L8
+of the stock key figures. For consistency and to accelerate the developement, we created enums like Function https://github.com/WanjaSchaible/important-metrics/blob/f7476cc9f23cc52fd65ac426f17ba458cc8b33ed/src/function.py#L3-L8
 
 In short, the following abstract shows how simple it is to interact with the code introduced before: https://github.com/WanjaSchaible/important-metrics/blob/de288fe66d27be4c2742bbc3f9ae44bea28721ff/showcase.py#L1-L28
 In the resulting JSON the key indicators will look like this
 https://github.com/WanjaSchaible/important-metrics/blob/f2564a57ac8088b6a6da848419c06d67daa27fa5/results/metrics.json#L2-L50
-The proportion of valid values as key indicators will be provided like
+The proportion of valid values as key indicators will be provided like this
 https://github.com/WanjaSchaible/important-metrics/blob/b6754a88220c920c1befa3421dbc07fbb8a2eb38/results/proportion.json#L1-L90
-Finally there will be provided such a png which visualizes a index compared to one of it's compnents
+Finally there will be generated such a png which visualizes a index compared to one of it's compnents
 ![comparison.png](results/comparison.png)
 
 ### What did [Alpha Vantage](https://www.alphavantage.co/) Provide?
@@ -181,7 +169,7 @@ Price to Cashflow:
 - To calculate it ourselves, we use the formula: Stock Price / (Operating Cash Flow / Shares Outstanding).
 - We obtain the Stock Price from the [Time Series Intraday](https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&apikey=demo), the Operating Cash Flow from the [Cash Flow statement](https://www.alphavantage.co/query?function=CASH_FLOW&symbol=IBM&apikey=demo), and the Shares Outstanding from the [Balance Sheet](https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=IBM&apikey=demo) provided by Alpha Vantage.
 
-## 5. Discussion
+## 4. Discussion
 
 ### Threats to validity 
 
@@ -190,5 +178,5 @@ When doing a stock key figure analysis with an API there are several threats to 
 2. Data Accuracy: It is essential that the API's data is accurate. Data that is inaccurate or unreliable can result in incorrect analysis and decisions. It's crucial to evaluate the credibility and dependability of the data source.
 3. API Limitations: The quantity of requests, data points, or available historical data may be constrained by APIs. The extent and depth of the analysis may be constrained by these restrictions. It's crucial to be aware of any restrictions put forward by the API and take into account how they might affect the analysis.
 4. Data Consistency: The validity of data can be threatened by differences in how it is presented and formatted among various API endpoints or sources. It's crucial to guarantee that the data obtained from various API calls can be properly integrated and analyzed and is consistent
-5. API Reliability and Downtime: The process of analyzing data may be obstructed by API outages or other disruptions. To reduce the risk of interruptions, it is crucial to take the API provider's dependability and stability into account or look out for alternatives like [Financial Modeling Prep](https://site.financialmodelingprep.com/financial-ratios/AAPL).
+5. API Reliability and Downtime: The process of analyzing data may be obstructed by API outages or other disruptions. To reduce the risk of interruptions, it is crucial to take the API provider's dependability and stability into account or look out for alternatives e.g. [Financial Modeling Prep](https://site.financialmodelingprep.com/financial-ratios/AAPL).
 6. Time required: The data is not provided immediately, but takes some time to be retrieved from the servers.
