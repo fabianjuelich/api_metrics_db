@@ -1,6 +1,6 @@
 # Documentation
 
-## 1. The Problem: Need for Automation in Fundamental Analysis
+## 1. Need for Automation in Fundamental Analysis
 
 ### Problem Statement:
 The problem we aim to solve is the laborious and time-consuming nature of manually conducting fundamental analysis for stock investments. Manual analysis requires significant effort and concentration to collect and analyze key performance indicators (KPIs) from various sources. This process is prone to human error and inefficiency.
