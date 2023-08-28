@@ -1,0 +1,51 @@
+version: "3"
+services:
+  application:
+    build: ./App
+    container_name: app
+    restart: always
+    ports:
+      - 2900:2900
+  database:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.9.1
+    container_name: elasticsearch
+    restart: always
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch_volume:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.9.1
+    container_name: kibana
+    restart: always
+    environment:
+      - SERVER_NAME=lazy-investor
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - database
+    ports:
+      - 5601:5601
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
+
+volumes:
+  elasticsearch_volume:
+    driver: local
