@@ -1,0 +1,1 @@
+![API vergleichs Kategorien](./appendix/categories.jpg)
