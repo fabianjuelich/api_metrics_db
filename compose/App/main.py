@@ -8,5 +8,5 @@ server.listen()
 while True:
 	client, addr = server.accept()
 	print("Connection from", addr)
-	client.send("Welcome to lazy-investor!\n".encode())
+	client.send("Welcome to lazy-investor\n".encode())
 	client.close()
