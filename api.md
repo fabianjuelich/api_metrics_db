@@ -51,3 +51,215 @@
 
 (https://leeway.tech/data-api)
 
+
+# Which exchanges are supported?
+
+## Leeway:
+
+- XETRA -
+    
+    XETRA
+    
+- AS -
+    
+    Euronext Amsterdam
+    
+- NASDAQ -
+    
+    NASDAQ
+    
+- NYSE -
+    
+    NYSE
+    
+- BR -
+    
+    Euronext Brussels
+    
+- BSE -
+    
+    Bombay Exchange
+    
+- BUD -
+    
+    Budapest Stock Exchange
+    
+- CO -
+    
+    Coppenhagen Exchange
+    
+- F -
+    
+    Frankfurt Exchange
+    
+- DU -
+    
+    Dusseldorf Exchange
+    
+- HM -
+    
+    Hamburg Exchange
+    
+- MU -
+    
+    Munich Exchange
+    
+- HE -
+    
+    Helsinki Exchange
+    
+- KQ -
+    
+    KOSDAQ
+    
+- LS -
+    
+    Euronext Lisbon
+    
+- LSE -
+    
+    London Exchange (LSE)
+    
+- MC -
+    
+    Madrid Exchange
+    
+- AU -
+    
+    Australia Exchange
+    
+- BK -
+    
+    Thailand Exchange
+    
+- HK -
+    
+    Hong Kong Exchange
+    
+- IC -
+    
+    Iceland Exchange
+    
+- IS -
+    
+    Istanbul Stock Exchange
+    
+- JK -
+    
+    Jakarta Exchange
+    
+- KAR -
+    
+    Karachi Stock Exchange
+    
+- KLSE -
+    
+    Kuala Lumpur Exchange
+    
+- MCX -
+    
+    MICEX Russia
+    
+- MI -
+    
+    Borsa Italiana
+    
+- MX -
+    
+    Mexican Exchange
+    
+- NFN -
+    
+    Nasdaq First North
+    
+- OL -
+    
+    Oslo Stock Exchange
+    
+- PA -
+    
+    Euronext Paris
+    
+- SA -
+    
+    Sao Paolo Exchange
+    
+- SG -
+    
+    Singapore Exchange
+    
+- SHE -
+    
+    Shenzhen Exchange
+    
+- SHG -
+    
+    Shanghai Exchange
+    
+- SR -
+    
+    Saudi Arabia Exchange
+    
+- ST -
+    
+    Stockholm Exchange
+    
+- SW -
+    
+    SIX Swiss Exchange
+    
+- TA -
+    
+    Tel Aviv Exchange
+    
+- TO -
+    
+    Toronto Exchange
+    
+- TSE -
+    
+    Tokyo Stock Exchange
+    
+- TW -
+    
+    Taiwan Exchange
+    
+- VI -
+    
+    Vienna Exchange
+    
+- VN -
+    
+    Vietnam Stocks
+    
+- COMM -
+    
+    Commodities & Futures
+    
+- FOREX -
+    
+    Forex
+    
+- CC -
+    
+    Crypto-Currencies
+    
+- BOND -
+    
+    Bonds
+    
+- GBOND -
+    
+    Governement Bonds
+    
+- INDX -
+    
+    Indices
+    
+- EUFUND -
+    
+    Europäische Fonds
+    
+    51 Exchanges
+    
+    ## Financial Modeling Prep:
