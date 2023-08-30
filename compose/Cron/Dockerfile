@@ -1,5 +1,6 @@
 FROM debian:bookworm
 
+RUN ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 RUN apt update && apt install cron -y
 
 ADD ./crontab /etc/cron.d/crontab

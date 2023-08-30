@@ -8,9 +8,11 @@ __Notes:__
 ![docker_architecture](./appendix/docker_architecture.png)
 
 ### Docker commands you should know:
-- `docker compose up` builds and runs all containers
-- `docker ps lists` lists running containers
-- `docker exec -it \<container name\> bash` opens shell on the container (execute on the same level as the [config file](./compose/docker-compose.yml))
+(execute on the same level as the [config file](./compose/docker-compose.yml))
+- `docker compose build [--no-cached]` builds all containers
+- `docker compose up [-d]` runs all containers
+- `docker ps` lists running containers
+- `docker exec -it \<container name\> bash` opens shell on the container
 
 ## Elasticsearch
 Elasticsearch is a document-based database search engine that provides a [REST API](https://de.wikipedia.org/wiki/Representational_State_Transfer) that you can send requests to through its HTTP interface.
@@ -24,8 +26,10 @@ The indices' data which is located at */usr/share/elasticsearch/data* on the gue
 
 lazy-investor index-id: kOm2aG-gTj2Wa-CaIRRFMw
 
+## Cronjob
+When working with cronjobs, it's important to explicitly set the timezone on that machine.
 
 ## ToDo:
-- [ ] Install and configure crontab
+- [x] Install and configure crontab
 - [ ] Code bash script for data exchange between app and database which will be executed every 24h
 - [ ] Add user password and encryption for Elastic stack (SSL/TLS)
