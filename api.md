@@ -52,214 +52,24 @@
 (https://leeway.tech/data-api)
 
 
-# Which exchanges are supported?
+# **Is the fundamental data available to calculate the 12 key indicators yourself?**
 
-## Leeway:
-
-- XETRA -
-    
-    XETRA
-    
-- AS -
-    
-    Euronext Amsterdam
-    
-- NASDAQ -
-    
-    NASDAQ
-    
-- NYSE -
-    
-    NYSE
-    
-- BR -
-    
-    Euronext Brussels
-    
-- BSE -
-    
-    Bombay Exchange
-    
-- BUD -
-    
-    Budapest Stock Exchange
-    
-- CO -
-    
-    Coppenhagen Exchange
-    
-- F -
-    
-    Frankfurt Exchange
-    
-- DU -
-    
-    Dusseldorf Exchange
-    
-- HM -
-    
-    Hamburg Exchange
-    
-- MU -
-    
-    Munich Exchange
-    
-- HE -
-    
-    Helsinki Exchange
-    
-- KQ -
-    
-    KOSDAQ
-    
-- LS -
-    
-    Euronext Lisbon
-    
-- LSE -
-    
-    London Exchange (LSE)
-    
-- MC -
-    
-    Madrid Exchange
-    
-- AU -
-    
-    Australia Exchange
-    
-- BK -
-    
-    Thailand Exchange
-    
-- HK -
-    
-    Hong Kong Exchange
-    
-- IC -
-    
-    Iceland Exchange
-    
-- IS -
-    
-    Istanbul Stock Exchange
-    
-- JK -
-    
-    Jakarta Exchange
-    
-- KAR -
-    
-    Karachi Stock Exchange
-    
-- KLSE -
-    
-    Kuala Lumpur Exchange
-    
-- MCX -
-    
-    MICEX Russia
-    
-- MI -
-    
-    Borsa Italiana
-    
-- MX -
-    
-    Mexican Exchange
-    
-- NFN -
-    
-    Nasdaq First North
-    
-- OL -
-    
-    Oslo Stock Exchange
-    
-- PA -
-    
-    Euronext Paris
-    
-- SA -
-    
-    Sao Paolo Exchange
-    
-- SG -
-    
-    Singapore Exchange
-    
-- SHE -
-    
-    Shenzhen Exchange
-    
-- SHG -
-    
-    Shanghai Exchange
-    
-- SR -
-    
-    Saudi Arabia Exchange
-    
-- ST -
-    
-    Stockholm Exchange
-    
-- SW -
-    
-    SIX Swiss Exchange
-    
-- TA -
-    
-    Tel Aviv Exchange
-    
-- TO -
-    
-    Toronto Exchange
-    
-- TSE -
-    
-    Tokyo Stock Exchange
-    
-- TW -
-    
-    Taiwan Exchange
-    
-- VI -
-    
-    Vienna Exchange
-    
-- VN -
-    
-    Vietnam Stocks
-    
-- COMM -
-    
-    Commodities & Futures
-    
-- FOREX -
-    
-    Forex
-    
-- CC -
-    
-    Crypto-Currencies
-    
-- BOND -
-    
-    Bonds
-    
-- GBOND -
-    
-    Governement Bonds
-    
-- INDX -
-    
-    Indices
-    
-- EUFUND -
-    
-    Europäische Fonds
-    
-    51 Exchanges
-    
-    ## Financial Modeling Prep:
+| Alpha Vantage | FMP | Leeway |
+| --- | --- | --- |
+| totalRevenue (Income Statement) | revenue (Income Statement) | totalRevenue (Fundamentals → Income Statement) |
+| costOfRevenue (Income Statement) | costOfRevenue (Income Statement) | costOfRevenue (Fundamentals → Income Statement) |
+| netIncome (Income Statement) | netIncome (Income Statement) | netIncome (Fundamentals → Income Statement) |
+| totalShareholderEquity (Balance Sheet) | totalStockholdersEquity (Balance Sheet) | totalStockholdersEquity (Fundamentals → Balance Sheet) |
+| totalLiabilities (Balance Sheet) | totalLiabilities (Balance Sheet) | totalLiab (Fundamentals → Balance Sheet) |
+| totalCurrentAssets (Balance Sheet) | totalCurrentAssets (Balance Sheet) | totalCurrentAssets (Fundamentals → Balance Sheet) |
+| totalNonCurrentAssets (Balance Sheet) | totalNonCurrentAssets (Balance Sheet) | nonCurrentAssetsTotal (Fundamentals → Balance Sheet) |
+| longTermDebtNoncurrent (Balance Sheet) | longtermdebtnoncurrent (Balance Sheet as Reported) | longTermDebt (Fundamentals → Balance Sheet) |
+| Close (Time Series Intraday) | Close (1 minute technical indicator) | Close (Intraday) |
+| SharesOutstanding (Company Overview) | weightedaveragenumberofdilutedsharesoutstanding(financial statement full as reported (nicht so aktuell wie alpha vantage)) | SharesOutstanding ( Fundamentals → SharesStats) |
+| cashAndCashEquivalentsAtCarryingValue (Balance Sheet) | cashandcashequivalentsatcarryingvalue (balance sheet as reported) | cashAndEquivalents (Fundamentals → Balance Sheet) |
+| depreciationAndAmortization (Income Statement) | depreciationAndAmortization (Income Statement) | deprecationAndAmortization (Fundamentals → Income Statement |
+| incomeTaxExpense (Income Statement) | incomeTaxExpense (Income Statement) | IncomeTaxEspense (Fundamentals → Income Statement) |
+| interestExpense (Income Statement) | interestExpense (Income Statement) | InterestExpense (Fundamentals → Income Statement) |
+| EPS (Company Overview) | earningspersharebasic (financial statement full as reported) | EarningsShare (Fundamentals → Highlights) |
+| commonStockSharesOutstanding (Balance Sheet) | commonstocksharesoutstanding (Balance Sheet as reported) | commonStockSharesOutstanding (Fundamentals → Balance Sheet) |
+| operatingCashflow (Cash flow) | operatingCashFlow (Cash flow) | totalCashFromOperatingActivities (Fundamentals → Cash Flow) |
