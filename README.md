@@ -7,5 +7,5 @@ Elaboration by: __Fabian Jülich and Denis Kalacevic__
 
 Building on __[Procurement & Analysis of stock key figures](./WI-Projekt_SS23_Juelich_Kalacevic/)__
 
-## Documentation
+## [Documentation](./documentation.md)
 ## Project Overview
