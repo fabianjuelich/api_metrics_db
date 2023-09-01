@@ -25,5 +25,5 @@
 # 
 # m h  dom mon dow   command
 
-0 0 * * * root /home/cronjob.sh
+0 0 * * * root /home/cronjob.py
 #
