@@ -1,5 +1,6 @@
 FROM python:3.11
 
-ADD main.py .
+ADD interface.py .
+RUN apt install stocksymbol
 
-CMD ["python", "./main.py"]
+CMD ["python", "./interface.py"]
