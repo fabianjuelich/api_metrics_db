@@ -30,6 +30,11 @@ lazy-investor index-id: kOm2aG-gTj2Wa-CaIRRFMw
 When working with cronjobs, it's important to explicitly set the timezone on that machine.
 
 ## ToDo:
+- [x] Setup Docker compose
+- [x] Install and configure Elasticsearch and Kibana
 - [x] Install and configure crontab
-- [ ] Code bash script for data exchange between app and database which will be executed every 24h
+- [ ] Rework application for multi-API calls
+- [x] Design interface for application
+- [x] Code script for data exchange between app and database which will be executed every 24h
+- [x] Generate list of all index symbols
 - [ ] Add user password and encryption for Elastic stack (SSL/TLS)
