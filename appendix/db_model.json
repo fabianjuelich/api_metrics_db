@@ -1,0 +1,23 @@
+{
+	SECTOR1: {
+		SYMBOL1: {
+			indices : [XYZ, ...],
+			data: {
+				TIMESTAMP1: {
+					KEY_INDICATOR_1: x,
+					KEY_INDICATOR_2: y,
+					...
+				},
+				TIMESTAMP2: {
+					...
+				}
+			}
+		},
+		SYMBOL2: {
+			...
+		}
+	},
+	SECTOR2: {
+		...
+	}
+}
