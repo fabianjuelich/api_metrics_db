@@ -1,20 +1,26 @@
-# Database
+# Infrastructure
 
-__Notes:__
-- Some links can only be accessed in the universities' network (e.g. by connecting via the VPN)
-- When customizing ports, take a look at [this table](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers) to avoid jam
+__Note:__ Some links can only be accessed in the universities' network (e.g. by connecting via the VPN).
 
 ## Docker
 ![docker_architecture](./appendix/docker_architecture.png)
 
+### Networking
+Docker Compose maintains a DNS that resolves the container_name property used in the [Docker Compose configuration](./compose/docker-compose.yml) to the relevant IP address.
+When customizing ports, take a look at [this table](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers) to avoid jam.
+
 ### Docker commands you should know:
-(execute on the same level as the [config file](./compose/docker-compose.yml))
-- `docker compose build [--no-cached]` builds all containers
-- `docker compose up [-d]` runs all containers
+(execute inside of the [docker compose folder](./compose/))
+- `docker compose build [--no-cached]` builds all containers [from new]
+- `docker compose up [-d]` runs all containers [in background]
 - `docker ps` lists running containers
 - `docker exec -it \<container name\> bash` opens shell on the container
 
-## Elasticsearch
+## [Tickersymbols](https://www.ig.com/en/glossary-trading-terms/stock-symbol-definition) (Excursus)
+
+Those abbreviations (usually 1-6 characters) identify stocks and indeces (mostly within one country). Thus, there may be different symbols for the same company or a company may be known under several symbols.
+
+## [Elasticsearch](https://www.elastic.co/elasticsearch/)
 Elasticsearch is a document-based database search engine that provides a [REST API](https://de.wikipedia.org/wiki/Representational_State_Transfer) that you can send requests to through its HTTP interface.
 That way you have different options to communicate with the database: 
 1. Transferring data with [cURL](https://curl.se/)
@@ -26,12 +32,33 @@ The indices' data which is located at */usr/share/elasticsearch/data* on the gue
 
 lazy-investor index-id: kOm2aG-gTj2Wa-CaIRRFMw
 
-## Cronjob
-When working with cronjobs, it's important to explicitly set the timezone on that machine.
+### Database design
+
+## Application
+
+### [findata.py](./compose/App/findata.py)
+Parses [multiple financial APIs](./api.md) to retrieve fundamental data.
+
+### [ss.py](./compose/App/ss.py)
+[StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) is a pretty neat API that we used to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). Since this project saved us a lot of scraping like we did last time, you are welcome to donate a cup of coffee.
+
+### [interface.py](./compose/App/interface.py)
+XML-RPC server for responding to requests.
+
+## [Cron](https://wiki.ubuntuusers.de/Cron/)
+Service that enables scheduling the execution of bash commands.
+When working with cronjobs, it's important to explicitly set the timezone on that (virtual) machine.
+
+### [crontab](./compose/Cron/crontab)
+Table that lists cronjobs specifying the minute, hour, day, month and weekday a command should be executed. They are either system wide or user related.
+
+### [cronjob.py](./compose/Cron/cronjob.py)
+Implements a XML-RPC client that requests findata from the application and sends it to the database via HTTP request.
 
 ## ToDo:
 - [x] Setup Docker compose
 - [x] Install and configure Elasticsearch and Kibana
+- [ ] Design db schema
 - [x] Install and configure crontab
 - [ ] Rework application for multi-API calls
 - [x] Design interface for application
