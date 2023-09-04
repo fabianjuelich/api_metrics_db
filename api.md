@@ -52,6 +52,38 @@
 (https://leeway.tech/data-api)
 
 
+## Quality of the Support:
+
+To test the response time and quality of support, a test email was composed and sent to the four providers. FMP and Leeway provided a reasonable and satisfactory response. There was no response from Alpha Vantage.
+
+### Email for Support Test:
+
+Subject: API Support Responsiveness
+
+Dear …,
+
+We are currently evaluating various Finance/Stock API providers for a project I am working on. As part of this evaluation, I wanted to test the responsiveness of your support team.
+
+Could you please confirm the receipt of this email by replying to it? This will help me determine the efficiency of your support system and give me confidence in considering your API services for integration.
+
+Thank you for your time and attention. I look forward to your response.
+
+Best regards,
+
+Denis
+
+
+## Is Backtesting possible?
+
+The time period for backtesting with a financial APIs depends on the specific trading or investment strategy and the data you need for the analysis. There isn't a one-size-fits-all answer to how far back the historical data should go, as it can vary based on factors such as your trading frequency, asset class, and the nature of your strategy.
+
+ In this case the answer is still easy because if you wanted to backtest with the 12 Stock key figures we calculated in the last Project, it would not be possible to calculate for example, the Price to Earning with Alpha Vantage, because they only provide the current EPS in the Company Overview. Also the fundamentaldata only goes back to 2018.
+
+FMP provides 15+ years of Financial Statements, including international filings.
+
+Leeway provides fundamental data back up to 30 years and the historical prices of up to 100 years.
+
+
 # **Is the fundamental data available to calculate the 12 key indicators yourself?**
 
 | Alpha Vantage | FMP | Leeway |
@@ -73,3 +105,4 @@
 | EPS (Company Overview) | earningspersharebasic (financial statement full as reported) | EarningsShare (Fundamentals → Highlights) |
 | commonStockSharesOutstanding (Balance Sheet) | commonstocksharesoutstanding (Balance Sheet as reported) | commonStockSharesOutstanding (Fundamentals → Balance Sheet) |
 | operatingCashflow (Cash flow) | operatingCashFlow (Cash flow) | totalCashFromOperatingActivities (Fundamentals → Cash Flow) |
+
