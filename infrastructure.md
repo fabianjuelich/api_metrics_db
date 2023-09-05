@@ -40,7 +40,7 @@ lazy-investor index-id: kOm2aG-gTj2Wa-CaIRRFMw
 Parses [multiple financial APIs](./api.md) to retrieve fundamental data.
 
 ### [ss.py](./compose/App/ss.py)
-[StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) is a pretty neat API that we used to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of scraping like we did last time. However, it should be mentioned that there are server outages. That's why we use the files generated once as a backup. Bug: Used **dr_market** instead of **de_market** in case of german stocks.
+[StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) is a pretty neat API that we used to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of scraping like we did last time. However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. Bug: Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks.
 
 ### [interface.py](./compose/App/interface.py)
 XML-RPC server for responding to requests.
@@ -58,12 +58,13 @@ Implements a XML-RPC client that requests findata from the application and sends
 ## ToDo:
 - [x] Setup Docker compose
 - [x] Install and configure Elasticsearch and Kibana
-- [ ] Design db schema
-- [x] Install and configure crontab
+- [ ] Finalize db schema
+- [x] Install and configure cron
 - [ ] Rework application for multi-API calls
 - [x] Design interface for application
 - [x] Code script for data exchange between app and database which will be executed every 24h
 - [x] Generate list of all index symbols
 - [ ] Add total count to index symbols information
 - [ ] Add user password and encryption for Elastic stack (SSL/TLS)
-- [ ] Report bug to stock-symbol
+- [X] Report typo to stock-symbol
+- [ ] Use backup data if server is not responding
