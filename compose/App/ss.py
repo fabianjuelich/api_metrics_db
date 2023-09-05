@@ -43,13 +43,37 @@ def market_symbols(markets=None):
             print(country)
     return markets_json
 
+# read backup data which was retrieved by above functions
+with open('./../index_symbols.json', 'r') as indices, open('./../market_symbols.json', 'r') as markets:
+    indices_json = json.load(indices)
+    markets_json = json.load(markets)
+
+# lists stock symbols of a market with the indices in which it is listed
+def stock_symbols(market):
+    symbols_index = {}
+    for component in markets_json[market]['components']:
+        if not component['market'] == f'{market}_market': continue  # ToDo: check if filter is necessary
+        symbols_index[component['symbol']] = []
+    for symbol in symbols_index:
+        for index in indices_json:
+            if indices_json[index]['information']['abbreviation'] != market: continue
+            for component in indices_json[index]['components']:
+                if component['symbol'] == symbol and component['market'] == f'{market}_market':   # ToDo: check if second filter is necessary
+                    symbols_index[symbol].append(index)
+                    # print(symbol, index)
+    # for key, value in symbols_index.items():
+    #     print(key)
+    #     print(value)
+    print(len(symbols_index))
+
+stock_symbols('us')
 
 # examples #
 
-print(json.dumps(market_symbols('de'), indent=4))
-with open('market_symbols.json', 'w') as f:
-    f.write(json.dumps(market_symbols(), indent=4))
+# print(json.dumps(market_symbols('de'), indent=4))
+# with open('market_symbols.json', 'w') as f:
+#     f.write(json.dumps(market_symbols(), indent=4))
 
-print(json.dumps(index_symbols(['DAX', 'IXIC']), indent=4))
-with open('index_symbols.json', 'w') as f:
-    f.write(json.dumps(index_symbols(), indent=4))
+# print(json.dumps(index_symbols(['DAX', 'IXIC']), indent=4))
+# with open('index_symbols.json', 'w') as f:
+#     f.write(json.dumps(index_symbols(), indent=4))

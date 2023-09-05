@@ -1,4 +1,5 @@
 from xmlrpc.server import SimpleXMLRPCServer
+import app
 
 class RPC_Server:
     def test(self):
