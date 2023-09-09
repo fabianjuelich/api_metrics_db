@@ -1,10 +1,9 @@
 from stocksymbol import StockSymbol
+import tokens
 import json
 
-BACKUP = True
-
 # insert your API key
-api_key = ""
+api_key = tokens.stocksymbol
 ss = StockSymbol(api_key)
 
 # join index list with symbol list by matching index symbol
@@ -17,13 +16,14 @@ def index_symbols(indices=None):
     indices_json = {}
     for index in index_list:
         symbol = index['indexId']
+        indices_json[symbol] = {}
+        indices_json[symbol]['information'] = index
         try:
-            indices_json[symbol] = {}
-            indices_json[symbol]['information'] = index
             indices_json[symbol]['components'] = ss.get_symbol_list(index=symbol)
+            indices_json[symbol]['information']['totalCount'] = len(indices_json[symbol]['components'])
         except:
-            indices_json[symbol] = None
-            print('Warning:', symbol, 'not found.')
+            indices_json[symbol]['components'] = None
+            print('WARNING:', symbol, 'not found.')
     return indices_json
 
 # join market list with symbol list by matching market country
@@ -36,16 +36,23 @@ def market_symbols(markets=None):
     markets_json = {}
     for market in market_list:
         country = market['abbreviation']
+        markets_json[country] = {}
+        markets_json[country]['information'] = market
         try:
-            markets_json[country] = {}
-            markets_json[country]['information'] = market
             markets_json[country]['components'] = ss.get_symbol_list(market=country)
         except:
             markets_json[country] = None
-            print('Warning:', country, 'not found.')
+            print('WARNING:', country, 'not found.')
     return markets_json
 
-if BACKUP:
+try:
+    # retrieve latest data
+    index_list_json = ss.index_list
+    market_list_json = ss.market_list
+    indices_symbols_json = index_symbols()
+    markets_symbols_json = market_symbols()
+except:
+    print('WARNING: API not responding')
     # read backup data which was retrieved by above functions
     try:
         with open('./data/index_symbols.json', 'r') as index_s, open('./data/market_symbols.json', 'r') as market_s, open('./data/index_list.json', 'r') as index_l, open('./data/market_list.json', 'r') as market_l:
@@ -54,34 +61,26 @@ if BACKUP:
             indices_symbols_json = json.load(index_s)
             markets_symbols_json = json.load(market_s)
     except:
-        raise Exception('Backup files not found')
-else:
-    # retrieve latest data
-    index_list_json = ss.index_list
-    market_list_json = ss.market_list
-    indices_symbols_json = index_symbols('IXIC')
-    markets_symbols_json = market_symbols('us')
+        raise Exception('ERROR: Backup-files not found')
 
 # lists stock symbols of a market with the indices in which it is listed
-def stock_symbols(market):
-    symbols_index = {}
+def stock_indices(market):
+    stock_json = {}
     for component in markets_symbols_json[market]['components']:
         # if not component['market'] == f'{market}_market': continue
-        symbols_index[component['symbol']] = []
-    for symbol in symbols_index:
+        stock_json[component['symbol']] = []
+    for symbol in stock_json:
         for index in indices_symbols_json:
             if indices_symbols_json[index]['information']['abbreviation'] != market: continue
             for component in indices_symbols_json[index]['components']:
                 if component['symbol'] == symbol:   # and component['market'] == f'{market}_market':
-                    symbols_index[symbol].append(index)
+                    stock_json[symbol].append(index)
                     # print(symbol, index)
+    return stock_json
     # for key, value in symbols_index.items():
     #     print(key)
     #     print(value)
     # print(len(symbols_index))
-
-
-stock_symbols('us')
 
 
 # example usage of custom functions #
@@ -103,3 +102,6 @@ stock_symbols('us')
 
 # with open('index_symbols.json', 'w') as f:
 #     f.write(json.dumps(index_symbols(), indent=4))
+
+# with open('stock_index.json', 'w') as f:
+#     f.write(json.dumps(stock_indices('us'), indent=4))
