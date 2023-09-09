@@ -19,7 +19,7 @@ def index_symbols(indices=None):
         indices_json[symbol] = {}
         indices_json[symbol]['information'] = index
         try:
-            indices_json[symbol]['components'] = ss.get_symbol_list(index=symbol)
+            indices_json[symbol]['components'] = dict(map(lambda s: (s['symbol'], s), ss.get_symbol_list(index=symbol)))
             indices_json[symbol]['information']['totalCount'] = len(indices_json[symbol]['components'])
         except:
             indices_json[symbol]['components'] = None
@@ -39,20 +39,21 @@ def market_symbols(markets=None):
         markets_json[country] = {}
         markets_json[country]['information'] = market
         try:
-            markets_json[country]['components'] = ss.get_symbol_list(market=country)
-        except:
-            markets_json[country] = None
+            markets_json[country]['components'] = dict(map(lambda s: (s['symbol'], s), ss.get_symbol_list(market=country)))
+        except Exception as e:
+            markets_json[country]['components'] = None
             print('WARNING:', country, 'not found.')
     return markets_json
 
 try:
     # retrieve latest data
+    raise Exception # ToDo: remove later (only added for faster execution)
     index_list_json = ss.index_list
     market_list_json = ss.market_list
     indices_symbols_json = index_symbols()
     markets_symbols_json = market_symbols()
 except:
-    print('WARNING: API not responding')
+    print('WARNING: API not reachable')
     # read backup data which was retrieved by above functions
     try:
         with open('./data/index_symbols.json', 'r') as index_s, open('./data/market_symbols.json', 'r') as market_s, open('./data/index_list.json', 'r') as index_l, open('./data/market_list.json', 'r') as market_l:
@@ -65,17 +66,12 @@ except:
 
 # lists stock symbols of a market with the indices in which it is listed
 def stock_indices(market):
-    stock_json = {}
-    for component in markets_symbols_json[market]['components']:
-        # if not component['market'] == f'{market}_market': continue
-        stock_json[component['symbol']] = []
+    stock_json = dict(map(lambda component: (component, []), markets_symbols_json[market]['components']))
     for symbol in stock_json:
         for index in indices_symbols_json:
-            if indices_symbols_json[index]['information']['abbreviation'] != market: continue
-            for component in indices_symbols_json[index]['components']:
-                if component['symbol'] == symbol:   # and component['market'] == f'{market}_market':
-                    stock_json[symbol].append(index)
-                    # print(symbol, index)
+            if indices_symbols_json[index]['information']['abbreviation'] == market\
+            and symbol in indices_symbols_json[index]['components']:
+                stock_json[symbol].append(index)
     return stock_json
     # for key, value in symbols_index.items():
     #     print(key)
