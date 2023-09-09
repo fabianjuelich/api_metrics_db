@@ -64,7 +64,7 @@ Implements a XML-RPC client that requests findata from the application and sends
 - [x] Design interface for application
 - [x] Code script for data exchange between app and database which will be executed every 24h
 - [x] Generate list of all index symbols
-- [ ] Add total count to index symbols information
+- [x] Add total count to index symbols information
 - [ ] Add user password and encryption for Elastic stack (SSL/TLS)
-- [X] Report typo to stock-symbol
-- [ ] Use backup data if server is not responding
+- [x] Report typo to stock-symbol
+- [x] Use backup data if server is not responding

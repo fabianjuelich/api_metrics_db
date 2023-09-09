@@ -8,7 +8,7 @@ es = Elasticsearch("http://elasticsearch:9200")
 ser = ServerProxy("http://app:2900")
 
 # example call
-doc = ser.test()
+doc = ser.metrics()
 # example storing
 res = es.index(
     index="lazy-investor",

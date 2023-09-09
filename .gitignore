@@ -1,6 +1,7 @@
 # Custom
 tmp/
 keys/
+docker/App/tokens.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
