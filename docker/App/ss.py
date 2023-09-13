@@ -1,5 +1,5 @@
 from stocksymbol import StockSymbol
-import tokens
+import tokens as tokens
 import json
 
 # insert your API key
@@ -50,27 +50,27 @@ try:
     raise Exception # ToDo: remove later (only added for faster execution)
     index_list_json = ss.index_list
     market_list_json = ss.market_list
-    indices_symbols_json = index_symbols()
-    markets_symbols_json = market_symbols()
+    index_symbols_json = index_symbols()
+    market_symbols_json = market_symbols()
 except:
-    print('WARNING: API not reachable')
+    print('WARNING: stock-symbol: API not reachable')
     # read backup data which was retrieved by above functions
     try:
         with open('./data/index_symbols.json', 'r') as index_s, open('./data/market_symbols.json', 'r') as market_s, open('./data/index_list.json', 'r') as index_l, open('./data/market_list.json', 'r') as market_l:
             index_list_json = json.load(index_l)
             market_list_json = json.load(market_l)
-            indices_symbols_json = json.load(index_s)
-            markets_symbols_json = json.load(market_s)
+            index_symbols_json = json.load(index_s)
+            market_symbols_json = json.load(market_s)
     except:
-        raise Exception('ERROR: Backup-files not found')
+        print('ERROR: stock-symbol: Backup-files not found')
 
 # lists stock symbols of a market with the indices in which it is listed
 def stock_indices(market):
-    stock_json = dict(map(lambda component: (component, []), markets_symbols_json[market]['components']))
+    stock_json = dict(map(lambda component: (component, []), market_symbols_json[market]['components']))
     for symbol in stock_json:
-        for index in indices_symbols_json:
-            if indices_symbols_json[index]['information']['abbreviation'] == market\
-            and symbol in indices_symbols_json[index]['components']:
+        for index in index_symbols_json:
+            if index_symbols_json[index]['information']['abbreviation'] == market\
+            and symbol in index_symbols_json[index]['components']:
                 stock_json[symbol].append(index)
     return stock_json
     # for key, value in symbols_index.items():

@@ -2,7 +2,9 @@ version: "3"
 services:
 
   application:
-    build: ./App
+    build:
+      dockerfile: Dockerfile_app
+      context: ./
     container_name: app # hostname
     restart: always
 
@@ -48,7 +50,9 @@ services:
           memory: 2048M
 
   cronjob:
-    build: ./Cron
+    build:
+      dockerfile: Dockerfile_cron
+      context: ./
     container_name: cron
     restart: always
 

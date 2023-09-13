@@ -11,7 +11,7 @@ When customizing ports, take a look at [this table](https://en.wikipedia.org/wik
 
 ### Docker commands you should know:
 (execute inside of the [docker compose folder](./compose/))
-- `docker compose build [--no-cached]` builds all containers [from new]
+- `docker compose build [--no-cache]` builds all containers [from new]
 - `docker compose up [-d]` runs all containers [in background]
 - `docker ps` lists running containers
 - `docker exec -it \<container name\> bash` opens shell on the container
