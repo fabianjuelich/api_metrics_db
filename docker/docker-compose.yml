@@ -3,7 +3,7 @@ services:
 
   application:
     build:
-      dockerfile: Dockerfile_app
+      dockerfile: app.Dockerfile
       context: ./
     container_name: app # hostname
     restart: always
@@ -51,7 +51,7 @@ services:
 
   cronjob:
     build:
-      dockerfile: Dockerfile_cron
+      dockerfile: cron.Dockerfile
       context: ./
     container_name: cron
     restart: always

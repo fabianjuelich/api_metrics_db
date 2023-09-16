@@ -1,12 +1,16 @@
 from stocksymbol import StockSymbol
 import tokens as tokens
 import json
+import os
 
-# insert your API key
+# API setup #
+
 api_key = tokens.stocksymbol
 ss = StockSymbol(api_key)
 
-# join index list with symbol list by matching index symbol
+# custom functions #
+
+# joins index list with symbol list by matching index symbol
 def index_symbols(indices=None):
     index_list = ss.index_list
     if indices:
@@ -26,7 +30,7 @@ def index_symbols(indices=None):
             print('WARNING:', symbol, 'not found.')
     return indices_json
 
-# join market list with symbol list by matching market country
+# joins market list with symbol list by matching market country
 def market_symbols(markets=None):
     market_list = ss.market_list
     if markets:
@@ -45,25 +49,6 @@ def market_symbols(markets=None):
             print('WARNING:', country, 'not found.')
     return markets_json
 
-try:
-    # retrieve latest data
-    raise Exception # ToDo: remove later (only added for faster execution)
-    index_list_json = ss.index_list
-    market_list_json = ss.market_list
-    index_symbols_json = index_symbols()
-    market_symbols_json = market_symbols()
-except:
-    print('WARNING: stock-symbol: API not reachable')
-    # read backup data which was retrieved by above functions
-    try:
-        with open('./data/index_symbols.json', 'r') as index_s, open('./data/market_symbols.json', 'r') as market_s, open('./data/index_list.json', 'r') as index_l, open('./data/market_list.json', 'r') as market_l:
-            index_list_json = json.load(index_l)
-            market_list_json = json.load(market_l)
-            index_symbols_json = json.load(index_s)
-            market_symbols_json = json.load(market_s)
-    except:
-        print('ERROR: stock-symbol: Backup-files not found')
-
 # lists stock symbols of a market with the indices in which it is listed
 def stock_indices(market):
     stock_json = dict(map(lambda component: (component, []), market_symbols_json[market]['components']))
@@ -78,12 +63,38 @@ def stock_indices(market):
     #     print(value)
     # print(len(symbols_index))
 
+# variables initialization #
+
+try:
+    # retrieve latest data
+    raise Exception # ToDo: remove later (only added for faster execution)
+    index_list_json = ss.index_list
+    market_list_json = ss.market_list
+    index_symbols_json = index_symbols()
+    market_symbols_json = market_symbols()
+    # stock_indices_json = stock_indices()  # ToDo: rework function to be generic
+except Exception as e:
+    print(e)
+    # read backup data which was retrieved by above functions
+    print('WARNING: stock-symbol: API not reachable')
+    try:
+        with open(os.path.join(os.path.dirname(__file__), 'data/index_symbols.json'), 'r') as index_s, \
+            open(os.path.join(os.path.dirname(__file__),'data/market_symbols.json'), 'r') as market_s, \
+            open(os.path.join(os.path.dirname(__file__),'data/index_list.json'), 'r') as index_l, \
+            open(os.path.join(os.path.dirname(__file__),'data/market_list.json'), 'r') as market_l, \
+            open(os.path.join(os.path.dirname(__file__),'data/stock_indices.json'), 'r') as stock_i:
+            index_list_json = json.load(index_l)
+            market_list_json = json.load(market_l)
+            index_symbols_json = json.load(index_s)
+            market_symbols_json = json.load(market_s)
+            stock_indices_json = json.load(stock_i)
+    except:
+        raise Exception('ERROR: stock-symbol: Backup-files not found')
 
 # example usage of custom functions #
 
 # print(json.dumps(index_symbols(['DAX', 'IXIC']), indent=4))
 # print(json.dumps(market_symbols('de'), indent=4))
-
 
 # file generation #
 
