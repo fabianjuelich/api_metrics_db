@@ -2,7 +2,11 @@
 
 __Note:__ Some links can only be accessed in the universities' network (e.g. by connecting via the VPN).
 
-## Docker
+## [Docker](https://www.docker.com/)
+Docker is used to build and run Linux containers for multiple platforms, while Docker Compose is a tool for defining and managing multi-container applications. Together, they provide a powerful solution for containerization, making it easier to deploy and scale applications.
+
+### Architecture
+ToDo
 ![docker_architecture](./appendix/docker_architecture.png)
 
 ### Networking
@@ -17,7 +21,6 @@ When customizing ports, take a look at [this table](https://en.wikipedia.org/wik
 - `docker exec -it \<container name\> bash` opens shell on the container
 
 ## [Tickersymbols](https://www.ig.com/en/glossary-trading-terms/stock-symbol-definition) (Excursus)
-
 Those abbreviations (usually 1-6 characters) identify stocks and indeces (mostly within one country). Thus, there may be different symbols for the same company or a company may be known under several symbols.
 
 ## [Elasticsearch](https://www.elastic.co/elasticsearch/)
@@ -33,19 +36,28 @@ The indices' data which is located at */usr/share/elasticsearch/data* on the gue
 lazy-investor index-id: kOm2aG-gTj2Wa-CaIRRFMw
 
 ### Database design
+ToDo
 
-## Application
+## App (Server)
+Application logic procuring and transforming fundamental data
 
-### [findata.py](./compose/App/findata.py)
-Parses [multiple financial APIs](./api.md) to retrieve fundamental data.
+### [app.py](./docker/app/app.py)
+Main program, whose `document()` function is called to receive index, market or stock data.
+Uses ss.py to retrieve basic data such as symbols needed for findata.py to receive financial data.
+
+### [findata.py](./docker/app/findata.py)
+Parses [multiple financial APIs](./api.md) to retrieve fundamental data and general information.
 
 ### [ss.py](./compose/App/ss.py)
-[StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) is a pretty neat API that we used to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of scraping like we did last time. However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. Bug: Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks.
+Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of scraping like we did last time. However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. Bug: Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks.
 
 ### [interface.py](./compose/App/interface.py)
-XML-RPC server for responding to requests.
+Restful XML-RPC server for responding to HTTP requests from Clients.
 
-## [Cron](https://wiki.ubuntuusers.de/Cron/)
+### tokens.py (not staged)
+API-keys used for Alpha-Vantage, Financial Modeling Prep, Leeway and StockSymbol.
+
+## [Cron](https://wiki.ubuntuusers.de/Cron/) (Client)
 Service that enables scheduling the execution of bash commands.
 When working with cronjobs, it's important to explicitly set the timezone on that (virtual) machine.
 
@@ -53,14 +65,17 @@ When working with cronjobs, it's important to explicitly set the timezone on tha
 Table that lists cronjobs specifying the minute, hour, day, month and weekday a command should be executed. They are either system wide or user related.
 
 ### [cronjob.py](./compose/Cron/cronjob.py)
-Implements a XML-RPC client that requests findata from the application and sends it to the database via HTTP request.
+Implements a XML-RPC client that requests findata from the application and sends it to the database via HTTP request. Communicates between application and database.
+
+## Shared
+API and TYPE Enum.
 
 ## ToDo:
 - [x] Setup Docker compose
 - [x] Install and configure Elasticsearch and Kibana
 - [ ] Finalize db schema
 - [x] Install and configure cron
-- [ ] Rework application for multi-API calls
+- [x] Rework application for multi-API calls
 - [x] Design interface for application
 - [x] Code script for data exchange between app and database which will be executed every 24h
 - [x] Generate list of all index symbols
