@@ -78,11 +78,11 @@ except Exception as e:
     # read backup data which was retrieved by above functions
     print('WARNING: stock-symbol: API not reachable')
     try:
-        with open(os.path.join(os.path.dirname(__file__), 'data/index_symbols.json'), 'r') as index_s, \
-            open(os.path.join(os.path.dirname(__file__),'data/market_symbols.json'), 'r') as market_s, \
-            open(os.path.join(os.path.dirname(__file__),'data/index_list.json'), 'r') as index_l, \
-            open(os.path.join(os.path.dirname(__file__),'data/market_list.json'), 'r') as market_l, \
-            open(os.path.join(os.path.dirname(__file__),'data/stock_indices.json'), 'r') as stock_i:
+        with open(os.path.join(os.path.dirname(__file__), 'backup/index_symbols.json'), 'r') as index_s, \
+            open(os.path.join(os.path.dirname(__file__),'backup/market_symbols.json'), 'r') as market_s, \
+            open(os.path.join(os.path.dirname(__file__),'backup/index_list.json'), 'r') as index_l, \
+            open(os.path.join(os.path.dirname(__file__),'backup/market_list.json'), 'r') as market_l, \
+            open(os.path.join(os.path.dirname(__file__),'backup/stock_indices.json'), 'r') as stock_i:
             index_list_json = json.load(index_l)
             market_list_json = json.load(market_l)
             index_symbols_json = json.load(index_s)

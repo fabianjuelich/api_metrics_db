@@ -3,8 +3,8 @@ services:
 
   application:
     build:
-      dockerfile: app.Dockerfile
-      context: ./
+      dockerfile: ./docker/app.Dockerfile
+      context: ./../
     container_name: app # hostname
     restart: always
 

@@ -27,6 +27,6 @@ def rpc(typ: TYPE, symbol: str, country: str, api: API):
 
 # example calls/storing #
 
-# rpc(TYPE.INDEX, 'NDX', None, API.LEEWAY)
-# rpc(TYPE.MARKET, None, 'DE', API.LEEWAY)
+rpc(TYPE.INDEX, 'NDX', None, API.LEEWAY)
+rpc(TYPE.MARKET, None, 'DE', API.LEEWAY)
 rpc(TYPE.STOCK, 'IBM', 'US', API.LEEWAY)

@@ -3,6 +3,9 @@ import requests
 import tokens
 import json
 import os
+# include previous project #
+# from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.table import Table
+# from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.enums.symbol import Symbol
 
 # exceptions #
 
@@ -44,6 +47,8 @@ class Findata():
     def metrics():
         pass
     def sector():
+        pass
+    def industry():
         pass
 
 # child classes #
@@ -129,3 +134,6 @@ class Leeway(Findata):
 
     def sector(self):
         return self.data['General']['Sector']
+
+    def industry(self):
+        return self.data['General']['Industry']
