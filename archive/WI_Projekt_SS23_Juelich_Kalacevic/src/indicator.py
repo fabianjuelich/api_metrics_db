@@ -1,6 +1,6 @@
-from src.enums.function import Function
-from src.enums.fiscal import Fiscal
-from src.alphavantage import get_latest_report, get_latest_series, get_currency
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.enums.function import Function
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.enums.fiscal import Fiscal
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.alphavantage import get_latest_report, get_latest_series, get_currency
 from dataclasses import dataclass
 from enum import StrEnum, auto
 

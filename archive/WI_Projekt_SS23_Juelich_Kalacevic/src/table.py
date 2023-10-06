@@ -1,9 +1,9 @@
-from src import indicator
-from src.enums.symbol import Symbol
-from src.components import Components
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.src import indicator
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.enums.symbol import Symbol
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.components import Components
 import pandas as pd
 from collections import defaultdict
-from src.visualization import visualize_comparison
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.visualization import visualize_comparison
 import os
 import csv
 import json
@@ -28,7 +28,7 @@ class Table:
                     for component in components.get_symbols(symbol):
                         tmp_symbols.append(component)
             elif source == 'csv':
-                with open(os.path.join(os.path.dirname(__file__), '../Informatikprojekt_WS22-23_Kinetz/data/stocks_data.csv')) as stocks_data_csv:
+                with open(os.path.join(os.path.dirname(__file__), '../../Informatikprojekt_WS22_23_Kinetz/data/stocks_data.csv')) as stocks_data_csv:
                     stocks_data = csv.reader(stocks_data_csv)
                     for i, row in enumerate(stocks_data):
                         for symbol in symbols:

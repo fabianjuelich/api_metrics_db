@@ -1,6 +1,6 @@
-from assets import credential as cred
-from src.enums.fiscal import Fiscal
-from src.enums.function import Function
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.assets import credential as cred
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.enums.fiscal import Fiscal
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.enums.function import Function
 import requests
 
 def alpha_vantage(function, symbol, interval=None, apikey=cred.apikey) -> dict:
