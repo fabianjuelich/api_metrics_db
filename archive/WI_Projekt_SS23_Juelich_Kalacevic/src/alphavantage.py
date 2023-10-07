@@ -106,3 +106,7 @@ def get_currency(report) -> str:
         return report['reportedCurrency']
     except:
         return report['Currency']
+
+def get_sector_and_industry(symbol) -> tuple:
+    overview = get_latest_report(symbol, Function.COMPANY_OVERVIEW)
+    return overview['Sector'], overview['Industry']

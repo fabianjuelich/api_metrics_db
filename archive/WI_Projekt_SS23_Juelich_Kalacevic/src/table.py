@@ -7,6 +7,8 @@ from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.visualization import visualiz
 import os
 import csv
 import json
+import archive.WI_Projekt_SS23_Juelich_Kalacevic.src.alphavantage as av
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.enums.source import Source
 
 class Table:
 
@@ -145,3 +147,16 @@ class Table:
             visualize_comparison(list(indicator.Indicator), self.index[0], averages, single_share, values, path)
         else:
             raise Exception('Please call on single index table, with single share as argument')
+
+    def get_dict_meta(self, source: Source):
+        result = {}
+        for component, data in self.json.items():
+            result[component] = {}
+            result[component]['metadata'] = {}
+            result[component]['metadata']['sector'], result[component]['metadata']['industry'] = av.get_sector_and_industry(component)
+            result[component]['metrics'] = dict(list(map(lambda d: (d, data[d][source]), data)))
+        return result
+
+# test
+table = Table('IBM')
+print(table.get_dict_meta(Source.GIVEN))
