@@ -1,6 +1,6 @@
-from enum import Enum
+from enum import Enum, auto
 
-class API(Enum):
-    ALPHA_VANTAGE = 0
-    LEEWAY = 1
-    FINANCIAL_MODELING_PREP = 2
+class Api(Enum):
+    ALPHA_VANTAGE = auto()
+    LEEWAY = auto()
+    FINANCIAL_MODELING_PREP = auto()

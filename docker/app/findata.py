@@ -4,8 +4,8 @@ import tokens
 import json
 import os
 # include previous project #
-# from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.table import Table
-# from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.enums.symbol import Symbol
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.table import Table
+from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.enums.source import Source
 
 # exceptions #
 
@@ -54,7 +54,18 @@ class Findata():
 # child classes #
 
 class AlphaVantage(Findata):
-    pass    # include previous class
+
+    def get(self, symbol):
+        self.data = Table(symbol).get_dict_meta(Source.GIVEN)[symbol]
+
+    def metrics(self):
+        return self.data['metrics']
+    
+    def sector(self):
+        return self.data['metadata']['sector']
+    
+    def industry(self):
+        return self.data['metadata']['industry']
 
 class FinancialModelingPrep(Findata):
     pass    # ToDo
@@ -137,3 +148,12 @@ class Leeway(Findata):
 
     def industry(self):
         return self.data['General']['Industry']
+    
+
+# test
+alpha = AlphaVantage()
+alpha.get('AAPL')
+print('AAPL')
+print(alpha.metrics())
+print(alpha.sector())
+print(alpha.industry())

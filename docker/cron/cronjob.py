@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 from xmlrpc.client import ServerProxy
 from elasticsearch import Elasticsearch
-from type import TYPE
-from api import API
+from sort import Sort
+from api import Api
 from datetime import date
 import json
 
@@ -20,13 +20,13 @@ def store(doc, ident):
         document=doc
     )
 
-def rpc(typ: TYPE, symbol: str, country: str, api: API):
+def rpc(typ: Sort, symbol: str, country: str, api: Api):
     ident = f'{str(date.today())}_{typ.name}_{(symbol+"_") if symbol else ""}{(country+"_") if country else ""}{api.name}'
     doc = json.loads(ser.metrics(typ.value, symbol, country, api.value))
     store(doc, ident)
 
 # example calls/storing #
 
-rpc(TYPE.INDEX, 'NDX', None, API.LEEWAY)
-rpc(TYPE.MARKET, None, 'DE', API.LEEWAY)
-rpc(TYPE.STOCK, 'IBM', 'US', API.LEEWAY)
+rpc(Sort.INDEX, 'NDX', None, Api.LEEWAY)
+rpc(Sort.MARKET, None, 'DE', Api.LEEWAY)
+rpc(Sort.STOCK, 'IBM', 'US', Api.LEEWAY)

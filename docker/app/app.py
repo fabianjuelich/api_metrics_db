@@ -1,13 +1,13 @@
 import findata as findata
 import ss as ss
-from type import TYPE
+from sort import Sort
 
-def document(typ: TYPE, symbol: str, country_code: str, api: findata.Findata):
+def document(typ: Sort, symbol: str, country_code: str, api: findata.Findata):
     symbol = symbol.upper() if symbol else None
     country_code = country_code.lower() if country_code else None
     data = {}
     match(typ):
-        case TYPE.INDEX:
+        case Sort.INDEX:
             index_symbols = ss.index_symbols_json[symbol]
             stock_indices = ss.stock_indices(index_symbols['information']['abbreviation'])
             for component in index_symbols['components']:
@@ -17,7 +17,7 @@ def document(typ: TYPE, symbol: str, country_code: str, api: findata.Findata):
                 data[component]['industry'] = api.industry()
                 data[component]['indices'] = stock_indices[component]
                 data[component]['metrics'] = api.metrics()
-        case TYPE.MARKET:
+        case Sort.MARKET:
             market_symbols = ss.market_symbols_json[country_code]
             stock_indices = ss.stock_indices(country_code)
             for component in market_symbols['components']:
@@ -27,7 +27,7 @@ def document(typ: TYPE, symbol: str, country_code: str, api: findata.Findata):
                 data[component]['industry'] = api.industry()
                 data[component]['indices'] = stock_indices[component]
                 data[component]['metrics'] = api.metrics()
-        case TYPE.STOCK:
+        case Sort.STOCK:
             api.get(symbol, ss.market_symbols_json[country_code]['components'][symbol]['exchange'])
             data[symbol] = {}
             data[symbol]['sector'] = api.sector()
@@ -37,6 +37,6 @@ def document(typ: TYPE, symbol: str, country_code: str, api: findata.Findata):
     return data
 
 # tests #
-# print(document(TYPE.INDEX, 'NDX', None, findata.Leeway()))
-# print(document(TYPE.MARKET, None, 'de', findata.Leeway()))
-# print(document(TYPE.STOCK, 'IBM', 'US', findata.Leeway()))
+# print(document(Sort.INDEX, 'NDX', None, findata.Leeway()))
+# print(document(Sort.MARKET, None, 'de', findata.Leeway()))
+# print(document(Sort.STOCK, 'IBM', 'US', findata.Leeway()))

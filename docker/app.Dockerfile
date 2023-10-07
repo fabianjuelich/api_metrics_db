@@ -1,4 +1,6 @@
-FROM python:3.11
+FROM debian:bookworm
+
+RUN apt update && apt install python3 python3-pip -y
 
 # new
 ADD ./docker/app/ /home/
@@ -13,11 +15,13 @@ ADD ./archive/WI_Projekt_SS23_Juelich_Kalacevic/__init__.py /home/archive/WI_Pro
 # remove this one later
 ADD ./archive/WI_Projekt_SS23_Juelich_Kalacevic/showcase.py /home/archive/WI_Projekt_SS23_Juelich_Kalacevic/showcase.py
 # new
-RUN pip install requests
-RUN pip install stocksymbol
+RUN pip3 install requests --break-system-packages
+RUN pip3 install stocksymbol --break-system-packages
 # archive
-RUN pip install requests_html
-RUN pip install pandas
-RUN pip install matplotlib
+RUN pip3 install requests_html --break-system-packages
+RUN pip3 install pandas --break-system-packages
+RUN pip3 install matplotlib --break-system-packages
 
-CMD ["python", "home/interface.py"]
+# ENV PYTHONPATH "${PYTHONPATH}:/home/archive/WI_Projekt_SS23_Juelich_Kalacevic"
+
+CMD ["python3", "home/interface.py"]

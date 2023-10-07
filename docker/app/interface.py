@@ -1,8 +1,8 @@
 from xmlrpc.server import SimpleXMLRPCServer
 import app
 from datetime import datetime
-from type import TYPE
-from api import API
+from sort import Sort
+from api import Api
 import findata as findata
 import json
 
@@ -10,14 +10,14 @@ import json
 
 class RPC_Server:
     def metrics(self, typ: int, symbol: str, country: str, api: int):
-        api = API(api)
-        api = findata.AlphaVantage() if api is API.ALPHA_VANTAGE else \
-            findata.Leeway() if api is API.LEEWAY else \
-            findata.FinancialModelingPrep() if api is API.FINANCIAL_MODELING_PREP \
+        api = Api(api)
+        api = findata.AlphaVantage() if api is Api.ALPHA_VANTAGE else \
+            findata.Leeway() if api is Api.LEEWAY else \
+            findata.FinancialModelingPrep() if api is Api.FINANCIAL_MODELING_PREP \
             else None
         doc = {}
         doc['timestamp'] = str(datetime.now())
-        doc['data'] = app.document(TYPE(typ), symbol, country, api)
+        doc['data'] = app.document(Sort(typ), symbol, country, api)
         return (json.dumps(doc))
     
 # server setup #

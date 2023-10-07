@@ -2,7 +2,6 @@ FROM debian:bookworm
 
 RUN ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 RUN apt update && apt install cron python3 python3-elasticsearch python3-requests -y
-# RUN pip install elasticsearch --break-system-packages
 
 ADD ./cron/crontab /etc/cron.d/crontab
 ADD ./cron/cronjob.py /home/cronjob.py
