@@ -7,7 +7,10 @@ Docker is used to build and run Linux containers for multiple platforms, while D
 
 ### Architecture
 ToDo
-![docker_architecture](./appendix/docker_architecture.png)
+![docker_architecture](./appendix/infrastructure/docker_architecture.png)
+
+### Dockerfile
+The working directory (WORKDIR) is used as the python path (searched for imports instead of the parent directory) unless it is explicitly defined as an environment variable by `ENV PYTHONPATH=\<path\>`.
 
 ### Networking
 Docker Compose maintains a DNS that resolves the container_name property used in the [Docker Compose configuration](./compose/docker-compose.yml) to the relevant IP address.
@@ -46,7 +49,7 @@ Main program, whose `document()` function is called to receive index, market or 
 Uses ss.py to retrieve basic data such as symbols needed for findata.py to receive financial data.
 
 ### [findata.py](./docker/app/findata.py)
-Parses [multiple financial APIs](./api.md) to retrieve fundamental data and general information.
+Parses [multiple financial APIs](./api.md) to retrieve fundamental data and general information. Encapsulating the data into objects provides a call-cost efficient way to calculate metrics.
 
 ### [ss.py](./compose/App/ss.py)
 Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of scraping like we did last time. However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. Bug: Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks.
