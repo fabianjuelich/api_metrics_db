@@ -93,7 +93,7 @@ Leeway provides fundamental data back up to 30 years and the historical prices o
 
 # Which and how many exchanges and markets are supported?
 
-![The following chart shows how many stock exchanges are supported.](image.png)
+![The following chart shows how many stock exchanges are supported.](appendix/api_comparison/image.png)
 
 Everything that is in these tables was taken as it was provided.
 
@@ -238,7 +238,7 @@ Everything that is in these tables was taken as it was provided.
 
 ## How many and which regions are supported?
 
-![The following chart shows how many regions are supported](image-1.png)
+![The following chart shows how many regions are supported](appendix/api_comparison/image-1.png)
 
 | Leeway | FMP | Alpha Vantage |
 | --- | --- | --- |
