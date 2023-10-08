@@ -10,7 +10,7 @@ ToDo
 ![docker_architecture](./appendix/infrastructure/docker_architecture.png)
 
 ### Dockerfile
-The working directory (WORKDIR) is used as the python path (searched for imports instead of the parent directory) unless it is explicitly defined as an environment variable by `ENV PYTHONPATH=\<path\>`.
+The working directory (WORKDIR) is used as the python path (searched for imports instead of the parent directory) unless it is explicitly defined as an environment variable by `ENV PYTHONPATH=<path>`.
 
 ### Networking
 Docker Compose maintains a DNS that resolves the container_name property used in the [Docker Compose configuration](./compose/docker-compose.yml) to the relevant IP address.
@@ -86,3 +86,4 @@ API and TYPE Enum.
 - [ ] Add user password and encryption for Elastic stack (SSL/TLS)
 - [x] Report typo to stock-symbol
 - [x] Use backup data if server is not responding
+- [ ] Revise infrastructure drawing

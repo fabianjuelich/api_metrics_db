@@ -9,7 +9,7 @@ import json
 # setup #
 
 es = Elasticsearch('http://elasticsearch:9200')
-ser = ServerProxy('http://app:2900', allow_none=True)  # ToDo: 'http://localhost:2900'
+ser = ServerProxy('http://app:2900', allow_none=True)
 
 def store(doc, ident):
     print(ident, '\n', json.dumps(doc, indent=4))
@@ -27,6 +27,8 @@ def rpc(typ: Sort, symbol: str, country: str, api: Api):
 
 # example calls/storing #
 
-rpc(Sort.INDEX, 'NDX', None, Api.LEEWAY)
-rpc(Sort.MARKET, None, 'DE', Api.LEEWAY)
-rpc(Sort.STOCK, 'IBM', 'US', Api.LEEWAY)
+# rpc(Sort.INDEX, 'NDX', None, Api.LEEWAY)
+# rpc(Sort.MARKET, None, 'DE', Api.LEEWAY)
+# rpc(Sort.STOCK, 'IBM', 'US', Api.LEEWAY)
+
+rpc(Sort.STOCK, 'AAPL', 'US', Api.FINANCIAL_MODELING_PREP)

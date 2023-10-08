@@ -39,23 +39,33 @@ def get_value_by_list(j: dict, l: list):
         value = value[key]
     return float(value)
 
-# parent class #
+def status(code):
+    match(code):
+        case 200:
+            print('INFO: OK')
+        case 401:
+            raise UNAUTHORIZED
+        case 429:
+            raise TOO_MANY_REQUESTS
+
+# interface #
 
 class Findata():
-    def get():
+
+    def get(self) -> None:
         pass
-    def metrics():
+    def metrics(self, symbol: str, *args) -> dict:
         pass
-    def sector():
+    def sector(self) -> str:
         pass
-    def industry():
+    def industry(self) -> str:
         pass
 
-# child classes #
+# implementations #
 
 class AlphaVantage(Findata):
 
-    def get(self, symbol):
+    def get(self, symbol, exchange=None, *_):
         self.data = Table(symbol).get_dict_meta(Source.GIVEN)[symbol]
 
     def metrics(self):
@@ -67,60 +77,94 @@ class AlphaVantage(Findata):
     def industry(self):
         return self.data['metadata']['industry']
 
+
 class FinancialModelingPrep(Findata):
-    pass    # ToDo
+
+    __financialmodellingprep = dict(zip(list(METRICS), [
+        ('income-statement', 0, 'revenue'),
+        ('income-statement', 0, 'grossProfit'),
+        ('key-metrics', 0, 'roe'),
+        ('key-metrics', 0, 'debtToEquity'), # ToDo
+        ('key-metrics', 0, 'debtToEquity'), # ToDo
+        ('key-metrics', 0, 'marketCap'),
+        ('key-metrics', 0, 'enterpriseValue'),
+        ('key-metrics', 0, 'evToSales'),
+        ('key-metrics', 0, 'enterpriseValueOverEBITDA'),
+        ('key-metrics', 0, 'revenuePerShare'),
+        ('key-metrics', 0, 'bookValuePerShare'),
+        ('key-metrics', 0, 'operatingCashFlowPerShare')
+    ]))
+    
+    def __init__(self):
+        self.url = 'https://financialmodelingprep.com/api/'
+
+    def get(self, symbol, exchange=None, docs=['profile', 'income-statement', 'balance-sheet-statement', 'key-metrics'], version=3, key=tokens.financial_modeling_prep):
+        self.data = {}
+        params = {
+            'apikey': key
+        }
+        for doc in docs:
+            url = self.url + f'v{version}/{doc}/{symbol}'
+            res = requests.get(url, params=params, timeout=60)
+            self.data[doc] = res.json()
+            status(res.status_code)
+
+    def metrics(self):
+        result = {}
+        for metric in METRICS:
+            match(metric):
+                # given
+                case _:
+                    result[metric.name] = get_value_by_list(self.data, self.__financialmodellingprep[metric])
+        return(result)
+    
+    def sector(self):
+        return self.data['profile'][0]['sector']
+    
+    def industry(self):
+        return self.data['profile'][0]['industry']
+
 
 class Leeway(Findata):
 
     __leeway = dict(zip(list(METRICS), [
-            ('Highlights', 'QuarterlyRevenueGrowthYOY'),
-            ('Highlights', 'GrossProfitTTM'),
-            ('Highlights', 'ReturnOnEquityTTM'),
-            {
-             'SHAREHOLDERS_EQUITY':('Financials', 'Balance_Sheet', 'quarterly', 0, 'totalStockholderEquity'),
-             'LIABILITIES': ('Financials', 'Balance_Sheet', 'quarterly', 0, 'totalLiab')
-             },
-            {
-             'DEBT': ('Financials', 'Balance_Sheet', 'quarterly', 0, 'longTermDebt'),
-             'SHAREHOLDERS_EQUITY': ('Financials', 'Balance_Sheet', 'quarterly', 0, 'totalStockholderEquity')
-            },
-            ('Highlights', 'MarketCapitalization'),
-            ('Valuation', 'EnterpriseValue'),
-            ('Valuation', 'EnterpriseValueRevenue'),
-            ('Valuation', 'EnterpriseValueEbitda'),
-            ('Highlights', 'PERatio'),
-            ('Valuation', 'PriceBookMRQ'),
-            {
-             'MARKET_CAPITALIZATION': ('Highlights', 'MarketCapitalization'),
-             'CASHFLOW': ('Financials', 'Cash_Flow', 'quarterly', 0, 'totalCashFromOperatingActivities')
-            }
+        ('Highlights', 'QuarterlyRevenueGrowthYOY'),
+        ('Highlights', 'GrossProfitTTM'),
+        ('Highlights', 'ReturnOnEquityTTM'),
+        {
+            'SHAREHOLDERS_EQUITY':('Financials', 'Balance_Sheet', 'quarterly', 0, 'totalStockholderEquity'),
+            'LIABILITIES': ('Financials', 'Balance_Sheet', 'quarterly', 0, 'totalLiab')
+        },
+        {
+            'DEBT': ('Financials', 'Balance_Sheet', 'quarterly', 0, 'longTermDebt'),
+            'SHAREHOLDERS_EQUITY': ('Financials', 'Balance_Sheet', 'quarterly', 0, 'totalStockholderEquity')
+        },
+        ('Highlights', 'MarketCapitalization'),
+        ('Valuation', 'EnterpriseValue'),
+        ('Valuation', 'EnterpriseValueRevenue'),
+        ('Valuation', 'EnterpriseValueEbitda'),
+        ('Highlights', 'PERatio'),
+        ('Valuation', 'PriceBookMRQ'),
+        {
+            'MARKET_CAPITALIZATION': ('Highlights', 'MarketCapitalization'),
+            'CASHFLOW': ('Financials', 'Cash_Flow', 'quarterly', 0, 'totalCashFromOperatingActivities')
+        }
     ]))
 
     def __init__(self):
         self.url = 'https://api.leeway.tech/api/v1/public/'
-        self.data = None
 
-    def __get(self, symbol, exchange, typ='fundamentals', token=tokens.leeway, lang='english', fmt='JSON'): # ToDo: rename later to get()
-        url = self.url + f'{typ}/{symbol}.{exchange}'
+    def get(self, symbol, exchange, doc='fundamentals', token=tokens.leeway, lang='english', fmt='JSON'):
+        url = self.url + f'{doc}/{symbol}.{exchange}'
         params = {
             'apitoken': token,
             'lang': lang,
             'fmt': fmt
         }
-        r = requests.get(url, params=params, timeout=60)
-        match(r.status_code):
-            case 200:
-                print('INFO: OK')
-            case 401:
-                raise UNAUTHORIZED
-            case 429:
-                raise TOO_MANY_REQUESTS
-        self.data = r.json()
+        res = requests.get(url, params=params, timeout=60)
+        status(res.status_code)
+        self.data = res.json()
 
-    def get(self, *args):   # ToDo: remove later
-        with open(os.path.join(os.path.dirname(__file__), 'data/leeway.json'), 'r') as f:
-            self.data = json.load(f)
-        
     def metrics(self):
         result = {}
         for metric in METRICS:
@@ -148,12 +192,3 @@ class Leeway(Findata):
 
     def industry(self):
         return self.data['General']['Industry']
-    
-
-# test
-alpha = AlphaVantage()
-alpha.get('AAPL')
-print('AAPL')
-print(alpha.metrics())
-print(alpha.sector())
-print(alpha.industry())

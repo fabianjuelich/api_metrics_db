@@ -11,7 +11,7 @@ def document(typ: Sort, symbol: str, country_code: str, api: findata.Findata):
             index_symbols = ss.index_symbols_json[symbol]
             stock_indices = ss.stock_indices(index_symbols['information']['abbreviation'])
             for component in index_symbols['components']:
-                api.get(component, index_symbols['components'][component]['exchange'])
+                api.get(component, exchange=index_symbols['components'][component]['exchange'])
                 data[component] = {}
                 data[component]['sector'] = api.sector()
                 data[component]['industry'] = api.industry()
@@ -21,22 +21,17 @@ def document(typ: Sort, symbol: str, country_code: str, api: findata.Findata):
             market_symbols = ss.market_symbols_json[country_code]
             stock_indices = ss.stock_indices(country_code)
             for component in market_symbols['components']:
-                api.get(component, market_symbols['components'][component]['exchange'])
+                api.get(component, exchange=market_symbols['components'][component]['exchange'])
                 data[component] = {}
                 data[component]['sector'] = api.sector()
                 data[component]['industry'] = api.industry()
                 data[component]['indices'] = stock_indices[component]
                 data[component]['metrics'] = api.metrics()
         case Sort.STOCK:
-            api.get(symbol, ss.market_symbols_json[country_code]['components'][symbol]['exchange'])
+            api.get(symbol, exchange=ss.market_symbols_json[country_code]['components'][symbol]['exchange'])
             data[symbol] = {}
             data[symbol]['sector'] = api.sector()
             data[symbol]['industry'] = api.industry()
             data[symbol]['indices'] = ss.stock_indices(country_code)[symbol]
             data[symbol]['metrics'] = api.metrics()
     return data
-
-# tests #
-# print(document(Sort.INDEX, 'NDX', None, findata.Leeway()))
-# print(document(Sort.MARKET, None, 'de', findata.Leeway()))
-# print(document(Sort.STOCK, 'IBM', 'US', findata.Leeway()))
