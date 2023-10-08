@@ -5,49 +5,49 @@
 
 ### Alpha Vantage:
 
--Realtime & historical stock market data APIs
+- Realtime & historical stock market data APIs
 
--Forex, commodity & crypto data feeds
+- Forex, commodity & crypto data feeds
 
--60+ technical & economic indicators
+- 60+ technical & economic indicators
 
--Market news API & sentiments
+- Market news API & sentiments
 
--Global coverage
+- Global coverage
 
 (https://www.alphavantage.co/)
 
 ### Financial Modeling Prep:
 
--Financial statements and multiple metrics for over 30,000 companies across the world
+- Financial statements and multiple metrics for over 30,000 companies across the world
 
--Stock prices and profile for more than 40,000 symbols
+- Stock prices and profile for more than 40,000 symbols
 
--News and press realeses in real-time categorized by stock symbol
+- News and press realeses in real-time categorized by stock symbol
 
--Multiple economic data like inflation rates, GDP, economic calendar and more
+- Multiple economic data like inflation rates, GDP, economic calendar and more
 
--Many ready to use packages for multiple languages.
+- Many ready to use packages for multiple languages.
 
--Social sentiment across different social media like Twitter or Reddit
+- Social sentiment across different social media like Twitter or Reddit
 
--Insider trading for U.S. stocks gathered from SEC forms
+- Insider trading for U.S. stocks gathered from SEC forms
 
--Processed 13-F forms, mutual fund holders and insitutional holders
+- Processed 13-F forms, mutual fund holders and insitutional holders
 
--SEC filings, transcripts, etf holders, earnings calendar and many more.
+- SEC filings, transcripts, etf holders, earnings calendar and many more.
 
 (https://site.financialmodelingprep.com/developer/docs/pricing/)
 
 ### Leeway:
 
--Provides access to comprehensive financial data from over 50 exchanges worldwide. (Among others, in Germany, there are Xetra and Frankfurt Stock Exchange, the Euronext exchanges in Paris and Amsterdam, and of course, in the USA, including New York Stock Exchange (NYSE) and NASDAQ.)
+- Provides access to comprehensive financial data from over 50 exchanges worldwide. (Among others, in Germany, there are Xetra and Frankfurt Stock Exchange, the Euronext exchanges in Paris and Amsterdam, and of course, in the USA, including New York Stock Exchange (NYSE) and NASDAQ.)
 
--fundamental data, including annual and quarterly financial statement data with up to 20 years of history, closing prices with the complete historical record, interval price data, and much more.
+- fundamental data, including annual and quarterly financial statement data with up to 20 years of history, closing prices with the complete historical record, interval price data, and much more.
 
--Stocks, ETFs, indices, funds, currencies, and cryptocurrencies. For stocks and ETFs, also master data, and for stocks, fundamental data as well.
+- Stocks, ETFs, indices, funds, currencies, and cryptocurrencies. For stocks and ETFs, also master data, and for stocks, fundamental data as well.
 
--Price data API, Fundamental data API, live delayed prices, interval price data, forex, crypto, and commodities, funds & ETF API, bonds, macroeconomic data, event calendar, event history.
+- Price data API, Fundamental data API, live delayed prices, interval price data, forex, crypto, and commodities, funds & ETF API, bonds, macroeconomic data, event calendar, event history.
 
 (https://leeway.tech/data-api)
 
@@ -76,6 +76,12 @@ Denis
 
 ## Is Backtesting possible?
 
+
+Backtesting involves applying a strategy or predictive model to historical data to determine its accuracy.
+It allows traders to test trading strategies without the need to risk capital.
+Common backtesting measures include net profit/loss, return, risk-adjusted return, market exposure, and volatility.
+
+
 The time period for backtesting with a financial APIs depends on the specific trading or investment strategy and the data you need for the analysis. There isn't a one-size-fits-all answer to how far back the historical data should go, as it can vary based on factors such as your trading frequency, asset class, and the nature of your strategy.
 
 In this case the answer is still easy because if you wanted to backtest with the 12 Stock key figures we calculated in the last Project, it would not be possible to calculate for example, the Price to Earning with Alpha Vantage, because they only provide the current EPS in the Company Overview. Also the fundamentaldata only goes back to 2018.
@@ -85,9 +91,11 @@ FMP provides 15+ years of Financial Statements, including international filings.
 Leeway provides fundamental data back up to 30 years and the historical prices of up to 100 years.
 
 
-# Which exchanges and markets are supported?
+# Which and how many exchanges and markets are supported?
 
-Everything is that is in these tables was taken as it was provided.
+![The following chart shows how many stock exchanges are supported.](image.png)
+
+Everything that is in these tables was taken as it was provided.
 
 ## Leeway:
 
@@ -228,6 +236,19 @@ Everything is that is in these tables was taken as it was provided.
 |  | Shanghai Stock Exchange |
 |  | Shenzhen Stock Exchange |
 
+## How many and which regions are supported?
+
+![The following chart shows how many regions are supported](image-1.png)
+
+| Leeway | FMP | Alpha Vantage |
+| --- | --- | --- |
+| Europe | Europe | Europe |
+| North America | North America | North America |
+| South America | South America | Asia |
+| Australia | Australia |  |
+| Asia | Asia |  |
+|  | Africa |  |
+
 
 # **Is the fundamental data available to calculate the 12 key indicators yourself?**
 
@@ -256,6 +277,24 @@ FMP stated that their Financial Statement endpoint is updated after a few minute
 Leeway stated that the data is updated daily but there might be a slight delay after the release of earningsreports. This also depends on the size of the company, how fast they publish and the market, but usually happens within a few days.
 
 Alpha Vantage didn’t respond, but on their Website it says that the Data is generally refreshed on the same day a company reports its latest earnings and financials.
+
+
+## Are there technical features like the SMA, for example?
+
+Technical features are used in the Technical Analysis of Stocks and the Technical Analysis is the study of historical market data, including price and volume.
+
+
+- Technical analysis attempts to predict future price movements, providing traders with the information needed to make a profit.
+
+- Traders apply technical analysis tools to charts in order to identify entry and exit points for potential trades.
+
+- An underlying assumption of technical analysis is that the market has processed all available information and that it is reflected in the price chart.
+
+Alpha Vantage provied a wide variety of technical features. There are 53 Technical features available, these include, for example, the SMA, EMA, WMA, etc. (https://www.alphavantage.co/documentation/#technical-indicators)
+
+FMP provides 9 Technical Indicators in the Technical Indicators Intraday API **(**https://site.financialmodelingprep.com/developer/docs/technicals-intraday-api/), and 1 more in **C**hart Market Stock Data API **(**https://site.financialmodelingprep.com/developer/docs/historical-stock-data-free-api/). So in total there are only 10 Technical Indicators that FMP Provides.
+
+Leeway provides 9 Technical Indicators that are listed in the big JSON file that they output.
 
 ## How good is the API Documentation?
 
