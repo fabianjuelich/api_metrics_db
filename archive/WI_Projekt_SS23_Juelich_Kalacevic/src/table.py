@@ -156,7 +156,3 @@ class Table:
             result[component]['metadata']['sector'], result[component]['metadata']['industry'] = av.get_sector_and_industry(component)
             result[component]['metrics'] = dict(list(map(lambda d: (d, data[d][source]), data)))
         return result
-
-# test
-table = Table('IBM')
-print(table.get_dict_meta(Source.GIVEN))

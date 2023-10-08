@@ -1,7 +1,7 @@
 # Custom
 .DS_Store
 .vscode/
-assets/credential.py
+# assets/credential.py
 important-metrics.xlsx
 
 # Byte-compiled / optimized / DLL files
