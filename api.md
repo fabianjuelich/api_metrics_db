@@ -3,7 +3,8 @@
 
 ## **What do the providers state on their website about what is being offered?**
 
-### Alpha Vantage:
+### [Alpha Vantage](https://www.alphavantage.co/)
+
 
 - Realtime & historical stock market data APIs
 
@@ -15,9 +16,8 @@
 
 - Global coverage
 
-(https://www.alphavantage.co/)
 
-### Financial Modeling Prep:
+### [Financial Modeling Prep](https://site.financialmodelingprep.com/developer/docs/pricing/)
 
 - Financial statements and multiple metrics for over 30,000 companies across the world
 
@@ -37,9 +37,9 @@
 
 - SEC filings, transcripts, etf holders, earnings calendar and many more.
 
-(https://site.financialmodelingprep.com/developer/docs/pricing/)
 
-### Leeway:
+### [Leeway](https://leeway.tech/data-api)
+
 
 - Provides access to comprehensive financial data from over 50 exchanges worldwide. (Among others, in Germany, there are Xetra and Frankfurt Stock Exchange, the Euronext exchanges in Paris and Amsterdam, and of course, in the USA, including New York Stock Exchange (NYSE) and NASDAQ.)
 
@@ -48,8 +48,6 @@
 - Stocks, ETFs, indices, funds, currencies, and cryptocurrencies. For stocks and ETFs, also master data, and for stocks, fundamental data as well.
 
 - Price data API, Fundamental data API, live delayed prices, interval price data, forex, crypto, and commodities, funds & ETF API, bonds, macroeconomic data, event calendar, event history.
-
-(https://leeway.tech/data-api)
 
 
 ## Quality of the Support:
@@ -71,8 +69,6 @@ Thank you for your time and attention. I look forward to your response.
 
 Best regards,
 
-Denis
-
 
 ## Is Backtesting possible?
 
@@ -89,6 +85,10 @@ In this case the answer is still easy because if you wanted to backtest with the
 FMP provides 15+ years of Financial Statements, including international filings.
 
 Leeway provides fundamental data back up to 30 years and the historical prices of up to 100 years.
+
+Having access to such extensive historical data allows for more in-depth and comprehensive backtesting of strategies. Traders and investors often rely on long-term historical data to analyze the performance of their strategies under various market conditions and economic cycles. Therefore, FMP and Leeway would be better suited for backtesting purposes when compared to Alpha Vantage, especially if you require a longer historical perspective for your analysis.
+
+
 
 
 # Which and how many exchanges and markets are supported?
@@ -272,11 +272,13 @@ Everything that is in these tables was taken as it was provided.
 
 To get an reliable answer to that, we asked the API providers themselves.
 
-FMP stated that their Financial Statement endpoint is updated after a few minutes/hours after published on SEC for US companies and the International Filings is updated daily.
+**FMP**: FMP updates its Financial Statement endpoint after a few minutes/hours of data being published on the SEC for US companies. For international filings, updates occur daily. These updates are frequent and aim to provide near-real-time data for US companies.
 
-Leeway stated that the data is updated daily but there might be a slight delay after the release of earningsreports. This also depends on the size of the company, how fast they publish and the market, but usually happens within a few days.
+**Leeway**: Leeway updates its data daily, but there might be a slight delay after the release of earnings reports. The update timing can vary based on factors like the size of the company, how quickly they publish their reports, and market conditions. Similar to FMP, Leeway provides daily updates with potential delays for earnings reports.
 
-Alpha Vantage didn’t respond, but on their Website it says that the Data is generally refreshed on the same day a company reports its latest earnings and financials.
+**Alpha Vantage**: Alpha Vantage's data is generally refreshed on the same day a company reports its latest earnings and financials. While they did not  respond to the E-Mail, it is stated on their website, this indicates a daily update frequency, similar to FMP and Leeway.
+
+In summary, all three API providers aim to offer daily data updates, which is a standard practice in the financial data industry. Whether you need near-real-time updates (FMP), daily data with potential delays (Leeway), or daily data refreshes (Alpha Vantage), you have options to suit your trading and analytical needs.
 
 
 ## Are there technical features like the SMA, for example?
@@ -290,19 +292,58 @@ Technical features are used in the Technical Analysis of Stocks and the Technica
 
 - An underlying assumption of technical analysis is that the market has processed all available information and that it is reflected in the price chart.
 
-Alpha Vantage provied a wide variety of technical features. There are 53 Technical features available, these include, for example, the SMA, EMA, WMA, etc. (https://www.alphavantage.co/documentation/#technical-indicators)
+Alpha Vantage provides a wide variety of technical features. There are [53 Technical features available](https://www.alphavantage.co/documentation/#technical-indicators), these include, for example, the SMA, EMA, WMA, etc.
 
-FMP provides 9 Technical Indicators in the Technical Indicators Intraday API **(**https://site.financialmodelingprep.com/developer/docs/technicals-intraday-api/), and 1 more in **C**hart Market Stock Data API **(**https://site.financialmodelingprep.com/developer/docs/historical-stock-data-free-api/). So in total there are only 10 Technical Indicators that FMP Provides.
+FMP provides [9 Technical Indicators in the Technical Indicators Intraday API](https://site.financialmodelingprep.com/developer/docs/technicals-intraday-api/), and [1 more in Chart Market Stock Data API](https://site.financialmodelingprep.com/developer/docs/historical-stock-data-free-api/). So in total, there are only 10 Technical Indicators that FMP provides.
 
-Leeway provides 9 Technical Indicators that are listed in the big JSON file that they output.
+Leeway provides 9 Technical Indicators that are listed in the big JSON file that they output in /api/v1/public/historicalquotes/marketcap/{symbolExchange} [in the Fundamentals](https://leeway.tech/api-doc/general?lang=ger&dataapi=true)
+
+![Alt text](appendix\api_comparison\technical_features2.png)
 
 ## How good is the API Documentation?
 
-FMP has the best API documentation. They provide a wide range of various financial-related data. Everything is categorized into their respective areas, and there is always a detailed explanation. There is also a page with individual formulas for different ratios, which is very helpful. There are also language specific guides. One thing that is very usefull that only FMP provides, is that it lists the properties of the Financial Reports i.e. the properties of the Income Statement, Balance Sheet and Cash Flow, so that you don't have to call the API first and then look if the specific value you need is listed.
+FMP stands out with its exceptional API documentation. They offer an extensive range of financial-related data, comprehensively categorized into their respective areas, accompanied by detailed explanations. Additionally, FMP provides a valuable resource by offering a page containing individual [formulas](https://site.financialmodelingprep.com/developer/docs/formula) for various financial ratios, which greatly aids developers and users. The documentation also includes language-specific guides to enhance usability.
 
-Alpha Vantage is in second place. They also provide everything categorized into their respective areas, with descriptions and examples for the various parameters that can be used. However, it offers a significantly narrower range compared to FMP. Additionally, there are no formulas that explain how the ratios are composed or calculated. Alpha Vantage also offers language-specific guides for the API. Unlike FMP, there is also no upfront overview of what is listed in the respective documents, so you have to make the API call first.
+A standout feature of FMP's documentation is its provision of property listings for Financial Reports, including Income Statements, Balance Sheets, and Cash Flow. This unique feature saves users the hassle of having to make API calls first to determine whether specific values are available.
 
-Leeway has by far the worst API documentation in terms of design. Leeway uses URL endpoint resources in their documentation, which can make it relatively unclear what exactly one is searching for. Everything is categorized into its respective area, similar to other APIs, but this presentation style can be less user-friendly and somewhat challenging to navigate when working with the API for the first time. There is a brief description for each endpoint, which is well done. One notable feature is that in the case of fundamentals, you can pass the exchange directly in the request. However, there are neither formulas nor an upfront overview of what is listed in the fundamentals.
+In summary, FMP's API documentation sets a high standard, offering comprehensive data, formula references, and convenient property listings, making it a top choice for users seeking detailed and user-friendly financial data resources.
+
+    Since FMP has made changes to its website, here is a new evaluation of the documentation:
+
+    The new documentation for FMP retains its organizational structure and categories from the previous version. However, there are notable changes. Descriptions for various sections have been streamlined and are now somewhat shorter, providing concise information.
+
+    One significant change is the removal of the functionality that allowed users to click on listed items, such as Financial Statements, to access a separate page detailing the properties of financial reports. Instead, users are presented with a clear guide showing the parameters that can be utilized for each respective statement. It's important to note that these parameter descriptions serve as a reference for users to understand the available options for customization but are not directly usable values.
+
+    An aspect that may pose a minor inconvenience is the scrolling behavior. When the mouse cursor is positioned within the statement display, scrolling is limited to within the statement itself, making it less intuitive to navigate the entire webpage.
+
+    Despite these minor drawbacks, FMP continues to offer the most comprehensive and detailed API documentation among the available options.
+
+
+>   [Here is a link to the new documentation](https://site.financialmodelingprep.com/developer/docs)
+
+
+
+[Alpha Vantage's API documentation](https://www.alphavantage.co/documentation/), while comprehensive, has some notable differences compared to FMP's documentation. While it provides categorized information with descriptions and examples for various parameters, it offers a more limited range of data compared to FMP.
+
+One area where Alpha Vantage falls short is in providing formulas that explain how the ratios are composed or calculated. This can be a disadvantage for users who want a deeper understanding of the financial metrics they are working with.
+
+However, Alpha Vantage does offer language-specific guides for the API, which can be helpful for developers working in different programming languages.
+
+One notable distinction is that Alpha Vantage's documentation lacks an upfront overview of what is listed in the respective documents. This means that users may need to make API calls to explore the available data, which can be less convenient compared to FMP's approach of providing an upfront overview of data properties.
+
+In summary, Alpha Vantage's API documentation is comprehensive but lacks certain features and detailed formulas found in FMP's documentation. Users may need to make API calls to explore the available data fully.
+
+[Leeway's API documentation](https://leeway.tech/api-doc/general?lang=ger&dataapi=true) is notably less user-friendly compared to other providers. The design and presentation of the documentation can be a drawback. Leeway's documentation uses URL endpoint resources, which might lead to confusion when users are trying to find specific information.
+
+While Leeway categorizes information into respective areas like other APIs, the design can be challenging to navigate, especially for users new to the API. However, it does offer a brief description for each endpoint, which is well done and provides some guidance.
+
+One positive aspect of Leeway's documentation is its capability to allow users to pass the exchange directly in the request, which can be a convenient feature for those looking to access exchange-specific data.
+
+Despite these attributes, Leeway's documentation lacks detailed formulas explaining metrics and financial ratios, and it also doesn't offer an upfront overview of what is available in the fundamentals, which could be useful for users seeking a quick reference.
+
+In summary, Leeway's API documentation may require users to spend more time navigating and exploring the documentation compared to other providers, and it lacks certain features found in more user-friendly documentation.
+
+
 
 ## Are there access limitations in the free version/ Is there a premium version?
 
@@ -311,21 +352,62 @@ Each of the three API providers has premium versions of their API, along with li
 For Financial Modeling Prep, there are four different versions available:
 
 1. Free: Provides access only to the US market, allows 250 requests per day, no access to premium endpoints, a maximum limit of 5 for all endpoints, and access to only annual data.
-2. Starter for $14/month: Offers 100% market coverage, allows 300 API requests per minute, provides 30 years of historical data, and can be canceled at any time.
-3. Professional for $39/month: Also provides 100% market coverage, allows 750 API requests per minute, grants access to premium endpoints, offers 30 years of historical data, includes chat and email priority support, bulk download endpoints, WebSocket, and can be canceled at any time.
-4. Enterprise for $75/month: Offers 100% market coverage, access to premium endpoints, 30 years of historical data, is allowed for commercial use (unlike the others), includes chat and email priority support, a 99.95% uptime SLA, bulk endpoints, stock ownership endpoints, WebSocket, and can also be canceled at any time.
+2. Starter for $19/month: Offers 100% market coverage, allows 300 API requests per minute, provides 30 years of historical data, and can be canceled at any time.
+3. Professional for $49/month: Also provides 100% market coverage, allows 750 API requests per minute, grants access to premium endpoints, offers 30 years of historical data, includes chat and email priority support, bulk download endpoints, WebSocket, and can be canceled at any time.
+4. Enterprise for $99/month: Offers 100% market coverage, 1,500 calls/minute, access to premium endpoints, 30 years of historical data, is allowed for commercial use (unlike the others), includes chat and email priority support, a 99.95% uptime SLA, bulk endpoints, stock ownership endpoints, WebSocket, and can also be canceled at any time.
+
+        FMP has since changed the prices and names of the services as follows:
+
+        Basic:
+            5 API Calls/Min.   
+            5-Year Historical Data.
+            Fundamental and Market Data.
+            Free.
+
+        Starter:
+            Real-time Data
+            300 API Calls / Min
+            30+ Year Historical Data
+            Fundamental Data
+            Market Data
+            $29.00/mo.
+        
+        Premium:
+            Real-time Data
+            750 API Calls / Min
+            30+ Year Historical Data
+            Fundamental Data
+            Market Data
+            Advanced Data
+            Websocket
+            Corporate Filings
+            $69.00/mo.
+
+         Ultimate:
+            Real-time Data
+            3,000 API Calls/Min
+            30+ Years Historical Data
+            Fundamental Data
+            Market Data
+            Advanced Data
+            Corporate Filings
+            Fund & ETF Data
+            ESG Data
+            Websocket
+            Bulk and Batch Deliver
+         $139.00/mo.
 
 For Leeway there are 2 different versions available:
 
-A Free and a Premium version for 69,95€/month, but the only difference here is the number of requests available.
+- A Free and a Premium version for 79,95€/month, but the only difference here is the number of requests available.
 
-The Free Plan offers only 50 requests per day, while the Premium version provides 100,000 requests per day. Both versions offer access to over 40 global exchanges, 25,000+ global stocks, and historical data of up to 20 years for fundamental data. For End-of-Day data, it's the same, except for historical data where the complete history is provided.
+- The Free Plan offers only 50 requests per day, while the Premium version provides 100,000 requests per day. Both versions offer access to over 40 global exchanges, 25,000+ global stocks, and historical data of up to 20 years for fundamental data. For End-of-Day data, it's the same, except for historical data where the complete history is provided.
 
 For Alpha Vantage there are 3 different versions available:
 
-There is a Free version that covers the majority of the datasets for up to 5 API requests per minute and 100 requestes per day.
+- There is a Free version that covers the majority of the datasets for up to 5 API requests per minute and 100 requestes per day.
 
-An Acadameic version called “Academic Access”.
+- An Acadameic version called “Academic Access”.
 
 And a Premium version with several different payment plans:
 
@@ -336,8 +418,52 @@ And a Premium version with several different payment plans:
 - 600 API requests per minute + realtime US market data: $199,99/month
 - 1200 API requests per minute + realtime US market data: $249,99/month
 
+### Costs per API request
+
+Financial Modeling Prep (Old Version):
+
+    Basic (Free):
+        Cost per API Request: Unlimited, as it's free
+
+    Starter ($19/Month):
+        Cost per API Request: Approximately $0.0000633 (per API request at maximum usage)
+
+    Professional ($49/Month):
+        Cost per API Request: Approximately $0.0000653 (per API request at maximum usage)
+
+    Enterprise ($99/Month):
+        Cost per API Request: Approximately $0.0000667 (per API request at maximum usage)
+
+Financial Modeling Prep (New Version):
+
+    Starter ($29/Month):
+        Cost per API Request: Approximately $0.0000967 (per API request at maximum usage)
+
+    Premium ($69/Month):
+        Cost per API Request: Approximately $0.000092 (per API request at maximum usage)
+
+    Ultimate ($139/Month):
+        Cost per API Request: Approximately $0.0000463 (per API request at maximum usage)
+
+  Leeway:
+
+    Free:
+        Cost per API Request: Unlimited, as it's free
+
+    Premium (75.95€/Month):
+        Cost per API Request: Approximately 0.0007595€ (per API request at maximum usage)
+
+Alpha Vantage:
+
+    Free:
+        Cost per API Request: Unlimited, as it's free
+
+    Premium Plans:
+        The cost per API request varies depending on the plan, ranging from approximately $0.0000833 to $0.0004167 per API request at maximum usage.
+
+
 ## Important to know:
 
 - If you call the Fundamentals in Leeway, it counts as 10 API calls at once.
+- Leeway provides all the Fundamental data within the 10 API calls at once.
 - Alpha Vantage uses their own Symbols for other exchanges.
-- Leeway provides all the Fundamental data with one API cal
