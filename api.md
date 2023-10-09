@@ -1,4 +1,4 @@
-![API vergleichs Kategorien](appendix\api_comparison\kategorien.jpg)
+![API vergleichs Kategorien](appendix/api_comparison/kategorien.jpg)
 
 
 ## What do the providers state on their website about what is being offered?
@@ -299,7 +299,7 @@ FMP provides [9 Technical Indicators in the Technical Indicators Intraday API](h
 Leeway provides 9 Technical Indicators that are listed in the big JSON file that they output in /api/v1/public/historicalquotes/marketcap/{symbolExchange} [in the Fundamentals](https://leeway.tech/api-doc/general?lang=ger&dataapi=true).
 
 
-![The following chart shows the number of technical features](appendix\api_comparison\technicals.png)
+![The following chart shows the number of technical features](appendix/api_comparison/technicals.png)
 
 ## How good is the API Documentation?
 
