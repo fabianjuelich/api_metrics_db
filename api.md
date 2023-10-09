@@ -1,7 +1,7 @@
-![API vergleichs Kategorien](./appendix/categories.jpg)
+![API vergleichs Kategorien](appendix\api_comparison\kategorien.jpg)
 
 
-## **What do the providers state on their website about what is being offered?**
+## What do the providers state on their website about what is being offered?
 
 ### [Alpha Vantage](https://www.alphavantage.co/)
 
@@ -250,7 +250,7 @@ Everything that is in these tables was taken as it was provided.
 |  | Africa |  |
 
 
-# **Is the fundamental data available to calculate the 12 key indicators yourself?**
+# Is the fundamental data available to calculate the 12 key indicators yourself?
 
 | Indicator | Alpha Vantage | FMP | Leeway |
 | --- | --- | --- | --- |
@@ -296,9 +296,10 @@ Alpha Vantage provides a wide variety of technical features. There are [53 Techn
 
 FMP provides [9 Technical Indicators in the Technical Indicators Intraday API](https://site.financialmodelingprep.com/developer/docs/technicals-intraday-api/), and [1 more in Chart Market Stock Data API](https://site.financialmodelingprep.com/developer/docs/historical-stock-data-free-api/). So in total, there are only 10 Technical Indicators that FMP provides.
 
-Leeway provides 9 Technical Indicators that are listed in the big JSON file that they output in /api/v1/public/historicalquotes/marketcap/{symbolExchange} [in the Fundamentals](https://leeway.tech/api-doc/general?lang=ger&dataapi=true)
+Leeway provides 9 Technical Indicators that are listed in the big JSON file that they output in /api/v1/public/historicalquotes/marketcap/{symbolExchange} [in the Fundamentals](https://leeway.tech/api-doc/general?lang=ger&dataapi=true).
 
-![Alt text](appendix\api_comparison\technical_features2.png)
+
+![The following chart shows the number of technical features](appendix\api_comparison\technicals.png)
 
 ## How good is the API Documentation?
 
@@ -395,7 +396,7 @@ For Financial Modeling Prep, there are four different versions available:
             ESG Data
             Websocket
             Bulk and Batch Deliver
-         $139.00/mo.
+            $139.00/mo.
 
 For Leeway there are 2 different versions available:
 
