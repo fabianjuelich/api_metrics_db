@@ -81,10 +81,10 @@ class AlphaVantage(Findata):
 class FinancialModelingPrep(Findata):
 
     __financialmodellingprep = dict(zip(list(METRICS), [
-        ('income-statement', 0, 'revenue'),
+        ('income-statement', 0, 'growthRevenue'),
         ('income-statement', 0, 'grossProfit'),
         ('key-metrics', 0, 'roe'),
-        ('key-metrics', 0, 'debtToEquity'), # ToDo
+        (), # ToDo: equity ratio
         ('key-metrics', 0, 'debtToEquity'), # ToDo
         ('key-metrics', 0, 'marketCap'),
         ('key-metrics', 0, 'enterpriseValue'),
@@ -115,7 +115,7 @@ class FinancialModelingPrep(Findata):
             match(metric):
                 # given
                 case _:
-                    result[metric.name] = get_value_by_list(self.data, self.__financialmodellingprep[metric])
+                    result[metric.value] = get_value_by_list(self.data, self.__financialmodellingprep[metric])
         return(result)
     
     def sector(self):
@@ -173,18 +173,18 @@ class Leeway(Findata):
                 case METRICS.EQUITY_RATIO:
                     shareholders_equity = get_value_by_list(self.data, self.__leeway[metric]['SHAREHOLDERS_EQUITY'])
                     total_assets = get_value_by_list(self.data, self.__leeway[metric]['LIABILITIES'])
-                    result[metric.name] = shareholders_equity / (total_assets + shareholders_equity)
+                    result[metric.value] = shareholders_equity / (total_assets + shareholders_equity)
                 case METRICS.GEARING_RATIO:
                     shareholders_equity = get_value_by_list(self.data, self.__leeway[metric]['SHAREHOLDERS_EQUITY'])
                     debt = get_value_by_list(self.data, self.__leeway[metric]['DEBT'])
-                    result[metric.name] = debt / shareholders_equity
+                    result[metric.value] = debt / shareholders_equity
                 case METRICS.PRICE_TO_CASHFLOW:
                     market_capitalization = get_value_by_list(self.data, self.__leeway[metric]['MARKET_CAPITALIZATION'])
                     cashflow = get_value_by_list(self.data, self.__leeway[metric]['CASHFLOW'])
-                    result[metric.name] = market_capitalization / cashflow
+                    result[metric.value] = market_capitalization / cashflow
                 # given
                 case _:
-                    result[metric.name] = get_value_by_list(self.data, self.__leeway[metric])
+                    result[metric.value] = get_value_by_list(self.data, self.__leeway[metric])
         return(result)
 
     def sector(self):

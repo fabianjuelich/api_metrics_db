@@ -3,7 +3,7 @@ from xmlrpc.client import ServerProxy
 from elasticsearch import Elasticsearch
 from sort import Sort
 from api import Api
-from datetime import date
+from datetime import datetime
 import json
 
 # setup #
@@ -11,19 +11,23 @@ import json
 es = Elasticsearch('http://elasticsearch:9200')
 ser = ServerProxy('http://app:2900', allow_none=True)
 
-def store(doc, ident):
-    print(ident, '\n', json.dumps(doc, indent=4))
-    return  # ToDo: remove later
-    res = es.index(
-        index="lazy-investor",
-        id = ident,
-        document=doc
-    )
+def store(data, request):
+    print(request, '\n', json.dumps(data, indent=4))
+    for doc in data:
+        doc['request'] = request
+        doc['timestamp'] = str(datetime.now())
+        res = es.index(
+            index="lazy-investor",
+            document=doc
+        )
+        print(res)
 
-def rpc(typ: Sort, symbol: str, country: str, api: Api):
-    ident = f'{str(date.today())}_{typ.name}_{(symbol+"_") if symbol else ""}{(country+"_") if country else ""}{api.name}'
-    doc = json.loads(ser.metrics(typ.value, symbol, country, api.value))
-    store(doc, ident)
+def rpc(sort: Sort, symbols: str, country_codes: str, api: Api):
+    data = json.loads(ser.metrics(sort.value, symbols, country_codes, api.value))
+    symbols_format = (('-'.join(symbols) if type(symbols) == list else symbols) + '_') if symbols else ""
+    country_codes_format = (('-'.join(country_codes) if type(country_codes) == list else country_codes) + '_') if country_codes else ""
+    request = f'{sort.name}_{symbols_format}{country_codes_format}{api.name}'
+    store(data, request)
 
 # example calls/storing #
 
@@ -31,4 +35,5 @@ def rpc(typ: Sort, symbol: str, country: str, api: Api):
 # rpc(Sort.MARKET, None, 'DE', Api.LEEWAY)
 # rpc(Sort.STOCK, 'IBM', 'US', Api.LEEWAY)
 
-rpc(Sort.STOCK, 'AAPL', 'US', Api.FINANCIAL_MODELING_PREP)
+# rpc(Sort.STOCK, ['AAPL', 'IBM'], 'US', Api.ALPHA_VANTAGE)
+rpc(Sort.INDEX, 'NDX', None, Api.ALPHA_VANTAGE)

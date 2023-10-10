@@ -9,13 +9,13 @@ class Indicator(StrEnum):
     GROSS_PROFIT = auto()
     RETURN_ON_EQUITY = auto()
     EQUITY_RATIO = auto()
-    GEARING = auto()
+    GEARING_RATIO = auto()
     MARKET_CAPITALIZATION = auto()
-    EV = auto()
-    EV_TO_REVENUE = auto()
+    ENTERPRISE_VALUE = auto()
+    EV_TO_SALES = auto()
     EV_TO_EBITDA = auto()
-    PRICE_TO_EARNING = auto()
-    PRICE_TO_BOOK = auto()
+    PRICE_TO_EARNINGS = auto()
+    PRICE_TO_BOOK_VALUE = auto()
     PRICE_TO_CASHFLOW = auto()
 
 @dataclass
@@ -69,7 +69,7 @@ indicators = {
             Function.BALANCE_SHEET)],
 
     # Gearing = Total Debt / Total Shareholders' Equity
-    Indicator.GEARING: [
+    Indicator.GEARING_RATIO: [
         Data(
             'longTermDebtNoncurrent',
             Function.BALANCE_SHEET),
@@ -88,7 +88,7 @@ indicators = {
 
     # EV = market capitalization + total debt - cash and cash equivalents
     # Total debt:  long-term debt noncurrent
-    Indicator.EV: [    
+    Indicator.ENTERPRISE_VALUE: [    
         Data(
             'longTermDebtNoncurrent',
             Function.BALANCE_SHEET),
@@ -96,7 +96,7 @@ indicators = {
             'cashAndCashEquivalentsAtCarryingValue',
             Function.BALANCE_SHEET)],
 
-    Indicator.EV_TO_REVENUE: Data(
+    Indicator.EV_TO_SALES: Data(
         'totalRevenue',
         Function.INCOME_STATEMENT),
 
@@ -116,7 +116,7 @@ indicators = {
              Function.INCOME_STATEMENT)],    
 
     # Stock Price / Earnings Per Share
-    Indicator.PRICE_TO_EARNING: [
+    Indicator.PRICE_TO_EARNINGS: [
          Data(
             '4. close',
             Function.TIME_SERIES_INTRADAY),
@@ -125,7 +125,7 @@ indicators = {
             Function.COMPANY_OVERVIEW)],
 
     # Market price per share(stock price) / (total shareholder equity / shares outstanding(=book value per share))
-    Indicator.PRICE_TO_BOOK: [
+    Indicator.PRICE_TO_BOOK_VALUE: [
          Data(
             '4. close',
             Function.TIME_SERIES_INTRADAY),
@@ -314,10 +314,10 @@ def equity_ratio(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
 
     return equRat, equRat_av
 
-def gearing(symbol):
+def gearing_ratio(symbol):
     try:
-        totDebt = int(get_latest_report(symbol, indicators[Indicator.GEARING][0].function)[0][indicators[Indicator.GEARING][0].key])
-        totShareEqau = int(get_latest_report(symbol, indicators[Indicator.GEARING][1].function)[0][indicators[Indicator.GEARING][1].key])
+        totDebt = int(get_latest_report(symbol, indicators[Indicator.GEARING_RATIO][0].function)[0][indicators[Indicator.GEARING_RATIO][0].key])
+        totShareEqau = int(get_latest_report(symbol, indicators[Indicator.GEARING_RATIO][1].function)[0][indicators[Indicator.GEARING_RATIO][1].key])
         gearing = round(totDebt/totShareEqau, 4)
     except:
         gearing = None
@@ -353,24 +353,24 @@ def market_capitalization(symbol):
 
     return markCap, markCap_av
 
-def ev(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+def enterprise_value(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
     try:
         markCap = market_capitalization(symbol)[0]
        
         longTermDebt = int(get_latest_report(
             symbol,
-            indicators[Indicator.EV][0].function,
+            indicators[Indicator.ENTERPRISE_VALUE][0].function,
             fiscal,
             fiscalDateEnding
-            )[0][indicators[Indicator.EV][0].key])
+            )[0][indicators[Indicator.ENTERPRISE_VALUE][0].key])
         
         cashandCashequ = int(get_latest_report(
             symbol,
-            indicators[Indicator.EV][1].function,
+            indicators[Indicator.ENTERPRISE_VALUE][1].function,
             fiscal,
             fiscalDateEnding
-            )[0][indicators[Indicator.EV][1].key])
+            )[0][indicators[Indicator.ENTERPRISE_VALUE][1].key])
 
         totDebt = longTermDebt
 
@@ -380,17 +380,17 @@ def ev(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
 
     return ev, None
 
-def ev_to_revenue(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding=None):
+def ev_to_sales(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding=None):
     # calc
     try:
-        ev1 = ev(symbol)[0]
+        ev1 = enterprise_value(symbol)[0]
 
         totRev = int(get_latest_report(
             symbol,
-            indicators[Indicator.EV_TO_REVENUE].function,
+            indicators[Indicator.EV_TO_SALES].function,
             fiscal,
             fiscalDateEnding
-            )[0][indicators[Indicator.EV_TO_REVENUE].key])
+            )[0][indicators[Indicator.EV_TO_SALES].key])
         
         evToRev = round(ev1 / totRev, 2)
     except:
@@ -409,7 +409,7 @@ def ev_to_revenue(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding
 
 def ev_to_ebitda(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding=None):
     # calc
-    ev_ = ev(symbol)[0]
+    ev_ = enterprise_value(symbol)[0]
 
     try:
         depAndAmo = int(get_latest_report(
@@ -456,20 +456,20 @@ def ev_to_ebitda(symbol, fiscal: Fiscal=Fiscal.ANNUAL_REPORTS, fiscalDateEnding=
 
     return evToEbitda, evToEbitda_av
 
-def price_to_earning(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+def price_to_earnings(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
     try:
         close = float(get_latest_series(
             symbol,
-            indicators[Indicator.PRICE_TO_EARNING][0].function
-        )[indicators[Indicator.PRICE_TO_EARNING][0].key])
+            indicators[Indicator.PRICE_TO_EARNINGS][0].function
+        )[indicators[Indicator.PRICE_TO_EARNINGS][0].key])
 
         eps = float(get_latest_report(
             symbol,
-            indicators[Indicator.PRICE_TO_EARNING][1].function,
+            indicators[Indicator.PRICE_TO_EARNINGS][1].function,
             fiscal,
             fiscalDateEnding
-        )[indicators[Indicator.PRICE_TO_EARNING][1].key])
+        )[indicators[Indicator.PRICE_TO_EARNINGS][1].key])
 
         priceToEarning = round(close/eps, 2)
     except:
@@ -486,27 +486,27 @@ def price_to_earning(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
 
     return priceToEarning, priceToEarning_av
 
-def price_to_book(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
+def price_to_book_value(symbol, fiscal: Fiscal=None, fiscalDateEnding=None):
     # calc
     try:
         close_ser = get_latest_series(
             symbol,
-            indicators[Indicator.PRICE_TO_BOOK][0].function)
-        close = float(close_ser[indicators[Indicator.PRICE_TO_BOOK][0].key])
+            indicators[Indicator.PRICE_TO_BOOK_VALUE][0].function)
+        close = float(close_ser[indicators[Indicator.PRICE_TO_BOOK_VALUE][0].key])
 
         totShareEqui = int(get_latest_report(
             symbol,
-            indicators[Indicator.PRICE_TO_BOOK][1].function,
+            indicators[Indicator.PRICE_TO_BOOK_VALUE][1].function,
             fiscal,
             fiscalDateEnding
-            )[0][indicators[Indicator.PRICE_TO_BOOK][1].key])
+            )[0][indicators[Indicator.PRICE_TO_BOOK_VALUE][1].key])
 
         shareOutSta = int(get_latest_report(
             symbol,
-            indicators[Indicator.PRICE_TO_BOOK][2].function,
+            indicators[Indicator.PRICE_TO_BOOK_VALUE][2].function,
             fiscal,
             fiscalDateEnding
-            )[0][indicators[Indicator.PRICE_TO_BOOK][2].key])
+            )[0][indicators[Indicator.PRICE_TO_BOOK_VALUE][2].key])
         
         priceToBook = round(close/(totShareEqui/shareOutSta), 2)
     except:
