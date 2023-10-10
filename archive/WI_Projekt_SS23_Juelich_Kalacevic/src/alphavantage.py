@@ -110,3 +110,6 @@ def get_currency(report) -> str:
 def get_sector_and_industry(symbol) -> tuple:
     overview = get_latest_report(symbol, Function.COMPANY_OVERVIEW)
     return overview['Sector'], overview['Industry']
+
+def ipo(symbol) -> str:
+    return None # not given

@@ -154,5 +154,6 @@ class Table:
             result[component] = {}
             result[component]['metadata'] = {}
             result[component]['metadata']['sector'], result[component]['metadata']['industry'] = av.get_sector_and_industry(component)
+            result[component]['metadata']['ipoDate'] = av.ipo(component)
             result[component]['metrics'] = dict(list(map(lambda d: (d, data[d][source]), data)))
         return result

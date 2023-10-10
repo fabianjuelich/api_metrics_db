@@ -60,6 +60,8 @@ class Findata():
         pass
     def industry(self) -> str:
         pass
+    def ipo(self) -> str:
+        pass
 
 # implementations #
 
@@ -76,15 +78,18 @@ class AlphaVantage(Findata):
     
     def industry(self):
         return self.data['metadata']['industry']
+    
+    def ipo(self):
+        return self.data['metadata']['ipoDate']
 
 
 class FinancialModelingPrep(Findata):
 
     __financialmodellingprep = dict(zip(list(METRICS), [
-        ('income-statement', 0, 'growthRevenue'),
+        ('income-statement-growth', 0, 'growthRevenue'),
         ('income-statement', 0, 'grossProfit'),
         ('key-metrics', 0, 'roe'),
-        (), # ToDo: equity ratio
+        ('key-metrics', 0, 'debtToEquity'), # ToDo: equity ratio
         ('key-metrics', 0, 'debtToEquity'), # ToDo
         ('key-metrics', 0, 'marketCap'),
         ('key-metrics', 0, 'enterpriseValue'),
@@ -98,7 +103,7 @@ class FinancialModelingPrep(Findata):
     def __init__(self):
         self.url = 'https://financialmodelingprep.com/api/'
 
-    def get(self, symbol, exchange=None, docs=['profile', 'income-statement', 'balance-sheet-statement', 'key-metrics'], version=3, key=tokens.financial_modeling_prep):
+    def get(self, symbol, exchange=None, docs=['profile', 'income-statement', 'income-statement-growth', 'balance-sheet-statement', 'key-metrics'], version=3, key=tokens.financial_modeling_prep):
         self.data = {}
         params = {
             'apikey': key
@@ -123,6 +128,9 @@ class FinancialModelingPrep(Findata):
     
     def industry(self):
         return self.data['profile'][0]['industry']
+    
+    def ipo(self):
+        return None # self.data['company-outlook'][0]['ipoDate'] # premium feature
 
 
 class Leeway(Findata):
@@ -192,3 +200,6 @@ class Leeway(Findata):
 
     def industry(self):
         return self.data['General']['Industry']
+
+    def ipo(self):
+        return self.data['General']['IPODate']

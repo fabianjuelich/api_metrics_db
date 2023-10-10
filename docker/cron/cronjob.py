@@ -3,7 +3,6 @@ from xmlrpc.client import ServerProxy
 from elasticsearch import Elasticsearch
 from sort import Sort
 from api import Api
-from datetime import datetime
 import json
 
 # setup #
@@ -15,7 +14,6 @@ def store(data, request):
     print(request, '\n', json.dumps(data, indent=4))
     for doc in data:
         doc['request'] = request
-        doc['timestamp'] = str(datetime.now())
         res = es.index(
             index="lazy-investor",
             document=doc
@@ -35,5 +33,5 @@ def rpc(sort: Sort, symbols: str, country_codes: str, api: Api):
 # rpc(Sort.MARKET, None, 'DE', Api.LEEWAY)
 # rpc(Sort.STOCK, 'IBM', 'US', Api.LEEWAY)
 
-# rpc(Sort.STOCK, ['AAPL', 'IBM'], 'US', Api.ALPHA_VANTAGE)
-rpc(Sort.INDEX, 'NDX', None, Api.ALPHA_VANTAGE)
+rpc(Sort.STOCK, 'IBM', 'US', Api.ALPHA_VANTAGE)
+# rpc(Sort.INDEX, 'NDX', None, Api.ALPHA_VANTAGE)
