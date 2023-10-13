@@ -10,5 +10,6 @@ ADD ./shared/ /home/
 RUN chmod +x /etc/cron.d/crontab
 RUN chmod +x /home/cronjob.py
 
-RUN touch /var/log/cron.log
-CMD cron && tail -f /var/log/cron.log
+RUN crontab /etc/cron.d/crontab
+
+ENTRYPOINT ["cron", "-f"]

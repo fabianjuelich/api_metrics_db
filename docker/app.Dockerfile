@@ -1,5 +1,6 @@
 FROM debian:bookworm
 
+RUN ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 RUN apt update && apt install python3 python3-pip -y
 
 # new
@@ -21,7 +22,5 @@ RUN pip3 install stocksymbol --break-system-packages
 RUN pip3 install requests_html --break-system-packages
 RUN pip3 install pandas --break-system-packages
 RUN pip3 install matplotlib --break-system-packages
-
-# ENV PYTHONPATH "${PYTHONPATH}:/home/archive/WI_Projekt_SS23_Juelich_Kalacevic"
 
 CMD ["python3", "home/interface.py"]
