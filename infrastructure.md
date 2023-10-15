@@ -6,8 +6,7 @@ __Note:__ Some links can only be accessed in the universities' network (e.g. by 
 Docker is used to build and run Linux containers for multiple platforms, while Docker Compose is a tool for defining and managing multi-container applications. Together, they provide a powerful solution for containerization, making it easier to deploy and scale applications.
 
 ### Architecture
-ToDo
-![docker_architecture](./appendix/infrastructure/docker_architecture.png)
+![architecture](./appendix/infrastructure/architecture.png)
 
 ### Dockerfile
 The working directory (WORKDIR) is used as the python path (searched for imports instead of the parent directory) unless it is explicitly defined as an environment variable by `ENV PYTHONPATH=<path>`.
@@ -36,20 +35,20 @@ That way you have different options to communicate with the database:
 
 The indices' data which is located at */usr/share/elasticsearch/data* on the guest machine will be persistently stored at */var/lib/docker/volumes/compose_elasticsearch_volume/_data* on the host machine.
 
-lazy-investor index-id: kOm2aG-gTj2Wa-CaIRRFMw
+lazy-investor index-id: lazy-investor
 
 ### Database design
 ToDo
 
 ## App (Server)
-Application logic procuring and transforming fundamental data
+Application logic procuring and transforming fundamental data.
 
 ### [app.py](./docker/app/app.py)
 Main program, whose `document()` function is called to receive index, market or stock data.
 Uses ss.py to retrieve basic data such as symbols needed for findata.py to receive financial data.
 
 ### [findata.py](./docker/app/findata.py)
-Parses [multiple financial APIs](./api.md) to retrieve fundamental data and general information. Encapsulating the data into objects provides a call-cost efficient way to calculate metrics.
+Parses [multiple financial APIs](./api.md) to retrieve fundamental data and general information. Encapsulating (and caching) the data into objects provides a call-cost efficient way to calculate metrics.
 
 ### [ss.py](./compose/App/ss.py)
 Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of scraping like we did last time. However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. Bug: Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks.
@@ -71,7 +70,7 @@ Table that lists cronjobs specifying the minute, hour, day, month and weekday a 
 Implements a XML-RPC client that requests findata from the application and sends it to the database via HTTP request. Communicates between application and database.
 
 ## Shared
-API and TYPE Enum.
+Api and Sort Enum.
 
 ## ToDo:
 - [x] Setup Docker compose
