@@ -149,7 +149,7 @@ The indices' data which is located at */usr/share/elasticsearch/data* on the gue
 ```
 
 ### Common requests
-```json
+```yaml
 # create index
 PUT lazy-investor
 
