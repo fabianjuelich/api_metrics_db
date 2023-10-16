@@ -1,8 +1,8 @@
 # Infrastructure
 
 __Note:__ Some links can only be accessed in the universities' network (e.g. by connecting via the VPN).
-![infrastructure](./appendix/infrastructure/infrastructure.png)
 
+![infrastructure](./appendix/infrastructure/infrastructure.png)
 
 ## [Docker](https://www.docker.com/)
 Docker is used to build and run Linux containers for multiple platforms, while Docker Compose is a tool for defining and managing multi-container applications. Together, they provide a powerful solution for containerization, making it easier to deploy and scale applications.
@@ -37,10 +37,213 @@ That way you have different options to communicate with the database:
 
 The indices' data which is located at */usr/share/elasticsearch/data* on the guest machine will be persistently stored at */var/lib/docker/volumes/compose_elasticsearch_volume/_data* on the host machine.
 
-lazy-investor index-id: lazy-investor
-
 ### Database design
-ToDo
+```json
+{
+  "lazy-investor": {
+    "aliases": {},
+    "mappings": {
+      "properties": {
+        "indices": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "industry": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "metrics": {
+          "properties": {
+            "equity_ratio": {
+              "type": "float"
+            },
+            "ev_to_ebitda": {
+              "type": "float"
+            },
+            "ev_to_sales": {
+              "type": "float"
+            },
+            "gross_profit": {
+              "type": "long"
+            },
+            "market_capitalization": {
+              "type": "long"
+            },
+            "price_to_book_value": {
+              "type": "float"
+            },
+            "price_to_earnings": {
+              "type": "float"
+            },
+            "return_on_equity": {
+              "type": "float"
+            },
+            "revenue_growth": {
+              "type": "float"
+            }
+          }
+        },
+        "request": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "sector": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "symbol": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "timestamp": {
+          "type": "date"
+        }
+      }
+    },
+    "settings": {
+      "index": {
+        "routing": {
+          "allocation": {
+            "include": {
+              "_tier_preference": "data_content"
+            }
+          }
+        },
+        "number_of_shards": "1",
+        "provided_name": "lazy-investor",
+        "creation_date": "1697468673744",
+        "number_of_replicas": "1",
+        "uuid": "nq4OdF_wRF60M7VP2PDAKw",
+        "version": {
+          "created": "8090199"
+        }
+      }
+    }
+  }
+}
+```
+
+### Common requests
+```json
+# create index
+PUT lazy-investor
+
+# map timestamp to date
+PUT /lazy-investor/_mapping
+{
+  "properties": {
+    "timestamp": {
+      "type": "date"
+    }
+  }
+}
+
+# show clusters
+GET _cluster/health
+
+# show nodes
+GET _nodes/stats
+
+# show db schema
+GET lazy-investor
+
+# delete index lazy-investor
+DELETE /lazy-investor
+
+# show all documents
+GET /lazy-investor/_search
+
+# show specific document by id
+GET lazy-investor/_doc/2023-10-09_STOCK_AAPL_US_ALPHA_VANTAGE
+
+# search for symbol IBM
+GET /lazy-investor/_search
+{
+  "query": {
+    "match": {
+      "symbol": "IBM"
+    }
+  }
+}
+
+# search for stocks listed in SPX
+GET /lazy-investor/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "indices": "SPX"
+          }
+        }
+      ]
+    }
+  }
+}
+
+# search for minimum price to earnings of 100
+GET /lazy-investor/_search
+{
+  "query": {
+    "range" : {
+      "metrics.price_to_earnings": {
+          "gte" : 100
+      }
+    }
+  }
+}
+
+# search for documents created on 2023-10-14
+GET /lazy-investor/_search
+{
+  "query": {
+    "range": {
+      "timestamp": {
+        "gte": "2023-10-14",
+        "lt": "2023-10-15"
+      }
+    }
+  }
+}
+
+# remove all documents created before 2023-11-01
+POST /lazy-investor/_delete_by_query
+{
+  "query": {
+    "range": {
+      "timestamp": {
+        "lt": "2023-11-01"
+      }
+    }
+  }
+}
+```
 
 ## App (Server)
 Application logic procuring and transforming fundamental data.
