@@ -10,11 +10,22 @@ Docker is used to build and run Linux containers for multiple platforms, while D
 ### Architecture
 ![docker](./appendix/infrastructure/docker.png)
 
-### Dockerfile
+### [Dockerfile](https://docs.docker.com/engine/reference/builder/)
+Contains instructions for building an image.
+
+__FROM__ creates the (Debian) base image.\
+__RUN__ executes commands on the OS. (E.g. setting the timezone)\
+__ADD__ copies files and directories into the image. (E.g. code)\
+__CMD__ defines what to do on start. (E.g. running a loop)
+
+### [Compose file](https://docs.docker.com/compose/compose-file/03-compose-file/)
+YAML file that defines the services used in the multi-container application. Therefore, you can use images directly or build from an existing Dockerfile.
+
 The working directory (WORKDIR) is used as the python path (searched for imports instead of the parent directory) unless it is explicitly defined as an environment variable by `ENV PYTHONPATH=<path>`.
+The Elasticsearch data which is located at */usr/share/elasticsearch/data* on the guest machine will be persistently stored at */var/lib/docker/volumes/compose_elasticsearch_volume/_data* on the host machine.
 
 ### Networking
-Docker Compose maintains a DNS that resolves the container_name property used in the [Docker Compose configuration](./compose/docker-compose.yml) to the relevant IP address.
+Docker Compose maintains a DNS that resolves the `container_name` property used in the [Docker Compose configuration](./compose/docker-compose.yml) to the relevant IP address.
 When customizing ports, take a look at [this table](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers) to avoid jam.
 
 ### Docker commands you should know:
@@ -34,8 +45,6 @@ That way you have different options to communicate with the database:
 2. Using the [Kibana console](http://139.6.56.155:5601/app/dev_tools#/console)
 3. Using a programming languages library like the [python client](https://elasticsearch-py.readthedocs.io/en/v8.9.0/)
 4. Saving and sending requests with [postman](https://www.postman.com/)
-
-The indices' data which is located at */usr/share/elasticsearch/data* on the guest machine will be persistently stored at */var/lib/docker/volumes/compose_elasticsearch_volume/_data* on the host machine.
 
 ### Database design
 ```json
@@ -245,6 +254,9 @@ POST /lazy-investor/_delete_by_query
 }
 ```
 
+## [Kibana](https://www.elastic.co/de/kibana)
+Data visualization and analyzing tool based on Elasticsearch.
+
 ## App (Server)
 Application logic procuring and transforming fundamental data.
 
@@ -260,6 +272,7 @@ Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-
 
 ### [interface.py](./compose/App/interface.py)
 Restful XML-RPC server for responding to HTTP requests from Clients.
+Enums cannot be used due to lack of support from RPC. Therefore, their values must be used.
 
 ### tokens.py (not staged)
 API-keys used for Alpha-Vantage, Financial Modeling Prep, Leeway and StockSymbol.
@@ -268,26 +281,27 @@ API-keys used for Alpha-Vantage, Financial Modeling Prep, Leeway and StockSymbol
 Service that enables scheduling the execution of bash commands.
 When working with cronjobs, it's important to explicitly set the timezone on that (virtual) machine.
 
-### [crontab](./compose/Cron/crontab)
+### [crontab](./docker/cron/crontab)
 Table that lists cronjobs specifying the minute, hour, day, month and weekday a command should be executed. They are either system wide or user related.
 
-### [cronjob.py](./compose/Cron/cronjob.py)
-Implements a XML-RPC client that requests findata from the application and sends it to the database via HTTP request. Communicates between application and database.
+### [cronjob.py](./docker/cron/cronjob.py)
+Implements a XML-RPC client that requests findata from the applications interface and stores it in the database via HTTP request.
 
-## Shared
+##
+__Shared__\
 Api and Sort Enum.
 
+# Usage
+`interface.py`
+```python
+def metrics(sort: int, symbols: str, country_codes: str, api: int)
+```
+```
+sort        symbols country_codes api
+SORT.INDEX     1..*             0   1
+SORT.MARKET       0          1..*   1
+SORT.STOCK     1..*             1   1
+```
+
 ## ToDo:
-- [x] Setup Docker compose
-- [x] Install and configure Elasticsearch and Kibana
-- [x] Finalize db schema
-- [x] Install and configure cron
-- [x] Rework application for multi-API calls
-- [x] Design interface for application
-- [x] Code script for data exchange between app and database which will be executed every 24h
-- [x] Generate list of all index symbols
-- [x] Add total count to index symbols information
 - [ ] Add user password and encryption for Elastic stack (SSL/TLS)
-- [x] Report typo to stock-symbol
-- [x] Use backup data if server is not responding
-- [x] Revise infrastructure drawing
