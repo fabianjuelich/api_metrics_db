@@ -1,12 +1,14 @@
 # Infrastructure
 
 __Note:__ Some links can only be accessed in the universities' network (e.g. by connecting via the VPN).
+![infrastructure](./appendix/infrastructure/infrastructure.png)
+
 
 ## [Docker](https://www.docker.com/)
 Docker is used to build and run Linux containers for multiple platforms, while Docker Compose is a tool for defining and managing multi-container applications. Together, they provide a powerful solution for containerization, making it easier to deploy and scale applications.
 
 ### Architecture
-![architecture](./appendix/infrastructure/architecture.png)
+![docker](./appendix/infrastructure/docker.png)
 
 ### Dockerfile
 The working directory (WORKDIR) is used as the python path (searched for imports instead of the parent directory) unless it is explicitly defined as an environment variable by `ENV PYTHONPATH=<path>`.
@@ -20,7 +22,7 @@ When customizing ports, take a look at [this table](https://en.wikipedia.org/wik
 - `docker compose build [--no-cache]` builds all containers [from new]
 - `docker compose up [-d]` runs all containers [in background]
 - `docker ps` lists running containers
-- `docker exec -it \<container name\> bash` opens shell on the container
+- `docker exec -it <container name> bash` opens shell on the container
 
 ## [Tickersymbols](https://www.ig.com/en/glossary-trading-terms/stock-symbol-definition) (Excursus)
 Those abbreviations (usually 1-6 characters) identify stocks and indeces (mostly within one country). Thus, there may be different symbols for the same company or a company may be known under several symbols.
@@ -75,7 +77,7 @@ Api and Sort Enum.
 ## ToDo:
 - [x] Setup Docker compose
 - [x] Install and configure Elasticsearch and Kibana
-- [ ] Finalize db schema
+- [x] Finalize db schema
 - [x] Install and configure cron
 - [x] Rework application for multi-API calls
 - [x] Design interface for application
@@ -85,4 +87,4 @@ Api and Sort Enum.
 - [ ] Add user password and encryption for Elastic stack (SSL/TLS)
 - [x] Report typo to stock-symbol
 - [x] Use backup data if server is not responding
-- [ ] Revise infrastructure drawing
+- [x] Revise infrastructure drawing
