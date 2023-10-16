@@ -1,4 +1,22 @@
-![API vergleichs Kategorien](appendix/api_comparison/kategorien.jpg)
+# Introduction
+
+## The Problem
+
+In today's interconnected world, access to real-time and reliable financial data plays a crucial role for businesses, investors, and developers. Integrating financial data into applications, trading strategies, or business decisions requires the use of financial APIs. These interfaces provide access to a large pool of information, including stock prices, financial reports, economic indicators, and more.
+
+However, as there are many providers in the market, comparing these options is crucial. This comparison not only aims to select the best provider but also impacts the efficiency of trading strategies, the accuracy of financial reports, and ultimately, business success. This project aims to compare the leading financial API providers, namely Alpha Vantage, Financial Modeling Prep (FMP), and Leeway. We will analyze their offerings, technical features, documentation, access limitations, and costs to determine which provider best aligns with specific requirements.
+
+Through this comparison, we can gain an understanding of how these providers contribute to informed financial decisions and the optimization of trading strategies. Choosing the right financial data API provider can significantly impact success in the financial world, and this comparison aims to simplify the decision-making process.
+
+## Solution Overview
+
+In this comprehensive comparison, we explore a range of critical aspects of financial data API providers. Our selection of these specific evaluation points is based on our previous project, where we extensively used an API to calculate 12 Key Indicators. During the course of that project, it became evident that these very points, which we now compare, play a highly relevant role in the selection of a financial data API for any analytical or trading intend.
+
+By looking into these areas, we aim to empower users with the insights needed to make well-informed decisions when selecting a finance API. These key factors serve as a compass for users, guiding them toward a provider that aligns with their data requirements and trading strategies.
+
+# Approach
+
+![API vergleichs Kategorien](appendix/api_comparison/english_categories.jpg)
 
 
 ## What do the providers state on their website about what is being offered?
