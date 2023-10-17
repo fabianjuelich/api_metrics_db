@@ -12,4 +12,4 @@ RUN chmod +x /home/cronjob.py
 
 RUN crontab /etc/cron.d/crontab
 
-ENTRYPOINT ["cron", "-f"]
+CMD ["cron", "-f"]
