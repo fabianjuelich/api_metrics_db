@@ -316,8 +316,7 @@ To get an reliable answer to that, we asked the API providers themselves.
 
 **Alpha Vantage**: Alpha Vantage's data is generally refreshed on the same day a company reports its latest earnings and financials. While they did not  respond to the E-Mail, it is stated on their website, this indicates a daily update frequency, similar to FMP and Leeway.
 
-In summary, all three API providers aim to offer daily data updates, which is a standard practice in the financial data industry. Whether you need near-real-time updates (FMP), daily data with potential delays (Leeway), or daily data refreshes (Alpha Vantage), you have options to suit your trading and analytical needs.
-
+In summary, all three API providers aim to offer daily data updates, which is a standard practice in the financial data industry. Whether you need near-real-time updates (FMP) or daily data updates (Leeway, Alpha Vantage).
 
 ## Are there technical features like the SMA, for example?
 
@@ -502,6 +501,26 @@ Alpha Vantage:
 
 
 # Discussion
+Alpha Vantage excels in providing a wide range of technical features, making it an attractive choice for users interested in technical analysis of stocks. However, it's essential to acknowledge several shortcomings.
+One of the most notable drawbacks is the lackluster support and responsiveness of the customer support. Users often rely on responsive and helpful customer support teams, but Alpha Vantage falls short in this aspect. When assistance is needed, the unresponsiveness of their support can be a source of frustration.
+Moreover, Alpha Vantage's market coverage is relatively small compared to some other providers. It also covers the least amount of regions. This limitation restricts users' ability to access a diverse array of exchanges and markets, potentially constraining their trading and investment strategies. 
+Regarding data updates, data is generally refreshed on the same day a company reports its latest earnings. While this is acceptable for many users, some might prefer even faster updates provided by other platforms.Additionally, the lack of an extensive historical data set makes backtesting difficult. The relatively short supported time period can hinder users who rely on historical data to assess the performance of their trading strategies. While the documentation provided by Alpha Vantage is decent, it doesn't match the comprehensive level offered by other providers, such as Financial Modeling Prep.
+Lastly, the premium pricing options are on the higher side, with the most expensive plan costing nearly $250 per month. This cost may not be justifiable for some users, especially considering that it offers fewer API calls per minute compared to other providers like FMP for a lower price.
+
+Leeway on the other hand is an excellent choice for useres who prioritize the convenience of accessing extensive financial data within a single document. The standout feature is Leeway's commitment to providing comprehensive information in a single, well-organized JSON file.
+Another good feature about Leeway was the quick and efficient response of the support team.
+Backtesting capabilities are another strong suit for Leeway, thanks to its provision of fundamental data, dating back up to 30 years and historical price data spanning up to 100 years. This extensive historical perspective enables traders and investors to conduct in-depth and comprehensive analyses of their strategies.
+They also provide a considerable amount of exchanges and markets, while not as extensive as FMP, the coverage is still impressive and should meet the needs of many users. The same applies to the regions. Leeway offers daily data updates with a small delay, depending on the company's size, to ensure that users have access to current and relevant financial information. However, there are still some notable limitations, especially when it comes to the technical features.
+They offer the fewest amount of technical indicators compared to its competitors. FOr users who rely heavily on technical analysis, this can be a significant drawback.
+Leeways worst feature is the documentation. It lacks the user-friendliness and organization seen in other providers Navigating the documentation, especially for new users, can be challenging, impacting the overall experience.
+Unklike the other API providers, Leeway offers only one premium version, limiting users' choices. When evaluating the cost per API request, Leeway emerges as the most expensive option, which could have an impact on the decision of budget-conscious users.
+
+FMP has an amazing customer support, offering quick responses and directly providing useful information. Backtesting is possible, although the data doesn't go as far back as Leeway's, with 15+ years, which is still sufficient for most users.
+They support the largest number of exchanges/markets and regions, providing extensive coverage for various needs. Data is updated most frequently among the three providers, ensuring users have access to current financial information. For US companies, financial data is updated within a few minutes/hours of being published on the SEC, and for international filings, daily updates are available. The API documentation is exceptional, offering a very detailed and user-friendly resource with a large pool of financial-related data. FMP provides four premium versions, with the most expensive one priced at $139.00 per month, which may seem expensive at first glance, but it offers a substantial 3,000 API calls per minute. However, when calculating the cost per API request for the top premium versions of all providers, FMP emerges as the most cost-effective option.
+One downside to FMP is the lackluster technical features, which are similar to Leeway. Additionally, while the documentation is excellent due to its comprehensive nature, it might be overwhelming for new users, given its extensive content and how it's divided into respective parts.
+
+
+
 
 
 # Conclusion
