@@ -14,6 +14,26 @@ In this comprehensive comparison, we explore a range of critical aspects of fina
 
 By looking into these areas, we aim to empower users with the insights needed to make well-informed decisions when selecting a finance API. These key factors serve as a compass for users, guiding them toward a provider that aligns with their data requirements and trading strategies.
 
+# Methodology 
+
+The approach in this project was as follows:
+
+-  Selection of API Providers: Identified three API providers, namely Financial Modeling Prep (FMP), Alpha Vantage, and Leeway, for comparison.
+
+- Comparision Criteria: Defined a set of criteria for the comparison, including what the providers offer, the quality of support, backtesting capabilities, markets and regions supported, update frequency, availability of fundamental data, technical features, API documentation quality, and the presence of premium versions.
+
+- Evaluation of Criteria: Assessed each API provider based on the defined criteria, gathering information on their offerings, support quality, features, and more.
+
+- Quantitative Analysis: Quantified certain aspects, such as API call limits, update frequency, and costs, to provide numerical comparisons.
+
+- Contextual Analysis: Provided context and explanations for each criterion to help readers understand the significance and implications of the findings.
+
+- Visualization: Utilized visual aids, such as tables and charts, to present data and comparisons in a more reader-friendly manner.
+
+- Discussion: Facilitated a discussion around the findings, highlighting the strengths and weaknesses of each API provider.
+
+- Conclusion: Summarized the findings, emphasizing which provider excels in specific areas and how the selection of an API provider should align with users' needs.
+
 # Approach
 
 ![API vergleichs Kategorien](appendix/api_comparison/english_categories.jpg)
@@ -479,6 +499,9 @@ Alpha Vantage:
 
     Premium Plans:
         The cost per API request varies depending on the plan, ranging from approximately $0.0000833 to $0.0004167 per API request at maximum usage.
+
+
+# Discussion
 
 
 # Conclusion
