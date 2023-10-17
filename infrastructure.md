@@ -21,7 +21,7 @@ __CMD__ defines what to do on start. (E.g. running a loop)
 ### [Compose file](https://docs.docker.com/compose/compose-file/03-compose-file/)
 YAML file that defines the services used in the multi-container application. Therefore, you can use images directly or build from an existing Dockerfile.
 
-The working directory (WORKDIR) is used as the python path (searched for imports instead of the parent directory) unless it is explicitly defined as an environment variable by `ENV PYTHONPATH=<path>`.
+The working directory (WORKDIR) is used as the python path (searched for imports instead of the parent directory) unless it is explicitly defined as an environment variable by `ENV PYTHONPATH=<path>`. \
 The Elasticsearch data which is located at */usr/share/elasticsearch/data* on the guest machine will be persistently stored at */var/lib/docker/volumes/compose_elasticsearch_volume/_data* on the host machine.
 
 ### Networking
@@ -29,7 +29,8 @@ Docker Compose maintains a DNS that resolves the `container_name` property used 
 When customizing ports, take a look at [this table](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers) to avoid jam.
 
 ### Docker commands you should know:
-(execute inside of the [docker compose folder](./compose/))
+Execute in the same directory as the [compose file](./docker/docker-compose.yml) as __root__.
+
 - `docker compose build [--no-cache]` builds all containers [from new]
 - `docker compose up [-d]` runs all containers [in background]
 - `docker ps` lists running containers
@@ -157,6 +158,12 @@ That way you have different options to communicate with the database:
 }
 ```
 
+### Relevant HTTP request methods
+__PUT__ replaces a ressource with the payload. \
+__GET__ requests a representation of a ressource. \
+__DELETE__ deletes a ressource. \
+__POST__ submits an change of the ressource.
+
 ### Common requests
 ```yaml
 # create index
@@ -178,7 +185,7 @@ GET _cluster/health
 # show nodes
 GET _nodes/stats
 
-# show db schema
+# show db schema (as seen above)
 GET lazy-investor
 
 # delete index lazy-investor
@@ -255,7 +262,11 @@ POST /lazy-investor/_delete_by_query
 ```
 
 ## [Kibana](https://www.elastic.co/de/kibana)
-Data visualization and analyzing tool based on Elasticsearch.
+Data visualization and analyzing tool based on Elasticsearch. These can be saved and assigned to a dashboard that can be monitored for benchmarking purposes.
+
+### Example: Proportionally market capitalization grouped by the top 5 sectors for the NASDAQ-100, collected on October 17th
+
+![visualization](./appendix/results/visualization.png)
 
 ## App (Server)
 Application logic procuring and transforming fundamental data.
@@ -268,7 +279,7 @@ Uses ss.py to retrieve basic data such as symbols needed for findata.py to recei
 Parses [multiple financial APIs](./api.md) to retrieve fundamental data and general information. Encapsulating (and caching) the data into objects provides a call-cost efficient way to calculate metrics.
 
 ### [ss.py](./compose/App/ss.py)
-Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of scraping like we did last time. However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. Bug: Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks.
+Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of scraping like we did last time. However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. Attention: [Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks](https://github.com/yongghongg/stock-symbol/issues/9).
 
 ### [interface.py](./compose/App/interface.py)
 Restful XML-RPC server for responding to HTTP requests from Clients.
