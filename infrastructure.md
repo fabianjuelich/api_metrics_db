@@ -1,6 +1,6 @@
-# Infrastructure
-
 __Note:__ Some links can only be accessed in the universities' network (e.g. by connecting via the VPN).
+
+# Infrastructure
 
 ![infrastructure](./appendix/infrastructure/infrastructure.png)
 
@@ -35,9 +35,6 @@ Execute in the same directory as the [compose file](./docker/docker-compose.yml)
 - `docker compose up [-d]` runs all containers [in background]
 - `docker ps` lists running containers
 - `docker exec -it <container name> bash` opens shell on the container
-
-## [Tickersymbols](https://www.ig.com/en/glossary-trading-terms/stock-symbol-definition) (Excursus)
-Those abbreviations (usually 1-6 characters) identify stocks and indeces (mostly within one country). Thus, there may be different symbols for the same company or a company may be known under several symbols.
 
 ## [Elasticsearch](https://www.elastic.co/elasticsearch/)
 Elasticsearch is a document-based database search engine that provides a [REST API](https://de.wikipedia.org/wiki/Representational_State_Transfer) that you can send requests to through its HTTP interface.
@@ -261,36 +258,50 @@ POST /lazy-investor/_delete_by_query
 }
 ```
 
+### Security
+
+To make the database more secure, you can set the security environment variable to true and assign a username and password.
+
+```dockerfile
+xpack.security.enabled: "true"
+ELASTIC_USERNAME: "fabian"
+ELASTIC_PASSWORD: "Pa$$w0rd"
+```
+
 ## [Kibana](https://www.elastic.co/de/kibana)
 Data visualization and analyzing tool based on Elasticsearch. These can be saved and assigned to a dashboard that can be monitored for benchmarking purposes.
 
-### Example: Proportionally market capitalization grouped by the top 5 sectors for the NASDAQ-100, collected on October 17th
+### Example: Proportionally market capitalization grouped by the top 5 sectors for the NASDAQ-100, collected on October 17th using Alpha Vantage
 
 ![visualization](./appendix/results/visualization.png)
 
 ## App (Server)
 Application logic procuring and transforming fundamental data.
 
+__Excursus: [Tickersymbols](https://www.ig.com/en/glossary-trading-terms/stock-symbol-definition)__ \
+Those abbreviations (usually 1-6 characters) identify stocks and indeces (mostly within one country). Thus, there may be different symbols for the same company or a company may be known under several symbols.
+
 ### [app.py](./docker/app/app.py)
-Main program, whose `document()` function is called to receive index, market or stock data.
-Uses ss.py to retrieve basic data such as symbols needed for findata.py to receive financial data.
+Main program, whose `document()` function is called to receive index, market or stock data including metrics and general information.
+Uses ss.py to retrieve basic data such as symbols needed for findata.py to receive financial data for an index or a market.
 
 ### [findata.py](./docker/app/findata.py)
 Parses [multiple financial APIs](./api.md) to retrieve fundamental data and general information. Encapsulating (and caching) the data into objects provides a call-cost efficient way to calculate metrics.
 
 ### [ss.py](./compose/App/ss.py)
-Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of scraping like we did last time. However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. Attention: [Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks](https://github.com/yongghongg/stock-symbol/issues/9).
+Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of [scraping like we did last time](./archive/WI_Projekt_SS23_Juelich_Kalacevic/src/components.py). However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. \
+Attention: [Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks](https://github.com/yongghongg/stock-symbol/issues/9).
 
 ### [interface.py](./compose/App/interface.py)
-Restful XML-RPC server for responding to HTTP requests from Clients.
-Enums cannot be used due to lack of support from RPC. Therefore, their values must be used.
+XML-RPC server for responding to HTTP requests from Clients.
+Enums cannot be used due to lack of encoding from XML. Therefore, their actual values must be used.
 
 ### tokens.py (not staged)
 API-keys used for Alpha-Vantage, Financial Modeling Prep, Leeway and StockSymbol.
 
 ## [Cron](https://wiki.ubuntuusers.de/Cron/) (Client)
-Service that enables scheduling the execution of bash commands.
-When working with cronjobs, it's important to explicitly set the timezone on that (virtual) machine.
+Service that enables scheduling the execution of bash commands. \
+__Note:__ When working with cronjobs, it's important to explicitly set the timezone on that (virtual) machine.
 
 ### [crontab](./docker/cron/crontab)
 Table that lists cronjobs specifying the minute, hour, day, month and weekday a command should be executed. They are either system wide or user related.
@@ -313,6 +324,3 @@ SORT.INDEX     1..*             0   1
 SORT.MARKET       0          1..*   1
 SORT.STOCK     1..*             1   1
 ```
-
-## ToDo:
-- [ ] Add user password and encryption for Elastic stack (SSL/TLS)
