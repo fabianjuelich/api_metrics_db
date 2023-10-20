@@ -7,6 +7,12 @@ __Note:__ Some links can only be accessed in the universities' network (e.g. by 
 ## [Docker](https://www.docker.com/)
 Docker is used to build and run Linux containers for multiple platforms, while Docker Compose is a tool for defining and managing multi-container applications. Together, they provide a powerful solution for containerization, making it easier to deploy and scale applications.
 
+Our composed Docker application consists of 4 services:
+- __Elasticsearch__ (Database)
+- __Kibana__ (Frontend)
+- __App__ (Logic)
+- __Cron__ (Automation)
+
 ### Architecture
 ![docker](./appendix/infrastructure/docker.png)
 
@@ -161,6 +167,49 @@ While Elasticsearch can handle unstructured data, our use case is a scenario whe
   }
 }
 ```
+### Example document
+```json
+{
+  "_index": "lazy-investor",
+  "_id": "mtIWT4sBXRCDxZ8MO0Ai",
+  "_version": 1,
+  "_seq_no": 486,
+  "_primary_term": 1,
+  "found": true,
+  "_source": {
+    "symbol": "AAPL",
+    "sector": "Technology",
+    "industry": "Consumer Electronics",
+    "ipo": "1980-12-12",
+    "indices": [
+      "DJI",
+      "S5INFT",
+      "IXCO",
+      "OEX",
+      "NDX",
+      "SPX",
+      "IXIC",
+      "DJA"
+    ],
+    "metrics": {
+      "revenue_growth": -0.014,
+      "gross_profit": 170782000000,
+      "return_on_equity": 1.6009,
+      "equity_ratio": 0.1799019812677965,
+      "gearing_ratio": 1.627086305869861,
+      "market_capitalization": 2743176790016,
+      "enterprise_value": 2789980241920,
+      "ev_to_sales": 5.9171,
+      "ev_to_ebitda": 23.52,
+      "price_to_earnings": 29.3903,
+      "price_to_book_value": 44.6301,
+      "price_to_cashflow": 103.98698976557999
+    },
+    "timestamp": "2023-10-20T23:55:38.909939",
+    "request": "STOCK_AAPL_US_LEEWAY"
+  }
+}
+```
 
 ### Relevant HTTP request methods
 __PUT__ replaces a ressource with the payload. \
@@ -198,8 +247,8 @@ DELETE /lazy-investor
 # show all documents
 GET /lazy-investor/_search
 
-# show specific document by id
-GET lazy-investor/_doc/2023-10-09_STOCK_AAPL_US_ALPHA_VANTAGE
+# show specific document by id (as seen above)
+GET lazy-investor/_doc/mtIWT4sBXRCDxZ8MO0Ai
 
 # search for symbol IBM
 GET /lazy-investor/_search
