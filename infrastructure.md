@@ -1,6 +1,6 @@
-# Infrastructure
-
 __Note:__ Some links can only be accessed in the universities' network (e.g. by connecting via the VPN).
+
+# Infrastructure
 
 ![infrastructure](./appendix/infrastructure/infrastructure.png)
 
@@ -21,7 +21,7 @@ __CMD__ defines what to do on start. (E.g. running a loop)
 ### [Compose file](https://docs.docker.com/compose/compose-file/03-compose-file/)
 YAML file that defines the services used in the multi-container application. Therefore, you can use images directly or build from an existing Dockerfile.
 
-The working directory (WORKDIR) is used as the python path (searched for imports instead of the parent directory) unless it is explicitly defined as an environment variable by `ENV PYTHONPATH=<path>`.
+The working directory (WORKDIR) is used as the python path (searched for imports instead of the parent directory) unless it is explicitly defined as an environment variable by `ENV PYTHONPATH=<path>`. \
 The Elasticsearch data which is located at */usr/share/elasticsearch/data* on the guest machine will be persistently stored at */var/lib/docker/volumes/compose_elasticsearch_volume/_data* on the host machine.
 
 ### Networking
@@ -29,17 +29,17 @@ Docker Compose maintains a DNS that resolves the `container_name` property used 
 When customizing ports, take a look at [this table](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers) to avoid jam.
 
 ### Docker commands you should know:
-(execute inside of the [docker compose folder](./compose/))
+Execute in the same directory as the [compose file](./docker/docker-compose.yml) as __root__.
+
 - `docker compose build [--no-cache]` builds all containers [from new]
 - `docker compose up [-d]` runs all containers [in background]
 - `docker ps` lists running containers
 - `docker exec -it <container name> bash` opens shell on the container
 
-## [Tickersymbols](https://www.ig.com/en/glossary-trading-terms/stock-symbol-definition) (Excursus)
-Those abbreviations (usually 1-6 characters) identify stocks and indeces (mostly within one country). Thus, there may be different symbols for the same company or a company may be known under several symbols.
-
 ## [Elasticsearch](https://www.elastic.co/elasticsearch/)
-Elasticsearch is a document-based database search engine that provides a [REST API](https://de.wikipedia.org/wiki/Representational_State_Transfer) that you can send requests to through its HTTP interface.
+Elasticsearch is a document-based database search engine that surpasses traditional (relational) databases for processing metrics due to its exceptional speed, scalability, and versatile search capabilities.
+The stored documents, which are JSON objects are grouped into so called indeces. Those are comparable to tables. Mapping defines how fields may be used.
+It provides a [REST API](https://de.wikipedia.org/wiki/Representational_State_Transfer) that you can send requests to through its HTTP interface.
 That way you have different options to communicate with the database: 
 1. Transferring data with [cURL](https://curl.se/)
 2. Using the [Kibana console](http://139.6.56.155:5601/app/dev_tools#/console)
@@ -47,10 +47,14 @@ That way you have different options to communicate with the database:
 4. Saving and sending requests with [postman](https://www.postman.com/)
 
 ### Database design
-```json
+While Elasticsearch can handle unstructured data, our use case is a scenario where a carefully chosen schema and mapping is beneficial to ensure data integretiy, search efficiency and ease of use.
+```yaml
 {
+  # name of the index
   "lazy-investor": {
+    # used to provide alternative names or references to the index
     "aliases": {},
+    # defines the fields for the index by describing their data type and subfields
     "mappings": {
       "properties": {
         "indices": {
@@ -134,6 +138,7 @@ That way you have different options to communicate with the database:
         }
       }
     },
+    # contains various configurations for the index
     "settings": {
       "index": {
         "routing": {
@@ -157,6 +162,12 @@ That way you have different options to communicate with the database:
 }
 ```
 
+### Relevant HTTP request methods
+__PUT__ replaces a ressource with the payload. \
+__GET__ requests a representation of a ressource. \
+__DELETE__ deletes a ressource. \
+__POST__ submits an change of the ressource.
+
 ### Common requests
 ```yaml
 # create index
@@ -178,7 +189,7 @@ GET _cluster/health
 # show nodes
 GET _nodes/stats
 
-# show db schema
+# show db schema (as seen above)
 GET lazy-investor
 
 # delete index lazy-investor
@@ -254,32 +265,50 @@ POST /lazy-investor/_delete_by_query
 }
 ```
 
+### Security
+
+To make the database more secure, you can set the security environment variable to true and assign a username and password.
+
+```dockerfile
+xpack.security.enabled: "true"
+ELASTIC_USERNAME: "fabian"
+ELASTIC_PASSWORD: "Pa$$w0rd"
+```
+
 ## [Kibana](https://www.elastic.co/de/kibana)
-Data visualization and analyzing tool based on Elasticsearch.
+Browser-based data visualization and analysis tool that is built on Elasticsearch and part of the [Elastic Stack](https://www.elastic.co/en/elastic-stack). The resulting visualizations can be saved and assigned to dashboards for monitoring and benchmarking purposes.
+
+### Example: Proportionally market capitalization grouped by the top 5 sectors for the NASDAQ-100, collected on October 17th using Alpha Vantage
+
+![visualization](./appendix/results/visualization.png)
 
 ## App (Server)
 Application logic procuring and transforming fundamental data.
 
+__Excursus: [Tickersymbols](https://www.ig.com/en/glossary-trading-terms/stock-symbol-definition)__ \
+Those abbreviations (usually 1-6 characters) identify stocks and indeces (mostly within one country). Thus, there may be different symbols for the same company or a company may be known under several symbols.
+
 ### [app.py](./docker/app/app.py)
-Main program, whose `document()` function is called to receive index, market or stock data.
-Uses ss.py to retrieve basic data such as symbols needed for findata.py to receive financial data.
+Main program, whose `document()` function is called to receive index, market or stock data including metrics and general information.
+Uses ss.py to retrieve basic data such as symbols needed for findata.py to receive financial data for an index or a market.
 
 ### [findata.py](./docker/app/findata.py)
 Parses [multiple financial APIs](./api.md) to retrieve fundamental data and general information. Encapsulating (and caching) the data into objects provides a call-cost efficient way to calculate metrics.
 
 ### [ss.py](./compose/App/ss.py)
-Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of scraping like we did last time. However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. Bug: Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks.
+Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of [scraping like we did last time](./archive/WI_Projekt_SS23_Juelich_Kalacevic/src/components.py). However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. \
+Attention: [Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks](https://github.com/yongghongg/stock-symbol/issues/9).
 
 ### [interface.py](./compose/App/interface.py)
-Restful XML-RPC server for responding to HTTP requests from Clients.
-Enums cannot be used due to lack of support from RPC. Therefore, their values must be used.
+XML-RPC server for responding to HTTP requests from Clients.
+Enums cannot be used due to lack of encoding from XML. Therefore, their actual values must be used.
 
 ### tokens.py (not staged)
 API-keys used for Alpha-Vantage, Financial Modeling Prep, Leeway and StockSymbol.
 
 ## [Cron](https://wiki.ubuntuusers.de/Cron/) (Client)
-Service that enables scheduling the execution of bash commands.
-When working with cronjobs, it's important to explicitly set the timezone on that (virtual) machine.
+Service that enables scheduling the execution of bash commands. \
+__Note:__ When working with cronjobs, it's important to explicitly set the timezone on that (virtual) machine.
 
 ### [crontab](./docker/cron/crontab)
 Table that lists cronjobs specifying the minute, hour, day, month and weekday a command should be executed. They are either system wide or user related.
@@ -302,6 +331,3 @@ SORT.INDEX     1..*             0   1
 SORT.MARKET       0          1..*   1
 SORT.STOCK     1..*             1   1
 ```
-
-## ToDo:
-- [ ] Add user password and encryption for Elastic stack (SSL/TLS)

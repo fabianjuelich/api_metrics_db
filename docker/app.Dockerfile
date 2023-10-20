@@ -13,8 +13,6 @@ ADD ./archive/Informatikprojekt_WS22_23_Kinetz/data/stocks_data.csv /home/archiv
 ADD ./archive/WI_Projekt_SS23_Juelich_Kalacevic/src /home/archive/WI_Projekt_SS23_Juelich_Kalacevic/src
 ADD ./archive/WI_Projekt_SS23_Juelich_Kalacevic/assets /home/archive/WI_Projekt_SS23_Juelich_Kalacevic/assets
 ADD ./archive/WI_Projekt_SS23_Juelich_Kalacevic/__init__.py /home/archive/WI_Projekt_SS23_Juelich_Kalacevic/__init__.py
-# remove this one later
-ADD ./archive/WI_Projekt_SS23_Juelich_Kalacevic/showcase.py /home/archive/WI_Projekt_SS23_Juelich_Kalacevic/showcase.py
 # new
 RUN pip3 install requests --break-system-packages
 RUN pip3 install stocksymbol --break-system-packages

@@ -40,7 +40,7 @@ def document(sort: Sort, symbols: str, country_codes: str, api: findata.Findata)
                 for component in index_symbols['components']:
                     try:
                         api.get(component, exchange=index_symbols['components'][component]['exchange'])
-                        data.append(new(component, stock_indices[component], api))
+                        data.append(new(component, stock_indices[component]))
                     except Exception as e:
                         # raise e
                         print(component, 'not found')
@@ -63,7 +63,7 @@ def document(sort: Sort, symbols: str, country_codes: str, api: findata.Findata)
                     api.get(s, exchange=ss.market_symbols_json[country_codes[0]]['components'][s]['exchange'])
                     data.append(new(s, ss.stock_indices(country_codes[0])[s]))
                 except Exception as e:
-                    raise e
+                    # raise e
                     print(component, 'not found')
                     
     return data
