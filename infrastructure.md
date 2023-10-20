@@ -37,7 +37,9 @@ Execute in the same directory as the [compose file](./docker/docker-compose.yml)
 - `docker exec -it <container name> bash` opens shell on the container
 
 ## [Elasticsearch](https://www.elastic.co/elasticsearch/)
-Elasticsearch is a document-based database search engine that provides a [REST API](https://de.wikipedia.org/wiki/Representational_State_Transfer) that you can send requests to through its HTTP interface.
+Elasticsearch is a document-based database search engine that surpasses traditional (relational) databases for processing metrics due to its exceptional speed, scalability, and versatile search capabilities.
+The stored documents, which are JSON objects are grouped into so called indeces. Those are comparable to tables. Mapping defines how fields may be used.
+It provides a [REST API](https://de.wikipedia.org/wiki/Representational_State_Transfer) that you can send requests to through its HTTP interface.
 That way you have different options to communicate with the database: 
 1. Transferring data with [cURL](https://curl.se/)
 2. Using the [Kibana console](http://139.6.56.155:5601/app/dev_tools#/console)
@@ -45,10 +47,14 @@ That way you have different options to communicate with the database:
 4. Saving and sending requests with [postman](https://www.postman.com/)
 
 ### Database design
-```json
+While Elasticsearch can handle unstructured data, our use case is a scenario where a carefully chosen schema and mapping is beneficial to ensure data integretiy, search efficiency and ease of use.
+```yaml
 {
+  # name of the index
   "lazy-investor": {
+    # used to provide alternative names or references to the index
     "aliases": {},
+    # defines the fields for the index by describing their data type and subfields
     "mappings": {
       "properties": {
         "indices": {
@@ -132,6 +138,7 @@ That way you have different options to communicate with the database:
         }
       }
     },
+    # contains various configurations for the index
     "settings": {
       "index": {
         "routing": {
@@ -269,7 +276,7 @@ ELASTIC_PASSWORD: "Pa$$w0rd"
 ```
 
 ## [Kibana](https://www.elastic.co/de/kibana)
-Data visualization and analyzing tool based on Elasticsearch. These can be saved and assigned to a dashboard that can be monitored for benchmarking purposes.
+Browser-based data visualization and analysis tool that is built on Elasticsearch and part of the [Elastic Stack](https://www.elastic.co/en/elastic-stack). The resulting visualizations can be saved and assigned to dashboards for monitoring and benchmarking purposes.
 
 ### Example: Proportionally market capitalization grouped by the top 5 sectors for the NASDAQ-100, collected on October 17th using Alpha Vantage
 
