@@ -167,7 +167,8 @@ While Elasticsearch can handle unstructured data, our use case is a scenario whe
   }
 }
 ```
-### Example document
+
+### Sample document
 ```json
 {
   "_index": "lazy-investor",
@@ -217,13 +218,13 @@ __GET__ requests a representation of a ressource. \
 __DELETE__ deletes a ressource. \
 __POST__ submits an change of the ressource.
 
-### Common requests
+### Sample requests (CRUD and other useful ones)
 ```yaml
 # create index
 PUT lazy-investor
 
 # map timestamp to date
-PUT /lazy-investor/_mapping
+PUT lazy-investor/_mapping
 {
   "properties": {
     "timestamp": {
@@ -242,16 +243,33 @@ GET _nodes/stats
 GET lazy-investor
 
 # delete index lazy-investor
-DELETE /lazy-investor
+DELETE lazy-investor
 
 # show all documents
-GET /lazy-investor/_search
+GET lazy-investor/_search
+
+# create document (dynamic id)
+POST lazy-investor/_doc/
+{
+  # data
+}
 
 # show specific document by id (as seen above)
 GET lazy-investor/_doc/mtIWT4sBXRCDxZ8MO0Ai
 
+# update specific field by id
+POST lazy-investor/_update/mtIWT4sBXRCDxZ8MO0Ai
+{
+  "doc": {
+    "industry": "Healthcare"
+  }
+}
+
+# delete specific document by id (as seen above)
+DELETE lazy-investor/_doc/mtIWT4sBXRCDxZ8MO0Ai
+
 # search for symbol IBM
-GET /lazy-investor/_search
+GET lazy-investor/_search
 {
   "query": {
     "match": {
@@ -260,8 +278,8 @@ GET /lazy-investor/_search
   }
 }
 
-# search for stocks listed in SPX
-GET /lazy-investor/_search
+# search for stocks listed in S&P 500
+GET lazy-investor/_search
 {
   "query": {
     "bool": {
@@ -277,7 +295,7 @@ GET /lazy-investor/_search
 }
 
 # search for minimum price to earnings of 100
-GET /lazy-investor/_search
+GET lazy-investor/_search
 {
   "query": {
     "range" : {
@@ -289,7 +307,7 @@ GET /lazy-investor/_search
 }
 
 # search for documents created on 2023-10-14
-GET /lazy-investor/_search
+GET lazy-investor/_search
 {
   "query": {
     "range": {
@@ -301,14 +319,12 @@ GET /lazy-investor/_search
   }
 }
 
-# remove all documents created before 2023-11-01
-POST /lazy-investor/_delete_by_query
+# remove all documents belonging to request INDEX_NDX_ALPHA_VANTAGE
+POST lazy-investor/_delete_by_query
 {
   "query": {
-    "range": {
-      "timestamp": {
-        "lt": "2023-11-01"
-      }
+    "match": {
+      "request": "INDEX_NDX_ALPHA_VANTAGE"
     }
   }
 }
