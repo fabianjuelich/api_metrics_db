@@ -365,7 +365,7 @@ Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-
 Attention: [Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks](https://github.com/yongghongg/stock-symbol/issues/9).
 
 ### [interface.py](./compose/App/interface.py)
-XML-RPC server for responding to HTTP requests from Clients.
+XML-RPC server for responding to HTTP requests from Clients with documents.
 Enums cannot be used due to lack of encoding from XML. Therefore, their actual values must be used.
 
 ### tokens.py (not staged)
@@ -376,7 +376,8 @@ Service that enables scheduling the execution of bash commands. \
 __Note:__ When working with cronjobs, it's important to explicitly set the timezone on that (virtual) machine.
 
 ### [crontab](./docker/cron/crontab)
-Table that lists cronjobs specifying the minute, hour, day, month and weekday a command should be executed. They are either system wide or user related.
+Table that lists cronjobs specifying the minute, hour, day, month and weekday a command should be executed. They are either system wide or user related. \
+`0 0 * * *` defines the daily execution of the script.
 
 ### [cronjob.py](./docker/cron/cronjob.py)
 Implements a XML-RPC client that requests findata from the applications interface and stores it in the database via HTTP request.
@@ -399,6 +400,8 @@ SORT.STOCK     1..*             1   1
 
 ## [Analysis](./boxplot.py)
 Once you have collected enough data to form a meaningful picture of e.g. an index or a time period, you can perform analysis.
+
 __Sample:__
 Comparing a single stock's P/E ratio to that of its sector helps investors measure the stock's relative valuation and growth perspective and guides on when to buy or sell. It also assists in diversification and risk management, ensuring a well balanced investment portfolio.
+
 ![boxplot](./appendix/results/boxplot.png)
