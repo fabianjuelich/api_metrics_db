@@ -371,8 +371,8 @@ Enums cannot be used due to lack of encoding from XML. Therefore, their actual v
 ### tokens.py (not staged)
 API-keys used for Alpha-Vantage, Financial Modeling Prep, Leeway and StockSymbol.
 
-## [Cron](https://wiki.ubuntuusers.de/Cron/) (Client)
-Service that enables scheduling the execution of bash commands. \
+## Cron (Client)
+[Service](https://wiki.ubuntuusers.de/Cron/) that enables scheduling the execution of bash commands. \
 __Note:__ When working with cronjobs, it's important to explicitly set the timezone on that (virtual) machine.
 
 ### [crontab](./docker/cron/crontab)
@@ -398,18 +398,19 @@ SORT.MARKET       0          1..*   1
 SORT.STOCK     1..*             1   1
 ```
 
-## [Analysis](./boxplot.py)
-Once you have collected enough data to form a meaningful picture of e.g. an index or a time period, you can perform analysis.
+## Analysis
+Once you have collected enough data to form a meaningful picture of e.g. an index or a time period, you can [perform analysis](./boxplot.py).
 
 __Sample:__
 Comparing a single stock's P/E ratio to that of its sector helps investors measure the stock's relative valuation and growth perspective and guides on when to buy or sell. It also assists in diversification and risk management, ensuring a well balanced investment portfolio.
 
 ![boxplot](./appendix/results/boxplot.png)
 
+#
+# API-Comparison
+## Introduction
 
-# Introduction
-
-## The Problem
+### The Problem
 
 In today's interconnected world, access to real-time and reliable financial data plays a crucial role for businesses, investors, and developers. Integrating financial data into applications, trading strategies, or business decisions requires the use of financial APIs. These interfaces provide access to a large pool of information, including stock prices, financial reports, economic indicators, and more.
 
@@ -417,13 +418,13 @@ However, as there are many providers in the market, comparing these options is c
 
 Through this comparison, we can gain an understanding of how these providers contribute to informed financial decisions and the optimization of trading strategies. Choosing the right financial data API provider can significantly impact success in the financial world, and this comparison aims to simplify the decision-making process.
 
-## Solution Overview
+### Solution Overview
 
 In this comprehensive comparison, we explore a range of critical aspects of financial data API providers. Our selection of these specific evaluation points is based on our previous project, where we extensively used an API to calculate 12 Key Indicators. During the course of that project, it became evident that these very points, which we now compare, play a highly relevant role in the selection of a financial data API for any analytical or trading intend.
 
 By looking into these areas, we aim to empower users with the insights needed to make well-informed decisions when selecting a finance API. These key factors serve as a compass for users, guiding them toward a provider that aligns with their data requirements and trading strategies.
 
-# Methodology 
+## Methodology 
 
 The approach in this project was as follows:
 
@@ -443,15 +444,14 @@ The approach in this project was as follows:
 
 - Conclusion: Summarized the findings, emphasizing which provider excels in specific areas and how the selection of an API provider should align with users' needs.
 
-# Approach
+## Approach
 
 ![API vergleichs Kategorien](appendix/api_comparison/english_categories.jpg)
 
 
-## What do the providers state on their website about what is being offered?
+### What do the providers state on their website about what is being offered?
 
-### [Alpha Vantage](https://www.alphavantage.co/)
-
+[__Alpha Vantage__](https://www.alphavantage.co/)
 
 - Realtime & historical stock market data APIs
 
@@ -464,7 +464,7 @@ The approach in this project was as follows:
 - Global coverage
 
 
-### [Financial Modeling Prep](https://site.financialmodelingprep.com/developer/docs/pricing/)
+[__Financial Modeling Prep__](https://site.financialmodelingprep.com/developer/docs/pricing/)
 
 - Financial statements and multiple metrics for over 30,000 companies across the world
 
@@ -485,8 +485,7 @@ The approach in this project was as follows:
 - SEC filings, transcripts, etf holders, earnings calendar and many more.
 
 
-### [Leeway](https://leeway.tech/data-api)
-
+[__Leeway__](https://leeway.tech/data-api)
 
 - Provides access to comprehensive financial data from over 50 exchanges worldwide. (Among others, in Germany, there are Xetra and Frankfurt Stock Exchange, the Euronext exchanges in Paris and Amsterdam, and of course, in the USA, including New York Stock Exchange (NYSE) and NASDAQ.)
 
@@ -497,12 +496,12 @@ The approach in this project was as follows:
 - Price data API, Fundamental data API, live delayed prices, interval price data, forex, crypto, and commodities, funds & ETF API, bonds, macroeconomic data, event calendar, event history.
 
 
-## Quality of the Support:
+### Quality of the Support:
 
 To test the response time and quality of support, a test email was composed and sent to the four providers. FMP and Leeway provided a reasonable and satisfactory response. There was no response from Alpha Vantage.
 
 
-### Email for Support Test:
+__Email for Support Test:__
 
 Subject: API Support Responsiveness
 
@@ -517,7 +516,7 @@ Thank you for your time and attention. I look forward to your response.
 Best regards,
 
 
-## Is Backtesting possible?
+### Is Backtesting possible?
 
 
 Backtesting involves applying a strategy or predictive model to historical data to determine its accuracy.
@@ -536,15 +535,13 @@ Leeway provides fundamental data back up to 30 years and the historical prices o
 Having access to such extensive historical data allows for more in-depth and comprehensive backtesting of strategies. Traders and investors often rely on long-term historical data to analyze the performance of their strategies under various market conditions and economic cycles. Therefore, FMP and Leeway would be better suited for backtesting purposes when compared to Alpha Vantage, especially if you require a longer historical perspective for your analysis.
 
 
-
-
-# Which and how many exchanges and markets are supported?
+## Which and how many exchanges and markets are supported?
 
 ![The following chart shows how many stock exchanges are supported.](appendix/api_comparison/image.png)
 
 Everything that is in these tables was taken as it was provided.
 
-## Leeway:
+__Leeway:__
 
 | Symbol | Description |
 | --- | --- |
@@ -600,7 +597,7 @@ Everything that is in these tables was taken as it was provided.
 | VN | Vietnam Stocks |
 | XETRA | XETRA |
 
-### Financial modeling prep:
+__Financial modeling prep:__
 
 | Symbol | Description |
 | --- | --- |
@@ -670,7 +667,7 @@ Everything that is in these tables was taken as it was provided.
 | TSXV | TSX Venture Exchange  |
 |  | Vienna Stock Exchange |
 
-### Alpha Vantage:
+__Alpha Vantage:__
 
 | Symbol | Description |
 | --- | --- |
@@ -683,7 +680,7 @@ Everything that is in these tables was taken as it was provided.
 |  | Shanghai Stock Exchange |
 |  | Shenzhen Stock Exchange |
 
-## How many and which regions are supported?
+### How many and which regions are supported?
 
 ![The following chart shows how many regions are supported](appendix/api_comparison/image-1.png)
 
@@ -697,7 +694,7 @@ Everything that is in these tables was taken as it was provided.
 |  | Africa |  |
 
 
-# Is the fundamental data available to calculate the 12 key indicators yourself?
+## Is the fundamental data available to calculate the 12 key indicators yourself?
 This table presents the indicators we calculated ourselves in the last project in the 'Indicator' column. In the other columns, you can see the three API providers and the respective names of the keys required for the calculations. These names are underlined for better readability. This table is intended to verify whether it is possible to calculate the derived metrics with each of the API providers
 
 
@@ -717,7 +714,7 @@ This table presents the indicators we calculated ourselves in the last project i
 | P/B = Stock Price / (total shareholder equity / Shares outstanding) | <ins>Close</ins> (Time Series Intraday) / <ins>SharesOutstanding</ins> (Company Overview) | <ins>Close</ins> (1min historical stock prices with volume) / <ins>weightedaveragenumberofdilutedsharesoutstanding</ins> (financial statement full as reported) | <ins>Close</ins>(Intraday) / <ins>SharesOutstanding</ins>( Fundamentals → SharesStats) |
 | P/CF = Stock Price / (Operating Cash Flow / Shares Outstanding) | <ins>Close</ins> (Time Series Intraday) / (<ins>operatingCashflow</ins> (Cash flow) / <ins>SharesOutstanding</ins> (Company Overview)) | <ins>Close</ins> (1min historical stock prices with volume) /(<ins>operatingCashFlow</ins> (Cash flow) / <ins>weightedaveragenumberofdilutedsharesoutstanding</ins> (financial statement full as reported)) | <ins>Close</ins> (Intraday) / (<ins>totalCashFromOperatingActivities</ins> (Fundamentals → Cash Flow) / <ins>sharesOutstanding</ins>( Fundamentals → SharesStats)) |
 
-## How often is the fundamental data updated?
+### How often is the fundamental data updated?
 
 To get an reliable answer to that, we asked the API providers themselves.
 
@@ -729,7 +726,7 @@ To get an reliable answer to that, we asked the API providers themselves.
 
 In summary, all three API providers aim to offer daily data updates, which is a standard practice in the financial data industry. Whether you need near-real-time updates (FMP) or daily data updates (Leeway, Alpha Vantage).
 
-## Are there technical features like the SMA, for example?
+### Are there technical features like the SMA, for example?
 
 Technical features are used in the Technical Analysis of Stocks and the Technical Analysis is the study of historical market data, including price and volume.
 
@@ -749,7 +746,7 @@ Leeway provides 9 Technical Indicators that are listed in the big JSON file that
 
 ![The following chart shows the number of technical features](appendix/api_comparison/technicals.png)
 
-## How good is the API Documentation?
+### How good is the API Documentation?
 
 FMP stands out with its exceptional API documentation. They offer an extensive range of financial-related data, comprehensively categorized into their respective areas, accompanied by detailed explanations. Additionally, FMP provides a valuable resource by offering a page containing individual [formulas](https://site.financialmodelingprep.com/developer/docs/formula) for various financial ratios, which greatly aids developers and users. The documentation also includes language-specific guides to enhance usability.
 
@@ -769,7 +766,6 @@ In summary, FMP's API documentation sets a high standard, offering comprehensive
 
 
 >   [Here is a link to the new documentation](https://site.financialmodelingprep.com/developer/docs)
-
 
 
 [Alpha Vantage's API documentation](https://www.alphavantage.co/documentation/), while comprehensive, has some notable differences compared to FMP's documentation. While it provides categorized information with descriptions and examples for various parameters, it offers a more limited range of data compared to FMP.
@@ -793,8 +789,7 @@ Despite these attributes, Leeway's documentation lacks detailed formulas explain
 In summary, Leeway's API documentation may require users to spend more time navigating and exploring the documentation compared to other providers, and it lacks certain features found in more user-friendly documentation.
 
 
-
-## Are there access limitations in the free version/ Is there a premium version?
+### Are there access limitations in the free version/ Is there a premium version?
 
 Each of the three API providers has premium versions of their API, along with limitations in the free version.
 
@@ -867,7 +862,7 @@ And a Premium version with several different payment plans:
 - 600 API requests per minute + realtime US market data: $199,99/month
 - 1200 API requests per minute + realtime US market data: $249,99/month
 
-### Costs per API request
+__Costs per API request__
 
 Financial Modeling Prep (Old Version):
 
@@ -911,7 +906,7 @@ Alpha Vantage:
         The cost per API request varies depending on the plan, ranging from approximately $0.0000833 to $0.0004167 per API request at maximum usage.
 
 
-# Discussion
+## Discussion
 Alpha Vantage excels in providing a wide range of technical features, making it an attractive choice for users interested in technical analysis of stocks. However, it's essential to acknowledge several shortcomings.
 One of the most notable drawbacks is the lackluster support and responsiveness of the customer support. Users often rely on responsive and helpful customer support teams, but Alpha Vantage falls short in this aspect. When assistance is needed, the unresponsiveness of their support can be a source of frustration.
 Moreover, Alpha Vantage's market coverage is relatively small compared to some other providers. It also covers the least amount of regions. This limitation restricts users' ability to access a diverse array of exchanges and markets, potentially constraining their trading and investment strategies. 
@@ -930,11 +925,7 @@ FMP has an amazing customer support, offering quick responses and directly provi
 They support the largest number of exchanges/markets and regions, providing extensive coverage for various needs. Data is updated most frequently among the three providers, ensuring users have access to current financial information. For US companies, financial data is updated within a few minutes/hours of being published on the SEC, and for international filings, daily updates are available. The API documentation is exceptional, offering a very detailed and user-friendly resource with a large pool of financial-related data. FMP provides four premium versions, with the most expensive one priced at $139.00 per month, which may seem expensive at first glance, but it offers a substantial 3,000 API calls per minute. However, when calculating the cost per API request for the top premium versions of all providers, FMP emerges as the most cost-effective option.
 One downside to FMP is the lackluster technical features, which are similar to Leeway. Additionally, while the documentation is excellent due to its comprehensive nature, it might be overwhelming for new users, given its extensive content and how it's divided into respective parts.
 
-
-
-
-
-# Conclusion
+## Conclusion
 In today's fast-evolving world of financial data, choosing the right API provider for your specific purposes is a crucial decision for traders, investors, and financial analysts. Our comparison of the three providers has revealed their respective strengths, weaknesses, and offerings, making it easier for users to find the perfect fit for their specific needs.
 
 - Alpha Vantage: If your primary focus is on technical analysis, Alpha Vantage stands out with its comprehensive range of technical features. Traders seeking advanced tools to support their strategies will find a valuable resource in this provider.
@@ -945,8 +936,7 @@ In today's fast-evolving world of financial data, choosing the right API provide
 
 The key takeaway from this comparison is that each provider excels in specific domains. Alpha Vantage is the go-to choice for technical analysis enthusiasts, FMP offers a wide range of financial features and impressive documentation, while Leeway provides an all-in-one data solution that simplifies data access. Ultimately, the decision of which provider to choose will depend on your unique requirements and the specific goals you aim to achieve. By understanding the strengths of each provider, you can make a well-informed decision and leverage the financial data that best suits your needs.
 
-## Important to know:
-
+### Important to know:
 - If you call the Fundamentals in Leeway, it counts as 10 API calls at once.
 - Leeway provides all the Fundamental data within the 10 API calls at once.
 - Alpha Vantage uses their own Symbols for other exchanges.
