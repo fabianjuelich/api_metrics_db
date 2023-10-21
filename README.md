@@ -8,15 +8,21 @@ Elaboration by: __Fabian Jülich and Denis Kalacevic__
 Building on __[Procurement & Analysis of stock key figures](./archive/WI-Projekt_SS23_Juelich_Kalacevic/)__
 
 ## [Documentation](./documentation.md)
-1. [__Infrastructure__](./documentation.md#) (Jülich)
-    - [Docker](./documentation.md#)
-    - [Elasticsearch](./documentation.md#)
-    - [Kibana](./documentation.md#)
-    - [App](./documentation.md#)
-    - [Cron](./documentation.md#)
-    - [Analysis](./documentation.md#)
-2. [__API Comparison__](./documentation.md#) (Kalacevic)
-    - [xyz](./documentation.md#xyz)
+1. [__Infrastructure__](./documentation.md#infrastructure) (Jülich)
+    - [Docker](./documentation.md#docker)
+    - [Elasticsearch](./documentation.md#elasticsearch)
+    - [Kibana](./documentation.md#kibana)
+    - [App](./documentation.md#app-server)
+    - [Cron](./documentation.md#cron-client)
+2. [__Usage__](./documentation.md#usage)
+3. [__API Comparison__](./documentation.md#api-comparison) (Kalacevic)
+    - [Introduction](./documentation.md#introduction)
+    - [Methodology](./documentation.md#methodology)
+    - [Approach](./documentation.md#approach)
+    - [Which and how many exchanges and markets are supported](./documentation.md#which-and-how-many-exchanges-and-markets-are-supported)
+    - [Is the fundamental data available to calculate the 12 key indicators yourself](./documentation.md#is-the-fundamental-data-available-to-calculate-the-12-key-indicators-yourself)
+    - [Discussion](./documentation.md#discussion)
+    - [Conclusion](./documentation.md#conclusion)
 
 ## Project Overview
 - Collecting data on stocks of specific indices over time in a database using a cron job.
