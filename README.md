@@ -8,19 +8,18 @@ Elaboration by: __Fabian Jülich and Denis Kalacevic__
 Building on __[Procurement & Analysis of stock key figures](./archive/WI-Projekt_SS23_Juelich_Kalacevic/)__
 
 ## [Documentation](./documentation.md)
-1. [__Infrastructure__](./documentation.md#) (Fabian Jülich)
-- Docker
-- Elasticsearch
-- Kibana
-- App
-- Cron
-2. [__API Comparison__](./documentation.md#) (Denis Kalacevic)
-- xyz
+1. [__Infrastructure__](./documentation.md#) (Jülich)
+    - [Docker](./documentation.md#)
+    - [Elasticsearch](./documentation.md#)
+    - [Kibana](./documentation.md#)
+    - [App](./documentation.md#)
+    - [Cron](./documentation.md#)
+    - [Analysis](./documentation.md#)
+2. [__API Comparison__](./documentation.md#) (Kalacevic)
+    - [xyz](./documentation.md#xyz)
+
 ## Project Overview
-Infrastructure for collecting the most important key figures that have been "checked" for correctness and persisting them in a database:
+- Collecting data on stocks of specific indices over time in a database using a cron job.
+- Comparing between different APIs (AlphaVantage, Financial Modeling Prep, Leeway).
 
-- Store data on stocks (including sector) from certain indices in a database (Elasticsearch)
-- Collect the data on stocks from certain indices over time using a cron job and pack it into the DB
-- Compare data between different APIs (AlphaVantage, Financial Modeling Prep, Leeway)
-
-The persisted data can be used for analysis (Compare P/E ratio of a company with box plot of other P/E ratios in the same sector).
+The persistent data should be usable for analysis (e.g. comparing a company's P/E ratio with the boxplot of other P/E ratios in the same sector).
