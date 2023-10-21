@@ -358,7 +358,7 @@ Main program, whose `document()` function is called to receive index, market or 
 Uses ss.py to retrieve basic data such as symbols needed for findata.py to receive financial data for an index or a market.
 
 ### [findata.py](./docker/app/findata.py)
-Parses [multiple financial APIs](./api.md) to retrieve fundamental data and general information. Encapsulating (and caching) the data into objects provides a call-cost efficient way to calculate metrics.
+Parses [multiple financial APIs](#api-comparison) to retrieve fundamental data and general information. Encapsulating (and caching) the data into objects provides a call-cost efficient way to calculate metrics.
 
 ### [ss.py](./compose/App/ss.py)
 Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of [scraping like we did last time](./archive/WI_Projekt_SS23_Juelich_Kalacevic/src/components.py). However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. \
