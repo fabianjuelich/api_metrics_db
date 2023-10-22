@@ -399,7 +399,7 @@ SORT.STOCK     1..*             1   1
 ```
 
 ## Analysis
-Once you have collected enough data to form a meaningful picture of e.g. an index or a time period, you can [perform analysis](./boxplot.py).
+Once you have collected enough data to form a meaningful picture of e.g. an index or a time period, you can [perform analysis](./appendix/results/boxplot.py).
 
 __Sample:__
 Comparing a single stock's P/E ratio to that of its sector helps investors measure the stock's relative valuation and growth perspective and guides on when to buy or sell. It also assists in diversification and risk management, ensuring a well balanced investment portfolio.
