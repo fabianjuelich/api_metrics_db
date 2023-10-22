@@ -1,8 +1,6 @@
 from enum import StrEnum, auto
 import requests
 import tokens
-import json
-import os
 # include previous project #
 from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.table import Table
 from archive.WI_Projekt_SS23_Juelich_Kalacevic.src.enums.source import Source
@@ -17,7 +15,7 @@ class TOO_MANY_REQUESTS(Exception):
 
 # metrics #
 
-class METRICS(StrEnum):
+class Metrics(StrEnum):
     REVENUE_GROWTH = auto()
     GROSS_PROFIT = auto()
     RETURN_ON_EQUITY = auto()
@@ -85,18 +83,21 @@ class AlphaVantage(Findata):
 
 class FinancialModelingPrep(Findata):
 
-    __financialmodellingprep = dict(zip(list(METRICS), [
+    __financialmodellingprep = dict(zip(list(Metrics), [
         ('income-statement-growth', 0, 'growthRevenue'),
         ('income-statement', 0, 'grossProfit'),
         ('key-metrics', 0, 'roe'),
-        ('key-metrics', 0, 'debtToEquity'), # ToDo: equity ratio
-        ('key-metrics', 0, 'debtToEquity'), # ToDo
+        {
+            'STOCKHOLDERS_EQUITY': ('balance-sheet-statement', 0, 'totalStockholdersEquity'),  
+            'ASSETS': ('balance-sheet-statement', 0, 'totalAssets')
+        },
+        ('key-metrics', 0, 'debtToEquity'),
         ('key-metrics', 0, 'marketCap'),
         ('key-metrics', 0, 'enterpriseValue'),
         ('key-metrics', 0, 'evToSales'),
         ('key-metrics', 0, 'enterpriseValueOverEBITDA'),
-        ('key-metrics', 0, 'revenuePerShare'),
-        ('key-metrics', 0, 'bookValuePerShare'),
+        ('key-metrics', 0, 'peRatio'),
+        ('key-metrics', 0, 'pbRatio'),
         ('key-metrics', 0, 'operatingCashFlowPerShare')
     ]))
     
@@ -116,11 +117,17 @@ class FinancialModelingPrep(Findata):
 
     def metrics(self):
         result = {}
-        for metric in METRICS:
+        for metric in Metrics:
             match(metric):
+                # not give
+                case Metrics.EQUITY_RATIO:
+                    stockholders_equity = get_value_by_list(self.data, self.__financialmodellingprep[metric]['STOCKHOLDERS_EQUITY'])
+                    assets = get_value_by_list(self.data, self.__financialmodellingprep[metric]['ASSETS'])
+                    res = stockholders_equity / assets
                 # given
                 case _:
-                    result[metric.value] = get_value_by_list(self.data, self.__financialmodellingprep[metric])
+                    res = get_value_by_list(self.data, self.__financialmodellingprep[metric])
+            result[metric.value] = res
         return(result)
     
     def sector(self):
@@ -135,13 +142,13 @@ class FinancialModelingPrep(Findata):
 
 class Leeway(Findata):
 
-    __leeway = dict(zip(list(METRICS), [
+    __leeway = dict(zip(list(Metrics), [
         ('Highlights', 'QuarterlyRevenueGrowthYOY'),
         ('Highlights', 'GrossProfitTTM'),
         ('Highlights', 'ReturnOnEquityTTM'),
         {
             'SHAREHOLDERS_EQUITY':('Financials', 'Balance_Sheet', 'quarterly', 0, 'totalStockholderEquity'),
-            'LIABILITIES': ('Financials', 'Balance_Sheet', 'quarterly', 0, 'totalLiab')
+            'ASSETS': ('Financials', 'Balance_Sheet', 'quarterly', 0, 'totalAssets')
         },
         {
             'DEBT': ('Financials', 'Balance_Sheet', 'quarterly', 0, 'longTermDebt'),
@@ -175,24 +182,25 @@ class Leeway(Findata):
 
     def metrics(self):
         result = {}
-        for metric in METRICS:
+        for metric in Metrics:
             match(metric):
                 # not given
-                case METRICS.EQUITY_RATIO:
+                case Metrics.EQUITY_RATIO:
                     shareholders_equity = get_value_by_list(self.data, self.__leeway[metric]['SHAREHOLDERS_EQUITY'])
-                    total_assets = get_value_by_list(self.data, self.__leeway[metric]['LIABILITIES'])
-                    result[metric.value] = shareholders_equity / (total_assets + shareholders_equity)
-                case METRICS.GEARING_RATIO:
+                    assets = get_value_by_list(self.data, self.__leeway[metric]['ASSETS'])
+                    res = shareholders_equity / assets
+                case Metrics.GEARING_RATIO:
                     shareholders_equity = get_value_by_list(self.data, self.__leeway[metric]['SHAREHOLDERS_EQUITY'])
                     debt = get_value_by_list(self.data, self.__leeway[metric]['DEBT'])
-                    result[metric.value] = debt / shareholders_equity
-                case METRICS.PRICE_TO_CASHFLOW:
+                    res = debt / shareholders_equity
+                case Metrics.PRICE_TO_CASHFLOW:
                     market_capitalization = get_value_by_list(self.data, self.__leeway[metric]['MARKET_CAPITALIZATION'])
                     cashflow = get_value_by_list(self.data, self.__leeway[metric]['CASHFLOW'])
-                    result[metric.value] = market_capitalization / cashflow
+                    res = market_capitalization / cashflow
                 # given
                 case _:
-                    result[metric.value] = get_value_by_list(self.data, self.__leeway[metric])
+                    res = get_value_by_list(self.data, self.__leeway[metric])
+            result[metric.value] = res
         return(result)
 
     def sector(self):

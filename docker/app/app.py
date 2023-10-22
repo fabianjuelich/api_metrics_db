@@ -20,6 +20,7 @@ def document(sort: Sort, symbols: str, country_codes: str, api: findata.Findata)
 
     data = []
 
+    # new document
     def new(symbol: str, indices: list):
         new = {}
         new['symbol'] = symbol
@@ -64,6 +65,6 @@ def document(sort: Sort, symbols: str, country_codes: str, api: findata.Findata)
                     data.append(new(s, ss.stock_indices(country_codes[0])[s]))
                 except Exception as e:
                     # raise e
-                    print(component, 'not found')
+                    print(s, 'not found')
                     
     return data
