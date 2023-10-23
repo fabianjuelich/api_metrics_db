@@ -18,7 +18,7 @@ By looking into these areas, we aim to empower users with the insights needed to
 
 The approach in this project was as follows:
 
--  Selection of API Providers: Identified three API providers, namely Financial Modeling Prep (FMP), Alpha Vantage, and Leeway, for comparison.
+- Selection of API Providers: Identified three API providers, namely Financial Modeling Prep (FMP), Alpha Vantage, and Leeway, for comparison.
 
 - Comparision Criteria: Defined a set of criteria for the comparison, including what the providers offer, the quality of support, backtesting capabilities, markets and regions supported, update frequency, availability of fundamental data, technical features, API documentation quality, and the presence of premium versions.
 
@@ -43,48 +43,30 @@ The approach in this project was as follows:
 
 ### [Alpha Vantage](https://www.alphavantage.co/)
 
-
 - Realtime & historical stock market data APIs
-
 - Forex, commodity & crypto data feeds
-
 - 60+ technical & economic indicators
-
 - Market news API & sentiments
-
 - Global coverage
 
 
 ### [Financial Modeling Prep](https://site.financialmodelingprep.com/developer/docs/pricing/)
 
 - Financial statements and multiple metrics for over 30,000 companies across the world
-
 - Stock prices and profile for more than 40,000 symbols
-
 - News and press realeses in real-time categorized by stock symbol
-
 - Multiple economic data like inflation rates, GDP, economic calendar and more
-
 - Many ready to use packages for multiple languages.
-
 - Social sentiment across different social media like Twitter or Reddit
-
 - Insider trading for U.S. stocks gathered from SEC forms
-
 - Processed 13-F forms, mutual fund holders and insitutional holders
-
 - SEC filings, transcripts, etf holders, earnings calendar and many more.
-
 
 ### [Leeway](https://leeway.tech/data-api)
 
-
 - Provides access to comprehensive financial data from over 50 exchanges worldwide. (Among others, in Germany, there are Xetra and Frankfurt Stock Exchange, the Euronext exchanges in Paris and Amsterdam, and of course, in the USA, including New York Stock Exchange (NYSE) and NASDAQ.)
-
 - fundamental data, including annual and quarterly financial statement data with up to 20 years of history, closing prices with the complete historical record, interval price data, and much more.
-
 - Stocks, ETFs, indices, funds, currencies, and cryptocurrencies. For stocks and ETFs, also master data, and for stocks, fundamental data as well.
-
 - Price data API, Fundamental data API, live delayed prices, interval price data, forex, crypto, and commodities, funds & ETF API, bonds, macroeconomic data, event calendar, event history.
 
 
@@ -324,11 +306,8 @@ In summary, all three API providers aim to offer daily data updates, which is a 
 
 Technical features are used in the Technical Analysis of Stocks and the Technical Analysis is the study of historical market data, including price and volume.
 
-
 - Technical analysis attempts to predict future price movements, providing traders with the information needed to make a profit.
-
 - Traders apply technical analysis tools to charts in order to identify entry and exit points for potential trades.
-
 - An underlying assumption of technical analysis is that the market has processed all available information and that it is reflected in the price chart.
 
 Alpha Vantage provides a wide variety of technical features. There are [53 Technical features available](https://www.alphavantage.co/documentation/#technical-indicators), these include, for example, the SMA, EMA, WMA, etc.
