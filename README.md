@@ -15,11 +15,11 @@ Building on __[Procurement & Analysis of stock key figures](./archive/WI-Projekt
     - [App](./documentation.md#app-server)
     - [Cron](./documentation.md#cron-client)
 2. [__Usage__](./documentation.md#usage)
+
 3. [__API Comparison__](./documentation.md#api-comparison) (Kalacevic)
     - [Introduction](./documentation.md#introduction)
     - [Methodology](./documentation.md#methodology)
     - [Approach](./documentation.md#approach)
-    - [Which and how many exchanges and markets are supported](./documentation.md#which-and-how-many-exchanges-and-markets-are-supported)
     - [Is the fundamental data available to calculate the 12 key indicators yourself](./documentation.md#is-the-fundamental-data-available-to-calculate-the-12-key-indicators-yourself)
     - [Discussion](./documentation.md#discussion)
     - [Conclusion](./documentation.md#conclusion)
