@@ -20,7 +20,7 @@ Building on __[Procurement & Analysis of stock key figures](./archive/WI-Projekt
     - [Introduction](./documentation.md#introduction)
     - [Methodology](./documentation.md#methodology)
     - [Approach](./documentation.md#approach)
-    - [Is the fundamental data available to calculate the 12 key indicators yourself](./documentation.md#is-the-fundamental-data-available-to-calculate-the-12-key-indicators-yourself)
+    - [Results](./documentation.md#What-do-the-providers-state-on-their-website-about-what-is-being-offered?)
     - [Discussion](./documentation.md#discussion)
     - [Conclusion](./documentation.md#conclusion)
 
