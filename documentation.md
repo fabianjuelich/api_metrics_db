@@ -362,11 +362,11 @@ Parses [multiple financial APIs](#api-comparison) to retrieve fundamental data a
 
 ### [ss.py](./compose/App/ss.py)
 Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of [scraping like we did last time](./archive/WI_Projekt_SS23_Juelich_Kalacevic/src/components.py). However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. \
-Attention: [Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks](https://github.com/yongghongg/stock-symbol/issues/9).
+__Note__: [Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks](https://github.com/yongghongg/stock-symbol/issues/9).
 
 ### [interface.py](./compose/App/interface.py)
-XML-RPC server for responding to HTTP requests from Clients with documents.
-Enums cannot be used due to lack of encoding from XML. Therefore, their actual values must be used.
+XML-RPC server for responding to HTTP requests from Clients with documents. \
+__Note:__ Enums cannot be used due to lack of encoding from XML. Therefore, their actual values must be used.
 
 ### tokens.py (not staged)
 API-keys used for Alpha-Vantage, Financial Modeling Prep, Leeway and StockSymbol.
@@ -392,11 +392,23 @@ Api and Sort Enum.
 def metrics(sort: int, symbols: str, country_codes: str, api: int)
 ```
 ```
+Cardinality:
 sort        symbols country_codes api
 SORT.INDEX     1..*             0   1
 SORT.MARKET       0          1..*   1
 SORT.STOCK     1..*             1   1
+
+Values:
+- Sort
+  - Index: 0
+  - Market: 1
+  - Stock: 2
+- Api
+  - Alpha Vantage: 0
+  - Financial Modeling Prep: 1
+  - Leeway: 2
 ```
+(See __[note](#interfacepy)__)
 
 ## Analysis
 Once you have collected enough data to form a meaningful picture of e.g. an index or a time period, you can [perform analysis](./appendix/results/boxplot.py).
