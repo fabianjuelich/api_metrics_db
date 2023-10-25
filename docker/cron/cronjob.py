@@ -29,9 +29,6 @@ def rpc(sort: Sort, symbols: str, country_codes: str, api: Api):
 
 # example calls/storing #
 
-# rpc(Sort.INDEX, 'NDX', None, Api.LEEWAY)
-# rpc(Sort.MARKET, None, 'DE', Api.LEEWAY)
-# rpc(Sort.STOCK, 'IBM', 'US', Api.LEEWAY)
-
-rpc(Sort.STOCK, 'IBM', 'US', Api.ALPHA_VANTAGE)
-# rpc(Sort.INDEX, 'NDX', None, Api.ALPHA_VANTAGE)
+rpc(Sort.INDEX, 'NDX', None, Api.ALPHA_VANTAGE)
+rpc(Sort.MARKET, None, 'DE', Api.FINANCIAL_MODELING_PREP)
+rpc(Sort.STOCK, 'IBM', 'US', Api.LEEWAY)
