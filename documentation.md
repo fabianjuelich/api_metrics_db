@@ -429,19 +429,12 @@ By looking into these areas, we aim to empower users with the insights needed to
 The approach in this project was as follows:
 
 -  Selection of API Providers: Identified three API providers, namely Financial Modeling Prep (FMP), Alpha Vantage, and Leeway, for comparison.
-
 - Comparision Criteria: Defined a set of criteria for the comparison, including what the providers offer, the quality of support, backtesting capabilities, markets and regions supported, update frequency, availability of fundamental data, technical features, API documentation quality, and the presence of premium versions.
-
 - Evaluation of Criteria: Assessed each API provider based on the defined criteria, gathering information on their offerings, support quality, features, and more.
-
 - Quantitative Analysis: Quantified certain aspects, such as API call limits, update frequency, and costs, to provide numerical comparisons.
-
 - Contextual Analysis: Provided context and explanations for each criterion to help readers understand the significance and implications of the findings.
-
 - Visualization: Utilized visual aids, such as tables and charts, to present data and comparisons in a more reader-friendly manner.
-
 - Discussion: Facilitated a discussion around the findings, highlighting the strengths and weaknesses of each API provider.
-
 - Conclusion: Summarized the findings, emphasizing which provider excels in specific areas and how the selection of an API provider should align with users' needs.
 
 ## Approach
@@ -456,45 +449,30 @@ The approach in this project was as follows:
 [__Alpha Vantage__](https://www.alphavantage.co/)
 
 - Realtime & historical stock market data APIs
-
 - Forex, commodity & crypto data feeds
-
 - 60+ technical & economic indicators
-
 - Market news API & sentiments
-
 - Global coverage
 
 
 [__Financial Modeling Prep__](https://site.financialmodelingprep.com/developer/docs/pricing/)
 
 - Financial statements and multiple metrics for over 30,000 companies across the world
-
 - Stock prices and profile for more than 40,000 symbols
-
 - News and press realeses in real-time categorized by stock symbol
-
 - Multiple economic data like inflation rates, GDP, economic calendar and more
-
 - Many ready to use packages for multiple languages.
-
 - Social sentiment across different social media like Twitter or Reddit
-
 - Insider trading for U.S. stocks gathered from SEC forms
-
 - Processed 13-F forms, mutual fund holders and insitutional holders
-
 - SEC filings, transcripts, etf holders, earnings calendar and many more.
 
 
 [__Leeway__](https://leeway.tech/data-api)
 
 - Provides access to comprehensive financial data from over 50 exchanges worldwide. (Among others, in Germany, there are Xetra and Frankfurt Stock Exchange, the Euronext exchanges in Paris and Amsterdam, and of course, in the USA, including New York Stock Exchange (NYSE) and NASDAQ.)
-
 - fundamental data, including annual and quarterly financial statement data with up to 20 years of history, closing prices with the complete historical record, interval price data, and much more.
-
 - Stocks, ETFs, indices, funds, currencies, and cryptocurrencies. For stocks and ETFs, also master data, and for stocks, fundamental data as well.
-
 - Price data API, Fundamental data API, live delayed prices, interval price data, forex, crypto, and commodities, funds & ETF API, bonds, macroeconomic data, event calendar, event history.
 
 
@@ -502,17 +480,14 @@ The approach in this project was as follows:
 
 To test the response time and quality of support, a test email was composed and sent to the four providers. FMP and Leeway provided a reasonable and satisfactory response. There was no response from Alpha Vantage.
 
-
 __Email for Support Test:__
 
 Subject: API Support Responsiveness
 
 Dear …,
 
-We are currently evaluating various Finance/Stock API providers for a project I am working on. As part of this evaluation, I wanted to test the responsiveness of your support team.
-
-Could you please confirm the receipt of this email by replying to it? This will help me determine the efficiency of your support system and give me confidence in considering your API services for integration.
-
+We are currently evaluating various Finance/Stock API providers for a project I am working on. As part of this evaluation, I wanted to test the responsiveness of your support team. \
+Could you please confirm the receipt of this email by replying to it? This will help me determine the efficiency of your support system and give me confidence in considering your API services for integration. \
 Thank you for your time and attention. I look forward to your response.
 
 Best regards,
@@ -520,18 +495,12 @@ Best regards,
 
 ### Is Backtesting possible?
 
-
 Backtesting involves applying a strategy or predictive model to historical data to determine its accuracy.
 It allows traders to test trading strategies without the need to risk capital.
-Common backtesting measures include net profit/loss, return, risk-adjusted return, market exposure, and volatility.
-
-
-The time period for backtesting with a financial APIs depends on the specific trading or investment strategy and the data you need for the analysis. There isn't a one-size-fits-all answer to how far back the historical data should go, as it can vary based on factors such as your trading frequency, asset class, and the nature of your strategy.
-
-In this case the answer is still easy because if you wanted to backtest with the 12 Stock key figures we calculated in the last Project, it would not be possible to calculate for example, the Price to Earning with Alpha Vantage, because they only provide the current EPS in the Company Overview. Also the fundamentaldata only goes back to 2018.
-
-FMP provides 15+ years of Financial Statements, including international filings.
-
+Common backtesting measures include net profit/loss, return, risk-adjusted return, market exposure, and volatility. \
+The time period for backtesting with a financial APIs depends on the specific trading or investment strategy and the data you need for the analysis. There isn't a one-size-fits-all answer to how far back the historical data should go, as it can vary based on factors such as your trading frequency, asset class, and the nature of your strategy. \
+In this case the answer is still easy because if you wanted to backtest with the 12 Stock key figures we calculated in the last Project, it would not be possible to calculate for example, the Price to Earning with Alpha Vantage, because they only provide the current EPS in the Company Overview. Also the fundamentaldata only goes back to 2018. \
+FMP provides 15+ years of Financial Statements, including international filings. \
 Leeway provides fundamental data back up to 30 years and the historical prices of up to 100 years.
 
 Having access to such extensive historical data allows for more in-depth and comprehensive backtesting of strategies. Traders and investors often rely on long-term historical data to analyze the performance of their strategies under various market conditions and economic cycles. Therefore, FMP and Leeway would be better suited for backtesting purposes when compared to Alpha Vantage, especially if you require a longer historical perspective for your analysis.
@@ -720,10 +689,8 @@ This table presents the indicators we calculated ourselves in the last project i
 
 To get an reliable answer to that, we asked the API providers themselves.
 
-**FMP**: FMP updates its Financial Statement endpoint after a few minutes/hours of data being published on the SEC for US companies. For international filings, updates occur daily. These updates are frequent and aim to provide near-real-time data for US companies.
-
-**Leeway**: Leeway updates its data daily, but there might be a slight delay after the release of earnings reports. The update timing can vary based on factors like the size of the company, how quickly they publish their reports, and market conditions. Similar to FMP, Leeway provides daily updates with potential delays for earnings reports.
-
+**FMP**: FMP updates its Financial Statement endpoint after a few minutes/hours of data being published on the SEC for US companies. For international filings, updates occur daily. These updates are frequent and aim to provide near-real-time data for US companies. \
+**Leeway**: Leeway updates its data daily, but there might be a slight delay after the release of earnings reports. The update timing can vary based on factors like the size of the company, how quickly they publish their reports, and market conditions. Similar to FMP, Leeway provides daily updates with potential delays for earnings reports. \
 **Alpha Vantage**: Alpha Vantage's data is generally refreshed on the same day a company reports its latest earnings and financials. While they did not  respond to the E-Mail, it is stated on their website, this indicates a daily update frequency, similar to FMP and Leeway.
 
 In summary, all three API providers aim to offer daily data updates, which is a standard practice in the financial data industry. Whether you need near-real-time updates (FMP) or daily data updates (Leeway, Alpha Vantage).
@@ -732,11 +699,8 @@ In summary, all three API providers aim to offer daily data updates, which is a 
 
 Technical features are used in the Technical Analysis of Stocks and the Technical Analysis is the study of historical market data, including price and volume.
 
-
 - Technical analysis attempts to predict future price movements, providing traders with the information needed to make a profit.
-
 - Traders apply technical analysis tools to charts in order to identify entry and exit points for potential trades.
-
 - An underlying assumption of technical analysis is that the market has processed all available information and that it is reflected in the price chart.
 
 Alpha Vantage provides a wide variety of technical features. There are [53 Technical features available](https://www.alphavantage.co/documentation/#technical-indicators), these include, for example, the SMA, EMA, WMA, etc.
@@ -750,44 +714,28 @@ Leeway provides 9 Technical Indicators that are listed in the big JSON file that
 
 ### How good is the API Documentation?
 
-FMP stands out with its exceptional API documentation. They offer an extensive range of financial-related data, comprehensively categorized into their respective areas, accompanied by detailed explanations. Additionally, FMP provides a valuable resource by offering a page containing individual [formulas](https://site.financialmodelingprep.com/developer/docs/formula) for various financial ratios, which greatly aids developers and users. The documentation also includes language-specific guides to enhance usability.
-
-A standout feature of FMP's documentation is its provision of property listings for Financial Reports, including Income Statements, Balance Sheets, and Cash Flow. This unique feature saves users the hassle of having to make API calls first to determine whether specific values are available.
-
+FMP stands out with its exceptional API documentation. They offer an extensive range of financial-related data, comprehensively categorized into their respective areas, accompanied by detailed explanations. Additionally, FMP provides a valuable resource by offering a page containing individual [formulas](https://site.financialmodelingprep.com/developer/docs/formula) for various financial ratios, which greatly aids developers and users. The documentation also includes language-specific guides to enhance usability. \
+A standout feature of FMP's documentation is its provision of property listings for Financial Reports, including Income Statements, Balance Sheets, and Cash Flow. This unique feature saves users the hassle of having to make API calls first to determine whether specific values are available. \
 In summary, FMP's API documentation sets a high standard, offering comprehensive data, formula references, and convenient property listings, making it a top choice for users seeking detailed and user-friendly financial data resources.
 
     Since FMP has made changes to its website, here is a new evaluation of the documentation:
-
     The new documentation for FMP retains its organizational structure and categories from the previous version. However, there are notable changes. Descriptions for various sections have been streamlined and are now somewhat shorter, providing concise information.
-
     One significant change is the removal of the functionality that allowed users to click on listed items, such as Financial Statements, to access a separate page detailing the properties of financial reports. Instead, users are presented with a clear guide showing the parameters that can be utilized for each respective statement. It's important to note that these parameter descriptions serve as a reference for users to understand the available options for customization but are not directly usable values.
-
     An aspect that may pose a minor inconvenience is the scrolling behavior. When the mouse cursor is positioned within the statement display, scrolling is limited to within the statement itself, making it less intuitive to navigate the entire webpage.
-
     Despite these minor drawbacks, FMP continues to offer the most comprehensive and detailed API documentation among the available options.
-
-
 >   [Here is a link to the new documentation](https://site.financialmodelingprep.com/developer/docs)
 
 
-[Alpha Vantage's API documentation](https://www.alphavantage.co/documentation/), while comprehensive, has some notable differences compared to FMP's documentation. While it provides categorized information with descriptions and examples for various parameters, it offers a more limited range of data compared to FMP.
-
-One area where Alpha Vantage falls short is in providing formulas that explain how the ratios are composed or calculated. This can be a disadvantage for users who want a deeper understanding of the financial metrics they are working with.
-
-However, Alpha Vantage does offer language-specific guides for the API, which can be helpful for developers working in different programming languages.
-
-One notable distinction is that Alpha Vantage's documentation lacks an upfront overview of what is listed in the respective documents. This means that users may need to make API calls to explore the available data, which can be less convenient compared to FMP's approach of providing an upfront overview of data properties.
-
+[Alpha Vantage's API documentation](https://www.alphavantage.co/documentation/), while comprehensive, has some notable differences compared to FMP's documentation. While it provides categorized information with descriptions and examples for various parameters, it offers a more limited range of data compared to FMP. \
+One area where Alpha Vantage falls short is in providing formulas that explain how the ratios are composed or calculated. This can be a disadvantage for users who want a deeper understanding of the financial metrics they are working with. \
+However, Alpha Vantage does offer language-specific guides for the API, which can be helpful for developers working in different programming languages. \
+One notable distinction is that Alpha Vantage's documentation lacks an upfront overview of what is listed in the respective documents. This means that users may need to make API calls to explore the available data, which can be less convenient compared to FMP's approach of providing an upfront overview of data properties. \
 In summary, Alpha Vantage's API documentation is comprehensive but lacks certain features and detailed formulas found in FMP's documentation. Users may need to make API calls to explore the available data fully.
 
-[Leeway's API documentation](https://leeway.tech/api-doc/general?lang=ger&dataapi=true) is notably less user-friendly compared to other providers. The design and presentation of the documentation can be a drawback. Leeway's documentation uses URL endpoint resources, which might lead to confusion when users are trying to find specific information.
-
-While Leeway categorizes information into respective areas like other APIs, the design can be challenging to navigate, especially for users new to the API. However, it does offer a brief description for each endpoint, which is well done and provides some guidance.
-
-One positive aspect of Leeway's documentation is its capability to allow users to pass the exchange directly in the request, which can be a convenient feature for those looking to access exchange-specific data.
-
-Despite these attributes, Leeway's documentation lacks detailed formulas explaining metrics and financial ratios, and it also doesn't offer an upfront overview of what is available in the fundamentals, which could be useful for users seeking a quick reference.
-
+[Leeway's API documentation](https://leeway.tech/api-doc/general?lang=ger&dataapi=true) is notably less user-friendly compared to other providers. The design and presentation of the documentation can be a drawback. Leeway's documentation uses URL endpoint resources, which might lead to confusion when users are trying to find specific information. \
+While Leeway categorizes information into respective areas like other APIs, the design can be challenging to navigate, especially for users new to the API. However, it does offer a brief description for each endpoint, which is well done and provides some guidance. \
+One positive aspect of Leeway's documentation is its capability to allow users to pass the exchange directly in the request, which can be a convenient feature for those looking to access exchange-specific data. \
+Despite these attributes, Leeway's documentation lacks detailed formulas explaining metrics and financial ratios, and it also doesn't offer an upfront overview of what is available in the fundamentals, which could be useful for users seeking a quick reference. \
 In summary, Leeway's API documentation may require users to spend more time navigating and exploring the documentation compared to other providers, and it lacks certain features found in more user-friendly documentation.
 
 
@@ -845,18 +793,14 @@ For Financial Modeling Prep, there are four different versions available:
 
 For Leeway there are 2 different versions available:
 
-- A Free and a Premium version for 79,95€/month, but the only difference here is the number of requests available.
-
-- The Free Plan offers only 50 requests per day, while the Premium version provides 100,000 requests per day. Both versions offer access to over 40 global exchanges, 25,000+ global stocks, and historical data of up to 20 years for fundamental data. For End-of-Day data, it's the same, except for historical data where the complete history is provided.
+1. A Free and a Premium version for 79,95€/month, but the only difference here is the number of requests available.
+2. The Free Plan offers only 50 requests per day, while the Premium version provides 100,000 requests per day. Both versions offer access to over 40 global exchanges, 25,000+ global stocks, and historical data of up to 20 years for fundamental data. For End-of-Day data, it's the same, except for historical data where the complete history is provided.
 
 For Alpha Vantage there are 3 different versions available:
 
-- There is a Free version that covers the majority of the datasets for up to 5 API requests per minute and 100 requestes per day.
-
-- An Acadameic version called “Academic Access”.
-
-And a Premium version with several different payment plans:
-
+1. There is a Free version that covers the majority of the datasets for up to 5 API requests per minute and 100 requestes per day.
+2. An Acadameic version called “Academic Access”.
+3. And a Premium version with several different payment plans:
 - 30 API requests per minute + 15-minute delayed US market data for $24,99/month
 - 75 API requests per minute + 15-minute delayed US market data: $49,99/month
 - 150 API requests per minute + realtime US market data: $99,99/month
