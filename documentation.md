@@ -5,7 +5,8 @@ __Note:__ Some links can only be accessed in the universities' network (e.g. by 
 ![infrastructure](./appendix/infrastructure/infrastructure.png)
 
 ## [Docker](https://www.docker.com/)
-Docker is used to build and run Linux containers for multiple platforms, while Docker Compose is a tool for defining and managing multi-container applications. Together, they provide a powerful solution for containerization, making it easier to deploy and scale applications.
+Docker is used to build and run Linux containers for multiple platforms, while Docker Compose is a tool for defining and managing multi-container applications.
+Together, they provide a powerful solution for containerization, making it easier to deploy and scale applications.
 
 Our composed Docker application consists of 4 services:
 - __Elasticsearch__ (Database)
@@ -351,21 +352,25 @@ Browser-based data visualization and analysis tool that is built on Elasticsearc
 Application logic procuring and transforming fundamental data.
 
 __Excursus: [Tickersymbols](https://www.ig.com/en/glossary-trading-terms/stock-symbol-definition)__ \
-Those abbreviations (usually 1-6 characters) identify stocks and indeces (mostly within one country). Thus, there may be different symbols for the same company or a company may be known under several symbols.
+Those abbreviations (usually 1-6 characters) identify stocks and indeces (mostly within one country).
+Thus, there may be different symbols for the same company or a company may be known under several symbols.
 
 ### [app.py](./docker/app/app.py)
 Main program, whose `document()` function is called to receive index, market or stock data including metrics and general information.
 Uses ss.py to retrieve basic data such as symbols needed for findata.py to receive financial data for an index or a market.
 
 ### [findata.py](./docker/app/findata.py)
-Parses [multiple financial APIs](#api-comparison) to retrieve fundamental data and general information. Encapsulating (and caching) the data into objects provides a call-cost efficient way to calculate metrics.
+Parses [multiple financial APIs](#api-comparison) to retrieve fundamental data and general information.
+Encapsulating (and caching) the data into objects provides a call-cost efficient way to calculate metrics.
 
 ### [ss.py](./compose/App/ss.py)
-Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of [scraping like we did last time](./archive/WI_Projekt_SS23_Juelich_Kalacevic/src/components.py). However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. \
+Uses a pretty neat API called [StockSymbol](https://github.com/yongghongg/stock-symbol/tree/master) to implement the generation of a JSON file that lists all stock symbols belonging to a given [index](./appendix/index_symbols.json) or [market](./appendix/market_symbols.json). This project saved us a lot of [scraping like we did last time](./archive/WI_Projekt_SS23_Juelich_Kalacevic/src/components.py).
+However, it should be mentioned that, as is usual with APIs, server failures can occur. That's why we use the files generated once as a backup. \
 __Note__: [Used *dr_market* instead of *de_market* in **market_list** attribute in case of german stocks](https://github.com/yongghongg/stock-symbol/issues/9).
 
 ### [interface.py](./compose/App/interface.py)
 XML-RPC server for responding to HTTP requests from Clients with documents. \
+There are two methods available: `metrics()` is used to request the metrics for specific parameters, while instructions are output if used incorrectly or called `help()`. \
 __Note:__ Enums cannot be used due to lack of encoding from XML. Therefore, their actual values must be used.
 
 ### tokens.py (not staged)
@@ -380,8 +385,8 @@ Table that lists cronjobs specifying the minute, hour, day, month and weekday a 
 `0 0 * * *` defines the daily execution of the script.
 
 ### [cronjob.py](./docker/cron/cronjob.py)
-Implements a XML-RPC client that requests findata from the applications interface and stores it in the database via HTTP request.
-
+Implements a XML-RPC client that requests findata from the applications interface and stores it in the database via HTTP request. \
+The `rpc()` method simplifies the [above mentioned lack](#interfacepy) and allows you to use Enum elements easily.
 ##
 __Shared__\
 Api and Sort Enum.
@@ -408,7 +413,8 @@ Values:
   - Financial Modeling Prep: 1
   - Leeway: 2
 ```
-(See __[note](#interfacepy)__)
+`cronjob.py` \
+See __[note](#cronjobpy)__.
 
 ## Analysis
 Once you have collected enough data to form a meaningful picture of e.g. an index or a time period, you can [perform analysis](./appendix/results/boxplot.py).
