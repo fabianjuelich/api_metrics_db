@@ -449,6 +449,8 @@ The approach in this project was as follows:
 ![API vergleichs Kategorien](appendix/api_comparison/english_categories.jpg)
 
 
+## Results
+
 ### What do the providers state on their website about what is being offered?
 
 [__Alpha Vantage__](https://www.alphavantage.co/)
@@ -535,7 +537,7 @@ Leeway provides fundamental data back up to 30 years and the historical prices o
 Having access to such extensive historical data allows for more in-depth and comprehensive backtesting of strategies. Traders and investors often rely on long-term historical data to analyze the performance of their strategies under various market conditions and economic cycles. Therefore, FMP and Leeway would be better suited for backtesting purposes when compared to Alpha Vantage, especially if you require a longer historical perspective for your analysis.
 
 
-## Which and how many exchanges and markets are supported?
+### Which and how many exchanges and markets are supported?
 
 ![The following chart shows how many stock exchanges are supported.](appendix/api_comparison/image.png)
 
@@ -694,7 +696,7 @@ __Alpha Vantage:__
 |  | Africa |  |
 
 
-## Is the fundamental data available to calculate the 12 key indicators yourself?
+### Is the fundamental data available to calculate the 12 key indicators yourself?
 This table presents the indicators we calculated ourselves in the last project in the 'Indicator' column. In the other columns, you can see the three API providers and the respective names of the keys required for the calculations. These names are underlined for better readability. This table is intended to verify whether it is possible to calculate the derived metrics with each of the API providers
 
 
