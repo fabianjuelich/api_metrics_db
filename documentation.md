@@ -2,7 +2,7 @@ __Note:__ Some links can only be accessed in the universities' network (e.g. by 
 
 # Infrastructure
 
-![infrastructure](./appendix/infrastructure/infrastructure.png)
+![infrastructure](./appendix/infrastructure/infrastructure.svg)
 
 ## [Docker](https://www.docker.com/)
 Docker is used to build and run Linux containers for multiple platforms, while Docker Compose is a tool for defining and managing multi-container applications.
@@ -15,7 +15,7 @@ Our composed Docker application consists of 4 services:
 - __Cron__ (Automation)
 
 ### Architecture
-![docker](./appendix/infrastructure/docker.png)
+![docker](./appendix/infrastructure/docker.svg)
 
 ### [Dockerfile](https://docs.docker.com/engine/reference/builder/)
 Contains instructions for building an image.
