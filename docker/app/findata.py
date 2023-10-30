@@ -32,10 +32,14 @@ class Metrics(StrEnum):
 # save typing #
 
 def get_value_by_list(j: dict, l: list):
-    value = j
-    for key in l:
-        value = value[key]
-    return float(value)
+    try:
+        value = j
+        for key in l:
+            value = value[key]
+        return float(value)
+    except Exception as e:
+        # log e
+        return None
 
 def status(code):
     match(code):
@@ -119,11 +123,11 @@ class FinancialModelingPrep(Findata):
         result = {}
         for metric in Metrics:
             match(metric):
-                # not give
+                # not given
                 case Metrics.EQUITY_RATIO:
                     stockholders_equity = get_value_by_list(self.data, self.__financialmodellingprep[metric]['STOCKHOLDERS_EQUITY'])
                     assets = get_value_by_list(self.data, self.__financialmodellingprep[metric]['ASSETS'])
-                    res = stockholders_equity / assets
+                    res = stockholders_equity / assets if stockholders_equity and assets else None
                 # given
                 case _:
                     res = get_value_by_list(self.data, self.__financialmodellingprep[metric])
@@ -188,15 +192,15 @@ class Leeway(Findata):
                 case Metrics.EQUITY_RATIO:
                     shareholders_equity = get_value_by_list(self.data, self.__leeway[metric]['SHAREHOLDERS_EQUITY'])
                     assets = get_value_by_list(self.data, self.__leeway[metric]['ASSETS'])
-                    res = shareholders_equity / assets
+                    res = shareholders_equity / assets if shareholders_equity and assets else None
                 case Metrics.GEARING_RATIO:
                     shareholders_equity = get_value_by_list(self.data, self.__leeway[metric]['SHAREHOLDERS_EQUITY'])
                     debt = get_value_by_list(self.data, self.__leeway[metric]['DEBT'])
-                    res = debt / shareholders_equity
+                    res = debt / shareholders_equity if shareholders_equity and debt else None
                 case Metrics.PRICE_TO_CASHFLOW:
                     market_capitalization = get_value_by_list(self.data, self.__leeway[metric]['MARKET_CAPITALIZATION'])
                     cashflow = get_value_by_list(self.data, self.__leeway[metric]['CASHFLOW'])
-                    res = market_capitalization / cashflow
+                    res = market_capitalization / cashflow if market_capitalization and cashflow else None
                 # given
                 case _:
                     res = get_value_by_list(self.data, self.__leeway[metric])
