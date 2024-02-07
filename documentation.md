@@ -38,7 +38,7 @@ When customizing ports, take a look at [this table](https://en.wikipedia.org/wik
 ### Docker commands you should know:
 Execute in the same directory as the [compose file](./docker/docker-compose.yml) as __root__.
 
-- `docker compose build [--no-cache]` builds all containers [from new]
+- `docker compose build [--no-cache]` builds all containers [from scratch]
 - `docker compose up [-d]` runs all containers [in background]
 - `docker ps` lists running containers
 - `docker exec -it <container name> bash` opens shell on the container
@@ -269,7 +269,7 @@ POST lazy-investor/_update/mtIWT4sBXRCDxZ8MO0Ai
 # delete specific document by id (as seen above)
 DELETE lazy-investor/_doc/mtIWT4sBXRCDxZ8MO0Ai
 
-# search for symbol IBM
+# search for symbol IBM (returns the top 10 hits by default)
 GET lazy-investor/_search
 {
   "query": {
@@ -279,7 +279,7 @@ GET lazy-investor/_search
   }
 }
 
-# search for stocks listed in S&P 500
+# search for stocks listed in S&P 500 (return a maximum of 100 hits)
 GET lazy-investor/_search
 {
   "query": {
@@ -292,7 +292,8 @@ GET lazy-investor/_search
         }
       ]
     }
-  }
+  },
+  "size": 100
 }
 
 # search for minimum price to earnings of 100
